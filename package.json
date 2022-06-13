@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/gawainhewitt/harp/issues"
   },
-  "homepage": "https://github.com/gawainhewitt/harp#readme"
+  "homepage": "https://github.com/gawainhewitt/harp#readme",
+  "dependencies": {
+    "browserify": "^17.0.0"
+  }
 }
