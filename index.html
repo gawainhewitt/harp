@@ -62,10 +62,10 @@
       const tryFunction = () => {
         console.log("clickety click");
       }
-      let x = document.getElementsByTagName("BODY")[0];
+      let x = document.querySelector(".the-harp");
       x.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        alert(e);
+        alert("alert");
       })
       x.addEventListener('touchmove', (e) => {
         e.preventDefault();
