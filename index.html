@@ -17,7 +17,7 @@
       
         <div class="the-harp">
           <div class="box one">
-            <div class="string" onmouseenter="tryFunction()"></div>
+            <div class="string" onmouseover="tryFunction()"></div>
             <div class="string"></div>
             <div class="string"></div>
             <div class="string"></div>
@@ -61,11 +61,11 @@
     <script>
       const tryFunction = () => {
         console.log("clickety click");
+        alert("click");
       }
-      let x = document.querySelector(".the-harp");
+      let x = document.querySelector(".wrapper");
       x.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        alert("alert");
       })
       x.addEventListener('touchmove', (e) => {
         e.preventDefault();
