@@ -62,6 +62,13 @@
       const tryFunction = () => {
         console.log("clickety click");
       }
+      let x = document.getElementsByTagName("BODY")[0];
+      x.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+      })
+      x.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+      })
     </script>
   </body>
 </html>
