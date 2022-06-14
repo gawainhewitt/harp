@@ -63,8 +63,10 @@
         console.log("clickety click");
       }
       let x = document.getElementsByTagName("BODY")[0];
+      alert("we got here");
       x.addEventListener('touchstart', (e) => {
         e.preventDefault();
+        alert("we got here");
       })
       x.addEventListener('touchmove', (e) => {
         e.preventDefault();
