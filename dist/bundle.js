@@ -17,6 +17,12 @@
             }
           }
           this.wrapper = document.querySelector("#wrapper");
+          this.startscreen = document.querySelector("#startscreen");
+        }
+        bindStartScreen(handler) {
+          this.startscreen.addEventListener("click", () => {
+            handler();
+          });
         }
         bindMouseEnter(handler) {
           for (let i = 0; i < 3; i++) {
@@ -79,7 +85,11 @@
           this.eventBinder.bindTouchEnd(this.#handleTouchEnd);
           this.eventBinder.bindTouchMove(this.#handleTouchMove);
           this.eventBinder.bindTouchCancel(this.#handleCancel);
+          this.eventBinder.bindStartScreen(this.hideStartScreen);
         }
+        hideStartScreen = () => {
+          this.eventBinder.startscreen.style.display = "none";
+        };
         handleMouseEnter = (type, string) => {
           if (type === "mouse") {
             if (this.mouseDown) {

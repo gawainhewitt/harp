@@ -16,6 +16,11 @@ class EventHandlers {
     this.eventBinder.bindTouchEnd(this.#handleTouchEnd);
     this.eventBinder.bindTouchMove(this.#handleTouchMove);
     this.eventBinder.bindTouchCancel(this.#handleCancel);
+    this.eventBinder.bindStartScreen(this.hideStartScreen); // get this actioned once sounds have loaded
+  }
+
+  hideStartScreen = () => {
+    this.eventBinder.startscreen.style.display = "none";
   }
 
   handleMouseEnter = (type, string) => {
