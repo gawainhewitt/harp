@@ -1,22 +1,24 @@
 class EventBinders {
 
   constructor() {
-    this.mouseEnter = document.querySelector("#mouseEnter");
-    this.mouseEnterText = document.querySelector('#mouseEnterText');
-    this.button = document.querySelector("#button");
+    this.stringsArray = [];
+    for(let i = 0; i < 3; i++){
+      this.stringsArray[i] = [];
+      for(let j = 0; j < 10; j++){
+        this.stringsArray[i][j] = document.querySelector(`#c${i}s${j}`);
+      }
+    }
     this.wrapper = document.querySelector("#wrapper");
   }
 
   bindMouseEnter(handler) {
-    this.mouseEnter.addEventListener('mouseenter', () => {
-      handler("mouse");
-    })
-  }
-  
-  bindButton(handler) {
-    this.button.addEventListener('click', () => {
-      handler();
-    })
+    for(let i = 0; i < 3; i++){
+      for(let j = 0; j < 10; j++){
+        this.stringsArray[i][j].addEventListener('mouseenter', () => { 
+        handler("mouse", `c${i}s${j}`);
+        })
+      }
+    }
   }
 
   bindSelectStart(handler) {

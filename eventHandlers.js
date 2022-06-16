@@ -12,23 +12,19 @@ class EventHandlers {
     this.eventBinder.bindSelectStart(this.disableSelect);
     this.eventBinder.bindMouseDown(this.registerMouseDown);
     this.eventBinder.bindMouseUp(this.registerMouseUp);
-    this.eventBinder.bindButton(this.buttonFunction);
     this.eventBinder.bindTouchStart(this.#handleTouchStart);
     this.eventBinder.bindTouchEnd(this.#handleTouchEnd);
     this.eventBinder.bindTouchMove(this.#handleTouchMove);
     this.eventBinder.bindTouchCancel(this.#handleCancel);
   }
 
-  handleMouseEnter = (type) => {
-    console.log(type);
+  handleMouseEnter = (type, string) => {
     if(type === "mouse"){
       if(this.mouseDown){
-        this.mouseEnterCount += 1;
-        this.eventBinder.mouseEnterText.innerHTML = `mouseEnter ${this.mouseEnterCount}`;
+        console.log(`type = ${type}, string = ${string}`);
       }
     }else{
-      this.mouseEnterCount += 1;
-      this.eventBinder.mouseEnterText.innerHTML = `mouseEnter ${this.mouseEnterCount}`;
+      console.log(`type = ${type}, string = ${string}`);
     }
     
   }
@@ -65,7 +61,7 @@ class EventHandlers {
   #handleTouchEnd = (e) => {
     e.preventDefault(); 
     let touches = e.changedTouches; 
-    console.log("touch end");
+    // console.log("touch end");
 
     for (let i = 0; i < touches.length; i++) {
       let idx = this.#ongoingTouchIndexById(touches[i].identifier); 
@@ -127,27 +123,30 @@ class EventHandlers {
   #showElement = () => {
     for(let i = 0; i < this.ongoingTouches.length; i++){
       let el = document.elementFromPoint(this.ongoingTouches[i].clientX, this.ongoingTouches[i].clientY);
-      console.log(`element = ${el.id}`);
+      // console.log(`element = ${el.id}`);
       
       if(this.#isNewTouchOnElement(i, el.id)){
-        // this is a bit irrelevent
-        if(el.id === "mouseEnterText"){
-          this.handleMouseEnter("touch");
+        for(let i = 0; i < 3; i++){
+          for(let j = 0; j < 10; j++){
+            if(el.id === `c${i}s${j}`){
+              this.handleMouseEnter("touch", `#c${i}s${j}`);
+            }
+          }
         }
       }
     }
   }
 
   #isNewTouchOnElement = (idx, el_id) => {
-    console.log(`length of this touches on elements = ${this.touchesOnElements.length}`)
+    // console.log(`length of this touches on elements = ${this.touchesOnElements.length}`)
     for(let i = 0; i < this.touchesOnElements.length; i++){
-      console.log(`touches on elements ${i} ${this.touchesOnElements[i]}`);
+      // console.log(`touches on elements ${i} ${this.touchesOnElements[i]}`);
       if(this.touchesOnElements[i].touch_id === this.ongoingTouches[idx].identifier){
         if(this.touchesOnElements[i].element_id === el_id){
-          console.log("already on element");
+          // console.log("already on element");
           return false;
         }else{
-          console.log("same touch new element");
+          // console.log("same touch new element");
           this.touchesOnElements.splice(i, 1, {touch_id: this.ongoingTouches[idx].identifier, element_id: el_id});
           return true;
         }

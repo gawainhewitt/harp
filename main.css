@@ -24,54 +24,54 @@ body{
 
 .top-box{
   /* we are using vh for a fixed knowable height relative to the window. Therefore :root, html and body % settings are irrelevant */
-  height: 20vh;
+  height: 10vh;
   background: cyan;
 }
 
 #middle-box{
   /* we are using vh for a fixed knowable height relative to the window. Therefore :root, html and body % settings are irrelevant */
-  height: 40vh;
+  height: 90vh;
   display: flex;
   background: white;
 }
 
-.bottom-box{
-  /* we are using vh for a fixed knowable height relative to the window. Therefore :root, html and body % settings are irrelevant */
-  height: 40vh;
+/* .bottom-box{
+  height: 10vh;
   background: yellow;
-}
+} */
 
 .one{
-  background: red;
+  background: brown;
   display: flex;
   flex: 1;
-  flex-direction: column;
+  flex-direction: row;
   justify-content:space-around;
 }
 
 .two{
-  background: blue;
-  display: flex;
-  flex: 2;
-  flex-direction: column;
-  justify-content:space-between;
+  background: grey;
+  display: none;
+  none: 1;
+  flex-direction: row;
+  justify-content:space-around;
 }
 
 .three{
-  background: green;
-  display: flex;
+  background: black;
+  display: none;
   flex: 1;
-  flex-direction: column;
+  flex-direction: row;
   justify-content:space-around;
+}
+
+.string{
+  background: goldenrod;
+  width: 1vw;
 }
 
 p {
   text-align: center;
-}
-
-.column{
-  background: grey;
-  width: 100%;
+  font-size: 2em;
 }
 
 
