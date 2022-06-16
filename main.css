@@ -1,0 +1,77 @@
+*{
+  font-family: Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* I have left :root in as a reminder that it is above html in inheritance */
+
+:root{
+  /* setting the height here gives the basis upon which percentages are referenced */
+  /* height: 50vh;  */
+}
+
+html{
+  /* sets height % relative to :root (if :root is set) */
+  /* height: 100%; */
+}
+
+body{
+  /* sets height % relative to html */
+  /* height: 100%; */
+}
+
+.top-box{
+  /* we are using vh for a fixed knowable height relative to the window. Therefore :root, html and body % settings are irrelevant */
+  height: 20vh;
+  background: cyan;
+}
+
+#middle-box{
+  /* we are using vh for a fixed knowable height relative to the window. Therefore :root, html and body % settings are irrelevant */
+  height: 40vh;
+  display: flex;
+  background: white;
+}
+
+.bottom-box{
+  /* we are using vh for a fixed knowable height relative to the window. Therefore :root, html and body % settings are irrelevant */
+  height: 40vh;
+  background: yellow;
+}
+
+.one{
+  background: red;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content:space-around;
+}
+
+.two{
+  background: blue;
+  display: flex;
+  flex: 2;
+  flex-direction: column;
+  justify-content:space-between;
+}
+
+.three{
+  background: green;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content:space-around;
+}
+
+p {
+  text-align: center;
+}
+
+.column{
+  background: grey;
+  width: 100%;
+}
+
+

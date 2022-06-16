@@ -1,75 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <title>Harp</title>
-    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <title>boxes and strings proof of concept</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
   </head>
   <body>
-    <div class="wrapper">
 
-      <div class="up-down">
+    <div id="wrapper">
 
-        <div class="top-menu">Top Menu</div>
-      
-        <div class="the-harp">
-          <div class="box one">
-            <div class="string" onmouseover="tryFunction()"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-          </div>
-          <div class="box two">
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-          </div>
-          <div class="box three">
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-            <div class="string"></div>
-          </div>
+      <div class="top-box" id ="top-box">
+        <p>top-box</p>
+      </div>
+    
+      <div id="middle-box">
+        <div class="one" id="one">
+          <p>middle-box flexbox row 1</p>
+          <div class="column" id="mouseEnter"><p id="mouseEnterText">mouseEnter 0</p></div>
         </div>
+        <div class="two" id="two">
+          <p id="midboxrow2">middle-box flexbox row 2</p>
+          <button type="button" id="button">button 0</button>
+          <div class="column" id="innerflexcol"><p>inner flexbox column</p></div>
+        </div>
+        <div class="three" id="three">
+          <p id="row3">middle-box flexbox row 3</p>
+          <div class="column" id="col3"><p>inner flexbox column</p></div>
+        </div>
+      </div>
 
+      <div class="bottom-box" id="bottom">
+        <p id="bttext">bottom-box</p>
       </div>
 
     </div>
 
-    <script>
-      const tryFunction = () => {
-        console.log("clickety click");
-        alert("click");
-      }
-      let x = document.querySelector(".wrapper");
-      x.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-      })
-      x.addEventListener('touchmove', (e) => {
-        e.preventDefault();
-      })
-    </script>
+    <script src="bundle.js"></script>
   </body>
 </html>
