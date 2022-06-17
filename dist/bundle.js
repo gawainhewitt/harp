@@ -10769,12 +10769,7 @@
         setUpAudio = (displayStartButton) => {
           this.sampler = new Tone.Sampler({
             urls: {
-              B2: "horn-tone-b2.mp3",
-              C3: "horn-tone-c3.mp3",
-              E3: "horn-tone-e3.mp3",
-              G3: "horn-tone-g3.mp3",
-              A3: "horn-tone-a3.mp3",
-              C4: "horn-tone-c4.mp3"
+              C4: "Harp-C4.mp3"
             },
             baseUrl: "/sounds/",
             onload: () => {
@@ -10788,7 +10783,8 @@
           }).toDestination();
           this.sampler.connect(this.reverb);
           this.sampler.set({
-            release: 8
+            release: 8,
+            volume: -6
           });
         };
         startAudio = () => {
