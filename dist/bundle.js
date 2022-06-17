@@ -28,7 +28,7 @@
           for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 10; j++) {
               this.stringsArray[i][j].addEventListener("mouseenter", () => {
-                handler("mouse", `c${i}s${j}`);
+                handler("mouse", { chord: i, string: j });
               });
             }
           }
@@ -77,7 +77,7 @@
           this.mouseEnterCount = 0;
           this.buttonCount = 0;
           this.mouseDown = false;
-          this.eventBinder.bindMouseEnter(this.handleMouseEnter);
+          this.eventBinder.bindMouseEnter(this.stringIsPlucked);
           this.eventBinder.bindSelectStart(this.disableSelect);
           this.eventBinder.bindMouseDown(this.registerMouseDown);
           this.eventBinder.bindMouseUp(this.registerMouseUp);
@@ -90,13 +90,13 @@
         hideStartScreen = () => {
           this.eventBinder.startscreen.style.display = "none";
         };
-        handleMouseEnter = (type, string) => {
+        stringIsPlucked = (type, whichString) => {
           if (type === "mouse") {
             if (this.mouseDown) {
-              console.log(`type = ${type}, string = ${string}`);
+              console.log(`type = ${type}, chord = ${whichString.chord}, string = ${whichString.string}`);
             }
           } else {
-            console.log(`type = ${type}, string = ${string}`);
+            console.log(`type = ${type}, chord = ${whichString.chord}, string = ${whichString.string}`);
           }
         };
         buttonFunction = () => {
@@ -181,7 +181,7 @@
               for (let i2 = 0; i2 < 3; i2++) {
                 for (let j = 0; j < 10; j++) {
                   if (el.id === `c${i2}s${j}`) {
-                    this.handleMouseEnter("touch", `#c${i2}s${j}`);
+                    this.stringIsPlucked("touch", { chord: i2, string: j });
                   }
                 }
               }

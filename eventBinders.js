@@ -22,7 +22,7 @@ class EventBinders {
     for(let i = 0; i < 3; i++){
       for(let j = 0; j < 10; j++){
         this.stringsArray[i][j].addEventListener('mouseenter', () => { 
-        handler("mouse", `c${i}s${j}`);
+        handler("mouse", {chord: i, string: j});
         })
       }
     }
