@@ -17,6 +17,23 @@ class EventHandlers {
     this.eventBinder.bindTouchMove(this.#handleTouchMove);
     this.eventBinder.bindTouchCancel(this.#handleCancel);
     this.harpSoundControl.setUpAudio(this.displayStartButton);
+    this.eventBinder.bindChordButtons(this.switchChords);
+    this.chordButtonState = [true, true, true];
+  }
+
+  switchChords = (button, buttonId) => {
+    const chordBlockClasses = [".one", ".two", ".three"];
+    console.log(`button id = ${buttonId}`);
+    this.chordButtonState[button] = !this.chordButtonState[button];
+    console.log(this.chordButtonState);
+    for(let i = 0; i < this.chordButtonState.length; i++){
+      if(this.chordButtonState[i]){
+        console.log("are we here?")
+        document.querySelector(chordBlockClasses[i]).style.display = "flex";
+      }else{
+        document.querySelector(chordBlockClasses[i]).style.display = "none";
+      }
+    }
   }
 
   displayStartButton = () => {

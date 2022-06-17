@@ -8,8 +8,23 @@ class EventBinders {
         this.stringsArray[i][j] = document.querySelector(`#c${i}s${j}`);
       }
     }
-    this.wrapper = document.querySelector("#wrapper");
+    this.middlebox = document.querySelector("#middle-box");
     this.startscreen = document.querySelector("#startscreen");
+    this.onechord = document.querySelector("#onechord");
+    this.twochord = document.querySelector("#twochord");
+    this.threechord = document.querySelector("#threechord");
+  }
+
+  bindChordButtons(handler) {
+    this.onechord.addEventListener('click', () => {
+      handler(0, "#onechord");
+    })
+    this.twochord.addEventListener('click', () => {
+      handler(1, "#twochord");
+    })
+    this.threechord.addEventListener('click', () => {
+      handler(2, "#threechord");
+    })
   }
 
   bindStartScreen(handler) {
@@ -47,19 +62,19 @@ class EventBinders {
   }
 
   bindTouchStart(handler) {
-    this.wrapper.addEventListener('touchstart', handler);
+    this.middlebox.addEventListener('touchstart', handler);
   }
 
   bindTouchEnd(handler) {
-    this.wrapper.addEventListener('touchend', handler);
+    this.middlebox.addEventListener('touchend', handler);
   }
 
   bindTouchMove(handler) {
-    this.wrapper.addEventListener('touchmove', handler);
+    this.middlebox.addEventListener('touchmove', handler);
   }
 
   bindTouchCancel(handler) {
-    this.wrapper.addEventListener('touchcancel', handler);
+    this.middlebox.addEventListener('touchcancel', handler);
   }
 
 }

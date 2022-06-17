@@ -26,6 +26,14 @@ body{
   /* we are using vh for a fixed knowable height relative to the window. Therefore :root, html and body % settings are irrelevant */
   height: 10vh;
   background: cyan;
+  display: flex;
+  flex-direction: column;
+  justify-content:space-around;
+}
+
+#inner-top-box{
+  display: flex;
+  justify-content:space-around;
 }
 
 #middle-box{
@@ -50,15 +58,15 @@ body{
 
 .two{
   background: grey;
-  display: none;
-  none: 1;
+  display: flex;
+  flex: 1;
   flex-direction: row;
   justify-content:space-around;
 }
 
 .three{
   background: black;
-  display: none;
+  display: flex;
   flex: 1;
   flex-direction: row;
   justify-content:space-around;

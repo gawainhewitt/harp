@@ -16,8 +16,22 @@
               this.stringsArray[i][j] = document.querySelector(`#c${i}s${j}`);
             }
           }
-          this.wrapper = document.querySelector("#wrapper");
+          this.middlebox = document.querySelector("#middle-box");
           this.startscreen = document.querySelector("#startscreen");
+          this.onechord = document.querySelector("#onechord");
+          this.twochord = document.querySelector("#twochord");
+          this.threechord = document.querySelector("#threechord");
+        }
+        bindChordButtons(handler) {
+          this.onechord.addEventListener("click", () => {
+            handler(0, "#onechord");
+          });
+          this.twochord.addEventListener("click", () => {
+            handler(1, "#twochord");
+          });
+          this.threechord.addEventListener("click", () => {
+            handler(2, "#threechord");
+          });
         }
         bindStartScreen(handler) {
           this.startscreen.addEventListener("click", () => {
@@ -49,16 +63,16 @@
           });
         }
         bindTouchStart(handler) {
-          this.wrapper.addEventListener("touchstart", handler);
+          this.middlebox.addEventListener("touchstart", handler);
         }
         bindTouchEnd(handler) {
-          this.wrapper.addEventListener("touchend", handler);
+          this.middlebox.addEventListener("touchend", handler);
         }
         bindTouchMove(handler) {
-          this.wrapper.addEventListener("touchmove", handler);
+          this.middlebox.addEventListener("touchmove", handler);
         }
         bindTouchCancel(handler) {
-          this.wrapper.addEventListener("touchcancel", handler);
+          this.middlebox.addEventListener("touchcancel", handler);
         }
       };
       module.exports = EventBinders2;
@@ -86,7 +100,23 @@
           this.eventBinder.bindTouchMove(this.#handleTouchMove);
           this.eventBinder.bindTouchCancel(this.#handleCancel);
           this.harpSoundControl.setUpAudio(this.displayStartButton);
+          this.eventBinder.bindChordButtons(this.switchChords);
+          this.chordButtonState = [true, true, true];
         }
+        switchChords = (button, buttonId) => {
+          const chordBlockClasses = [".one", ".two", ".three"];
+          console.log(`button id = ${buttonId}`);
+          this.chordButtonState[button] = !this.chordButtonState[button];
+          console.log(this.chordButtonState);
+          for (let i = 0; i < this.chordButtonState.length; i++) {
+            if (this.chordButtonState[i]) {
+              console.log("are we here?");
+              document.querySelector(chordBlockClasses[i]).style.display = "flex";
+            } else {
+              document.querySelector(chordBlockClasses[i]).style.display = "none";
+            }
+          }
+        };
         displayStartButton = () => {
           this.eventBinder.bindStartScreen(this.hideStartScreen);
         };
@@ -10664,8 +10694,8 @@
         constructor() {
           this.chordArray = [
             ["C3", "E3", "G3", "C4", "E4", "G4", "C5", "E5", "G5", "C6"],
-            ["C3", "E3", "G3", "C2", "E2", "G2", "C3", "E3", "G3", "C4"],
-            ["C3", "E3", "G3", "C2", "E2", "G2", "C3", "E3", "G3", "C4"]
+            ["F3", "A3", "C3", "F4", "A4", "C4", "F5", "A5", "C6", "F6"],
+            ["G3", "B3", "D3", "G4", "B4", "D4", "G5", "B5", "D6", "G6"]
           ];
           this.allTheNotes = [
             "C1",
