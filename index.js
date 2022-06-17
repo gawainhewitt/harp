@@ -1,8 +1,8 @@
 const EventBinders = require('./eventBinders');
 const EventHandlers = require('./eventHandlers');
-const CoolStuffHappens = require('./coolStuffHappens');
+const HarpSoundControl = require('./harpSoundControl');
 
 const eventBinders = new EventBinders;
-const coolStuffHappens = new CoolStuffHappens;
-const eventHandlers = new EventHandlers(eventBinders, coolStuffHappens);
+const harpSoundControl = new HarpSoundControl;
+const eventHandlers = new EventHandlers(eventBinders, harpSoundControl);
 

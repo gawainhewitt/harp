@@ -1,8 +1,8 @@
 class EventHandlers {
   
-  constructor(eventBinder, coolStuffHappens) {
+  constructor(eventBinder, harpSoundControl) {
     this.eventBinder = eventBinder;
-    this.coolStuffHappens = coolStuffHappens;
+    this.harpSoundControl = harpSoundControl;
     this.ongoingTouches = [];
     this.touchesOnElements = [];
     this.mouseEnterCount = 0;
@@ -16,20 +16,27 @@ class EventHandlers {
     this.eventBinder.bindTouchEnd(this.#handleTouchEnd);
     this.eventBinder.bindTouchMove(this.#handleTouchMove);
     this.eventBinder.bindTouchCancel(this.#handleCancel);
+    this.harpSoundControl.setUpAudio(this.displayStartButton);
+  }
+
+  displayStartButton = () => {
     this.eventBinder.bindStartScreen(this.hideStartScreen); // get this actioned once sounds have loaded
   }
 
   hideStartScreen = () => {
+    this.harpSoundControl.startAudio();
     this.eventBinder.startscreen.style.display = "none";
   }
 
   stringIsPlucked = (type, whichString) => {
     if(type === "mouse"){
       if(this.mouseDown){
-        console.log(`type = ${type}, chord = ${whichString.chord}, string = ${whichString.string}`);
+        console.log(`type = ${type}`);
+        this.harpSoundControl.playNote(whichString);
       }
     }else{
-      console.log(`type = ${type}, chord = ${whichString.chord}, string = ${whichString.string}`);
+      console.log(`type = ${type}`);
+      this.harpSoundControl.playNote(whichString);
     }
     
   }
