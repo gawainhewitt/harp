@@ -1,3 +1,7 @@
+// const binders = {
+//   'bindMouseEnter' : 'stringIsPlucked'
+// } from John
+
 class EventHandlers {
   
   constructor(eventBinder, harpSoundControl) {
@@ -8,6 +12,16 @@ class EventHandlers {
     this.mouseEnterCount = 0;
     this.buttonCount = 0;
     this.mouseDown = false;
+    
+    // for (const property in binders) {
+    //   const handler = this[binders[property]]
+    //   this.eventBinder[property] = handler
+    // }
+
+    // [].forEach((el) => {
+
+    // }) From John
+
     this.eventBinder.bindMouseEnter(this.stringIsPlucked);
     this.eventBinder.bindSelectStart(this.disableSelect);
     this.eventBinder.bindMouseDown(this.registerMouseDown);
@@ -30,6 +44,7 @@ class EventHandlers {
       if(this.chordButtonState[i]){
         console.log("are we here?")
         document.querySelector(chordBlockClasses[i]).style.display = "flex";
+        // john suggesting I could instead create and destroy a class here rather than change the style
       }else{
         document.querySelector(chordBlockClasses[i]).style.display = "none";
       }
