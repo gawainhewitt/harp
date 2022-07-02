@@ -26,6 +26,8 @@ class EventHandlers {
     this.eventBinder.bindSelectStart(this.disableSelect);
     this.eventBinder.bindMouseDown(this.registerMouseDown);
     this.eventBinder.bindMouseUp(this.registerMouseUp);
+    this.eventBinder.bindKeyDown(this.handleKeyDown);
+    this.eventBinder.bindKeyUp(this.handleKeyUp);
     this.eventBinder.bindTouchStart(this.#handleTouchStart);
     this.eventBinder.bindTouchEnd(this.#handleTouchEnd);
     this.eventBinder.bindTouchMove(this.#handleTouchMove);
@@ -90,6 +92,16 @@ class EventHandlers {
 
   registerMouseUp = () => {
     this.mouseDown = false;
+  }
+
+  handleKeyDown = (e) => {
+    let key = e.code;
+    console.log("keydown "+key); //debugging
+  }
+
+  handleKeyUp = () => {
+    let key = e.code;
+    console.log("keydown "+key); //debugging
   }
 
   #handleTouchStart = (e) => {

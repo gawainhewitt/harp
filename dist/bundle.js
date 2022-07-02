@@ -48,18 +48,18 @@
           }
         }
         bindSelectStart(handler) {
-          document.addEventListener("selectstart", (e) => {
-            handler(e);
+          document.addEventListener("selectstart", (e2) => {
+            handler(e2);
           });
         }
         bindMouseDown(handler) {
-          document.addEventListener("mousedown", (e) => {
-            handler(e);
+          document.addEventListener("mousedown", (e2) => {
+            handler(e2);
           });
         }
         bindMouseUp(handler) {
-          document.addEventListener("mouseup", (e) => {
-            handler(e);
+          document.addEventListener("mouseup", (e2) => {
+            handler(e2);
           });
         }
         bindTouchStart(handler) {
@@ -73,6 +73,12 @@
         }
         bindTouchCancel(handler) {
           this.middlebox.addEventListener("touchcancel", handler);
+        }
+        bindKeyDown(handler) {
+          document.addEventListener("keydown", handler);
+        }
+        bindKeyUp(handler) {
+          document.addEventListener("keyup", handler);
         }
       };
       module.exports = EventBinders2;
@@ -95,6 +101,8 @@
           this.eventBinder.bindSelectStart(this.disableSelect);
           this.eventBinder.bindMouseDown(this.registerMouseDown);
           this.eventBinder.bindMouseUp(this.registerMouseUp);
+          this.eventBinder.bindKeyDown(this.handleKeyDown);
+          this.eventBinder.bindKeyUp(this.handleKeyUp);
           this.eventBinder.bindTouchStart(this.#handleTouchStart);
           this.eventBinder.bindTouchEnd(this.#handleTouchEnd);
           this.eventBinder.bindTouchMove(this.#handleTouchMove);
@@ -140,26 +148,34 @@
           this.buttonCount += 1;
           text.innerHTML = `button ${this.buttonCount}`;
         };
-        disableSelect = (e) => {
-          e.preventDefault();
+        disableSelect = (e2) => {
+          e2.preventDefault();
         };
-        registerMouseDown = (e) => {
-          this.disableSelect(e);
+        registerMouseDown = (e2) => {
+          this.disableSelect(e2);
           this.mouseDown = true;
         };
         registerMouseUp = () => {
           this.mouseDown = false;
         };
-        #handleTouchStart = (e) => {
-          e.preventDefault();
+        handleKeyDown = (e2) => {
+          let key = e2.code;
+          console.log("keydown " + key);
+        };
+        handleKeyUp = () => {
+          let key = e.code;
+          console.log("keydown " + key);
+        };
+        #handleTouchStart = (e2) => {
+          e2.preventDefault();
           console.log("touch start");
-          let touches = e.changedTouches;
+          let touches = e2.changedTouches;
           this.ongoingTouches.push(this.#copyTouch(touches[0]));
           this.#showElement(this.ongoingTouches);
         };
-        #handleTouchEnd = (e) => {
-          e.preventDefault();
-          let touches = e.changedTouches;
+        #handleTouchEnd = (e2) => {
+          e2.preventDefault();
+          let touches = e2.changedTouches;
           for (let i = 0; i < touches.length; i++) {
             let idx = this.#ongoingTouchIndexById(touches[i].identifier);
             if (idx >= 0) {
@@ -175,10 +191,10 @@
             }
           }
         };
-        #handleTouchMove = (e) => {
-          e.preventDefault();
+        #handleTouchMove = (e2) => {
+          e2.preventDefault();
           console.log("touch move");
-          let touches = e.changedTouches;
+          let touches = e2.changedTouches;
           for (let i = 0; i < touches.length; i++) {
             let idx = this.#ongoingTouchIndexById(touches[i].identifier);
             if (idx >= 0) {
@@ -189,10 +205,10 @@
           }
           this.#showElement(this.ongoingTouches);
         };
-        #handleCancel = (e) => {
-          e.preventDefault();
+        #handleCancel = (e2) => {
+          e2.preventDefault();
           console.log("touchcancel.");
-          let touches = e.changedTouches;
+          let touches = e2.changedTouches;
           for (let i = 0; i < touches.length; i++) {
             let idx = this.ongoingTouchIndexById(touches[i].identifier);
             this.ongoingTouches.splice(idx, 1);
@@ -246,60 +262,60 @@
   // node_modules/tone/build/Tone.js
   var require_Tone = __commonJS({
     "node_modules/tone/build/Tone.js"(exports, module) {
-      !function(t, e) {
-        typeof exports == "object" && typeof module == "object" ? module.exports = e() : typeof define == "function" && define.amd ? define([], e) : typeof exports == "object" ? exports.Tone = e() : t.Tone = e();
+      !function(t, e2) {
+        typeof exports == "object" && typeof module == "object" ? module.exports = e2() : typeof define == "function" && define.amd ? define([], e2) : typeof exports == "object" ? exports.Tone = e2() : t.Tone = e2();
       }(typeof self != "undefined" ? self : exports, function() {
         return function(t) {
-          var e = {};
+          var e2 = {};
           function s(n) {
-            if (e[n])
-              return e[n].exports;
-            var i = e[n] = { i: n, l: false, exports: {} };
+            if (e2[n])
+              return e2[n].exports;
+            var i = e2[n] = { i: n, l: false, exports: {} };
             return t[n].call(i.exports, i, i.exports, s), i.l = true, i.exports;
           }
-          return s.m = t, s.c = e, s.d = function(t2, e2, n) {
-            s.o(t2, e2) || Object.defineProperty(t2, e2, { enumerable: true, get: n });
+          return s.m = t, s.c = e2, s.d = function(t2, e3, n) {
+            s.o(t2, e3) || Object.defineProperty(t2, e3, { enumerable: true, get: n });
           }, s.r = function(t2) {
             typeof Symbol != "undefined" && Symbol.toStringTag && Object.defineProperty(t2, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(t2, "__esModule", { value: true });
-          }, s.t = function(t2, e2) {
-            if (1 & e2 && (t2 = s(t2)), 8 & e2)
+          }, s.t = function(t2, e3) {
+            if (1 & e3 && (t2 = s(t2)), 8 & e3)
               return t2;
-            if (4 & e2 && typeof t2 == "object" && t2 && t2.__esModule)
+            if (4 & e3 && typeof t2 == "object" && t2 && t2.__esModule)
               return t2;
             var n = /* @__PURE__ */ Object.create(null);
-            if (s.r(n), Object.defineProperty(n, "default", { enumerable: true, value: t2 }), 2 & e2 && typeof t2 != "string")
+            if (s.r(n), Object.defineProperty(n, "default", { enumerable: true, value: t2 }), 2 & e3 && typeof t2 != "string")
               for (var i in t2)
-                s.d(n, i, function(e3) {
-                  return t2[e3];
+                s.d(n, i, function(e4) {
+                  return t2[e4];
                 }.bind(null, i));
             return n;
           }, s.n = function(t2) {
-            var e2 = t2 && t2.__esModule ? function() {
+            var e3 = t2 && t2.__esModule ? function() {
               return t2.default;
             } : function() {
               return t2;
             };
-            return s.d(e2, "a", e2), e2;
-          }, s.o = function(t2, e2) {
-            return Object.prototype.hasOwnProperty.call(t2, e2);
+            return s.d(e3, "a", e3), e3;
+          }, s.o = function(t2, e3) {
+            return Object.prototype.hasOwnProperty.call(t2, e3);
           }, s.p = "", s(s.s = 9);
-        }([function(t, e, s) {
-          !function(t2, e2, s2, n) {
+        }([function(t, e2, s) {
+          !function(t2, e3, s2, n) {
             "use strict";
             function i(t3) {
               return t3 && typeof t3 == "object" && "default" in t3 ? t3 : { default: t3 };
             }
-            var o = i(e2), r = i(s2), a = i(n), c = function(t3, e3, s3) {
-              return { endTime: e3, insertTime: s3, type: "exponentialRampToValue", value: t3 };
-            }, h = function(t3, e3, s3) {
-              return { endTime: e3, insertTime: s3, type: "linearRampToValue", value: t3 };
-            }, u = function(t3, e3) {
-              return { startTime: e3, type: "setValue", value: t3 };
-            }, l = function(t3, e3, s3) {
-              return { duration: s3, startTime: e3, type: "setValueCurve", values: t3 };
-            }, p = function(t3, e3, s3) {
+            var o = i(e3), r = i(s2), a = i(n), c = function(t3, e4, s3) {
+              return { endTime: e4, insertTime: s3, type: "exponentialRampToValue", value: t3 };
+            }, h = function(t3, e4, s3) {
+              return { endTime: e4, insertTime: s3, type: "linearRampToValue", value: t3 };
+            }, u = function(t3, e4) {
+              return { startTime: e4, type: "setValue", value: t3 };
+            }, l = function(t3, e4, s3) {
+              return { duration: s3, startTime: e4, type: "setValueCurve", values: t3 };
+            }, p = function(t3, e4, s3) {
               var n2 = s3.startTime, i2 = s3.target, o2 = s3.timeConstant;
-              return i2 + (e3 - i2) * Math.exp((n2 - t3) / o2);
+              return i2 + (e4 - i2) * Math.exp((n2 - t3) / o2);
             }, d = function(t3) {
               return t3.type === "exponentialRampToValue";
             }, f = function(t3) {
@@ -310,82 +326,82 @@
               return t3.type === "setValue";
             }, g = function(t3) {
               return t3.type === "setValueCurve";
-            }, v = function t3(e3, s3, n2, i2) {
-              var o2 = e3[s3];
-              return o2 === void 0 ? i2 : _(o2) || m(o2) ? o2.value : g(o2) ? o2.values[o2.values.length - 1] : p(n2, t3(e3, s3 - 1, o2.startTime, i2), o2);
-            }, y = function(t3, e3, s3, n2, i2) {
-              return s3 === void 0 ? [n2.insertTime, i2] : _(s3) ? [s3.endTime, s3.value] : m(s3) ? [s3.startTime, s3.value] : g(s3) ? [s3.startTime + s3.duration, s3.values[s3.values.length - 1]] : [s3.startTime, v(t3, e3 - 1, s3.startTime, i2)];
+            }, v = function t3(e4, s3, n2, i2) {
+              var o2 = e4[s3];
+              return o2 === void 0 ? i2 : _(o2) || m(o2) ? o2.value : g(o2) ? o2.values[o2.values.length - 1] : p(n2, t3(e4, s3 - 1, o2.startTime, i2), o2);
+            }, y = function(t3, e4, s3, n2, i2) {
+              return s3 === void 0 ? [n2.insertTime, i2] : _(s3) ? [s3.endTime, s3.value] : m(s3) ? [s3.startTime, s3.value] : g(s3) ? [s3.startTime + s3.duration, s3.values[s3.values.length - 1]] : [s3.startTime, v(t3, e4 - 1, s3.startTime, i2)];
             }, x = function(t3) {
               return t3.type === "cancelAndHold";
             }, w = function(t3) {
               return t3.type === "cancelScheduledValues";
             }, b = function(t3) {
               return x(t3) || w(t3) ? t3.cancelTime : d(t3) || f(t3) ? t3.endTime : t3.startTime;
-            }, T = function(t3, e3, s3, n2) {
+            }, T = function(t3, e4, s3, n2) {
               var i2 = n2.endTime, o2 = n2.value;
-              return s3 === o2 ? o2 : 0 < s3 && 0 < o2 || s3 < 0 && o2 < 0 ? s3 * Math.pow(o2 / s3, (t3 - e3) / (i2 - e3)) : 0;
-            }, S = function(t3, e3, s3, n2) {
-              return s3 + (t3 - e3) / (n2.endTime - e3) * (n2.value - s3);
-            }, k = function(t3, e3) {
-              var s3 = e3.duration, n2 = e3.startTime, i2 = e3.values;
-              return function(t4, e4) {
-                var s4 = Math.floor(e4), n3 = Math.ceil(e4);
-                return s4 === n3 ? t4[s4] : (1 - (e4 - s4)) * t4[s4] + (1 - (n3 - e4)) * t4[n3];
+              return s3 === o2 ? o2 : 0 < s3 && 0 < o2 || s3 < 0 && o2 < 0 ? s3 * Math.pow(o2 / s3, (t3 - e4) / (i2 - e4)) : 0;
+            }, S = function(t3, e4, s3, n2) {
+              return s3 + (t3 - e4) / (n2.endTime - e4) * (n2.value - s3);
+            }, k = function(t3, e4) {
+              var s3 = e4.duration, n2 = e4.startTime, i2 = e4.values;
+              return function(t4, e5) {
+                var s4 = Math.floor(e5), n3 = Math.ceil(e5);
+                return s4 === n3 ? t4[s4] : (1 - (e5 - s4)) * t4[s4] + (1 - (n3 - e5)) * t4[n3];
               }(i2, (t3 - n2) / s3 * (i2.length - 1));
             }, C = function(t3) {
               return t3.type === "setTarget";
             }, A = function() {
-              function t3(e3) {
-                r.default(this, t3), this._automationEvents = [], this._currenTime = 0, this._defaultValue = e3;
+              function t3(e4) {
+                r.default(this, t3), this._automationEvents = [], this._currenTime = 0, this._defaultValue = e4;
               }
               return a.default(t3, [{ key: Symbol.iterator, value: function() {
                 return this._automationEvents[Symbol.iterator]();
               } }, { key: "add", value: function(t4) {
-                var e3 = b(t4);
+                var e4 = b(t4);
                 if (x(t4) || w(t4)) {
                   var s3 = this._automationEvents.findIndex(function(s4) {
-                    return w(t4) && g(s4) ? s4.startTime + s4.duration >= e3 : b(s4) >= e3;
+                    return w(t4) && g(s4) ? s4.startTime + s4.duration >= e4 : b(s4) >= e4;
                   }), n2 = this._automationEvents[s3];
                   if (s3 !== -1 && (this._automationEvents = this._automationEvents.slice(0, s3)), x(t4)) {
                     var i2 = this._automationEvents[this._automationEvents.length - 1];
                     if (n2 !== void 0 && _(n2)) {
                       if (C(i2))
                         throw new Error("The internal list is malformed.");
-                      var o2 = g(i2) ? i2.startTime + i2.duration : b(i2), r2 = g(i2) ? i2.values[i2.values.length - 1] : i2.value, a2 = d(n2) ? T(e3, o2, r2, n2) : S(e3, o2, r2, n2), p2 = d(n2) ? c(a2, e3, this._currenTime) : h(a2, e3, this._currenTime);
+                      var o2 = g(i2) ? i2.startTime + i2.duration : b(i2), r2 = g(i2) ? i2.values[i2.values.length - 1] : i2.value, a2 = d(n2) ? T(e4, o2, r2, n2) : S(e4, o2, r2, n2), p2 = d(n2) ? c(a2, e4, this._currenTime) : h(a2, e4, this._currenTime);
                       this._automationEvents.push(p2);
                     }
-                    i2 !== void 0 && C(i2) && this._automationEvents.push(u(this.getValue(e3), e3)), i2 !== void 0 && g(i2) && i2.startTime + i2.duration > e3 && (this._automationEvents[this._automationEvents.length - 1] = l(new Float32Array([6, 7]), i2.startTime, e3 - i2.startTime));
+                    i2 !== void 0 && C(i2) && this._automationEvents.push(u(this.getValue(e4), e4)), i2 !== void 0 && g(i2) && i2.startTime + i2.duration > e4 && (this._automationEvents[this._automationEvents.length - 1] = l(new Float32Array([6, 7]), i2.startTime, e4 - i2.startTime));
                   }
                 } else {
                   var m2 = this._automationEvents.findIndex(function(t5) {
-                    return b(t5) > e3;
+                    return b(t5) > e4;
                   }), v2 = m2 === -1 ? this._automationEvents[this._automationEvents.length - 1] : this._automationEvents[m2 - 1];
-                  if (v2 !== void 0 && g(v2) && b(v2) + v2.duration > e3)
+                  if (v2 !== void 0 && g(v2) && b(v2) + v2.duration > e4)
                     return false;
-                  var y2 = d(t4) ? c(t4.value, t4.endTime, this._currenTime) : f(t4) ? h(t4.value, e3, this._currenTime) : t4;
+                  var y2 = d(t4) ? c(t4.value, t4.endTime, this._currenTime) : f(t4) ? h(t4.value, e4, this._currenTime) : t4;
                   if (m2 === -1)
                     this._automationEvents.push(y2);
                   else {
-                    if (g(t4) && e3 + t4.duration > b(this._automationEvents[m2]))
+                    if (g(t4) && e4 + t4.duration > b(this._automationEvents[m2]))
                       return false;
                     this._automationEvents.splice(m2, 0, y2);
                   }
                 }
                 return true;
               } }, { key: "flush", value: function(t4) {
-                var e3 = this._automationEvents.findIndex(function(e4) {
-                  return b(e4) > t4;
+                var e4 = this._automationEvents.findIndex(function(e5) {
+                  return b(e5) > t4;
                 });
-                if (e3 > 1) {
-                  var s3 = this._automationEvents.slice(e3 - 1), n2 = s3[0];
-                  C(n2) && s3.unshift(u(v(this._automationEvents, e3 - 2, n2.startTime, this._defaultValue), n2.startTime)), this._automationEvents = s3;
+                if (e4 > 1) {
+                  var s3 = this._automationEvents.slice(e4 - 1), n2 = s3[0];
+                  C(n2) && s3.unshift(u(v(this._automationEvents, e4 - 2, n2.startTime, this._defaultValue), n2.startTime)), this._automationEvents = s3;
                 }
               } }, { key: "getValue", value: function(t4) {
                 if (this._automationEvents.length === 0)
                   return this._defaultValue;
-                var e3 = this._automationEvents[this._automationEvents.length - 1], s3 = this._automationEvents.findIndex(function(e4) {
-                  return b(e4) > t4;
-                }), n2 = this._automationEvents[s3], i2 = b(e3) <= t4 ? e3 : this._automationEvents[s3 - 1];
+                var e4 = this._automationEvents[this._automationEvents.length - 1], s3 = this._automationEvents.findIndex(function(e5) {
+                  return b(e5) > t4;
+                }), n2 = this._automationEvents[s3], i2 = b(e4) <= t4 ? e4 : this._automationEvents[s3 - 1];
                 if (i2 !== void 0 && C(i2) && (n2 === void 0 || !_(n2) || n2.insertTime > t4))
                   return p(t4, v(this._automationEvents, s3 - 2, i2.startTime, this._defaultValue), i2);
                 if (i2 !== void 0 && m(i2) && (n2 === void 0 || !_(n2)))
@@ -409,30 +425,30 @@
               return { cancelTime: t3, type: "cancelAndHold" };
             }, t2.createCancelScheduledValuesAutomationEvent = function(t3) {
               return { cancelTime: t3, type: "cancelScheduledValues" };
-            }, t2.createExponentialRampToValueAutomationEvent = function(t3, e3) {
-              return { endTime: e3, type: "exponentialRampToValue", value: t3 };
-            }, t2.createLinearRampToValueAutomationEvent = function(t3, e3) {
-              return { endTime: e3, type: "linearRampToValue", value: t3 };
-            }, t2.createSetTargetAutomationEvent = function(t3, e3, s3) {
-              return { startTime: e3, target: t3, timeConstant: s3, type: "setTarget" };
+            }, t2.createExponentialRampToValueAutomationEvent = function(t3, e4) {
+              return { endTime: e4, type: "exponentialRampToValue", value: t3 };
+            }, t2.createLinearRampToValueAutomationEvent = function(t3, e4) {
+              return { endTime: e4, type: "linearRampToValue", value: t3 };
+            }, t2.createSetTargetAutomationEvent = function(t3, e4, s3) {
+              return { startTime: e4, target: t3, timeConstant: s3, type: "setTarget" };
             }, t2.createSetValueAutomationEvent = u, t2.createSetValueCurveAutomationEvent = l, Object.defineProperty(t2, "__esModule", { value: true });
-          }(e, s(1), s(7), s(8));
-        }, function(t, e, s) {
+          }(e2, s(1), s(7), s(8));
+        }, function(t, e2, s) {
           var n = s(2), i = s(3), o = s(4), r = s(6);
-          t.exports = function(t2, e2) {
-            return n(t2) || i(t2, e2) || o(t2, e2) || r();
+          t.exports = function(t2, e3) {
+            return n(t2) || i(t2, e3) || o(t2, e3) || r();
           };
-        }, function(t, e) {
+        }, function(t, e2) {
           t.exports = function(t2) {
             if (Array.isArray(t2))
               return t2;
           };
-        }, function(t, e) {
-          t.exports = function(t2, e2) {
+        }, function(t, e2) {
+          t.exports = function(t2, e3) {
             if (typeof Symbol != "undefined" && Symbol.iterator in Object(t2)) {
               var s = [], n = true, i = false, o = void 0;
               try {
-                for (var r, a = t2[Symbol.iterator](); !(n = (r = a.next()).done) && (s.push(r.value), !e2 || s.length !== e2); n = true)
+                for (var r, a = t2[Symbol.iterator](); !(n = (r = a.next()).done) && (s.push(r.value), !e3 || s.length !== e3); n = true)
                   ;
               } catch (t3) {
                 i = true, o = t3;
@@ -447,379 +463,379 @@
               return s;
             }
           };
-        }, function(t, e, s) {
+        }, function(t, e2, s) {
           var n = s(5);
-          t.exports = function(t2, e2) {
+          t.exports = function(t2, e3) {
             if (t2) {
               if (typeof t2 == "string")
-                return n(t2, e2);
+                return n(t2, e3);
               var s2 = Object.prototype.toString.call(t2).slice(8, -1);
-              return s2 === "Object" && t2.constructor && (s2 = t2.constructor.name), s2 === "Map" || s2 === "Set" ? Array.from(t2) : s2 === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(s2) ? n(t2, e2) : void 0;
+              return s2 === "Object" && t2.constructor && (s2 = t2.constructor.name), s2 === "Map" || s2 === "Set" ? Array.from(t2) : s2 === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(s2) ? n(t2, e3) : void 0;
             }
           };
-        }, function(t, e) {
-          t.exports = function(t2, e2) {
-            (e2 == null || e2 > t2.length) && (e2 = t2.length);
-            for (var s = 0, n = new Array(e2); s < e2; s++)
+        }, function(t, e2) {
+          t.exports = function(t2, e3) {
+            (e3 == null || e3 > t2.length) && (e3 = t2.length);
+            for (var s = 0, n = new Array(e3); s < e3; s++)
               n[s] = t2[s];
             return n;
           };
-        }, function(t, e) {
+        }, function(t, e2) {
           t.exports = function() {
             throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
           };
-        }, function(t, e) {
-          t.exports = function(t2, e2) {
-            if (!(t2 instanceof e2))
+        }, function(t, e2) {
+          t.exports = function(t2, e3) {
+            if (!(t2 instanceof e3))
               throw new TypeError("Cannot call a class as a function");
           };
-        }, function(t, e) {
-          function s(t2, e2) {
-            for (var s2 = 0; s2 < e2.length; s2++) {
-              var n = e2[s2];
+        }, function(t, e2) {
+          function s(t2, e3) {
+            for (var s2 = 0; s2 < e3.length; s2++) {
+              var n = e3[s2];
               n.enumerable = n.enumerable || false, n.configurable = true, "value" in n && (n.writable = true), Object.defineProperty(t2, n.key, n);
             }
           }
-          t.exports = function(t2, e2, n) {
-            return e2 && s(t2.prototype, e2), n && s(t2, n), t2;
+          t.exports = function(t2, e3, n) {
+            return e3 && s(t2.prototype, e3), n && s(t2, n), t2;
           };
-        }, function(t, e, s) {
+        }, function(t, e2, s) {
           "use strict";
-          s.r(e), s.d(e, "getContext", function() {
+          s.r(e2), s.d(e2, "getContext", function() {
             return Ji;
-          }), s.d(e, "setContext", function() {
+          }), s.d(e2, "setContext", function() {
             return Ki;
-          }), s.d(e, "Clock", function() {
+          }), s.d(e2, "Clock", function() {
             return qo;
-          }), s.d(e, "Context", function() {
+          }), s.d(e2, "Context", function() {
             return Gi;
-          }), s.d(e, "BaseContext", function() {
+          }), s.d(e2, "BaseContext", function() {
             return Wi;
-          }), s.d(e, "Delay", function() {
+          }), s.d(e2, "Delay", function() {
             return Fo;
-          }), s.d(e, "Gain", function() {
+          }), s.d(e2, "Gain", function() {
             return ko;
-          }), s.d(e, "Offline", function() {
+          }), s.d(e2, "Offline", function() {
             return Io;
-          }), s.d(e, "OfflineContext", function() {
+          }), s.d(e2, "OfflineContext", function() {
             return Yi;
-          }), s.d(e, "Param", function() {
+          }), s.d(e2, "Param", function() {
             return xo;
-          }), s.d(e, "ToneAudioBuffer", function() {
+          }), s.d(e2, "ToneAudioBuffer", function() {
             return Xi;
-          }), s.d(e, "ToneAudioBuffers", function() {
+          }), s.d(e2, "ToneAudioBuffers", function() {
             return Vo;
-          }), s.d(e, "ToneAudioNode", function() {
+          }), s.d(e2, "ToneAudioNode", function() {
             return wo;
-          }), s.d(e, "connectSeries", function() {
+          }), s.d(e2, "connectSeries", function() {
             return bo;
-          }), s.d(e, "connect", function() {
+          }), s.d(e2, "connect", function() {
             return To;
-          }), s.d(e, "disconnect", function() {
+          }), s.d(e2, "disconnect", function() {
             return So;
-          }), s.d(e, "FrequencyClass", function() {
+          }), s.d(e2, "FrequencyClass", function() {
             return lo;
-          }), s.d(e, "Frequency", function() {
+          }), s.d(e2, "Frequency", function() {
             return _o;
-          }), s.d(e, "MidiClass", function() {
+          }), s.d(e2, "MidiClass", function() {
             return No;
-          }), s.d(e, "Midi", function() {
+          }), s.d(e2, "Midi", function() {
             return Po;
-          }), s.d(e, "TimeClass", function() {
+          }), s.d(e2, "TimeClass", function() {
             return ho;
-          }), s.d(e, "Time", function() {
+          }), s.d(e2, "Time", function() {
             return uo;
-          }), s.d(e, "TicksClass", function() {
+          }), s.d(e2, "TicksClass", function() {
             return jo;
-          }), s.d(e, "Ticks", function() {
+          }), s.d(e2, "Ticks", function() {
             return Lo;
-          }), s.d(e, "TransportTimeClass", function() {
+          }), s.d(e2, "TransportTimeClass", function() {
             return mo;
-          }), s.d(e, "TransportTime", function() {
+          }), s.d(e2, "TransportTime", function() {
             return go;
-          }), s.d(e, "Emitter", function() {
+          }), s.d(e2, "Emitter", function() {
             return Bi;
-          }), s.d(e, "IntervalTimeline", function() {
+          }), s.d(e2, "IntervalTimeline", function() {
             return Bo;
-          }), s.d(e, "StateTimeline", function() {
+          }), s.d(e2, "StateTimeline", function() {
             return yo;
-          }), s.d(e, "Timeline", function() {
+          }), s.d(e2, "Timeline", function() {
             return Ni;
-          }), s.d(e, "isUndef", function() {
+          }), s.d(e2, "isUndef", function() {
             return ai;
-          }), s.d(e, "isDefined", function() {
+          }), s.d(e2, "isDefined", function() {
             return ci;
-          }), s.d(e, "isFunction", function() {
+          }), s.d(e2, "isFunction", function() {
             return hi;
-          }), s.d(e, "isNumber", function() {
+          }), s.d(e2, "isNumber", function() {
             return ui;
-          }), s.d(e, "isObject", function() {
+          }), s.d(e2, "isObject", function() {
             return li;
-          }), s.d(e, "isBoolean", function() {
+          }), s.d(e2, "isBoolean", function() {
             return pi;
-          }), s.d(e, "isArray", function() {
+          }), s.d(e2, "isArray", function() {
             return di;
-          }), s.d(e, "isString", function() {
+          }), s.d(e2, "isString", function() {
             return fi;
-          }), s.d(e, "isNote", function() {
+          }), s.d(e2, "isNote", function() {
             return _i;
-          }), s.d(e, "dbToGain", function() {
+          }), s.d(e2, "dbToGain", function() {
             return eo;
-          }), s.d(e, "gainToDb", function() {
+          }), s.d(e2, "gainToDb", function() {
             return so;
-          }), s.d(e, "intervalToFrequencyRatio", function() {
+          }), s.d(e2, "intervalToFrequencyRatio", function() {
             return no;
-          }), s.d(e, "ftom", function() {
+          }), s.d(e2, "ftom", function() {
             return oo;
-          }), s.d(e, "mtof", function() {
+          }), s.d(e2, "mtof", function() {
             return ao;
-          }), s.d(e, "optionsFromArguments", function() {
+          }), s.d(e2, "optionsFromArguments", function() {
             return Di;
-          }), s.d(e, "defaultArg", function() {
+          }), s.d(e2, "defaultArg", function() {
             return Oi;
-          }), s.d(e, "Unit", function() {
+          }), s.d(e2, "Unit", function() {
             return i;
-          }), s.d(e, "debug", function() {
+          }), s.d(e2, "debug", function() {
             return n;
-          }), s.d(e, "Noise", function() {
+          }), s.d(e2, "Noise", function() {
             return Jo;
-          }), s.d(e, "UserMedia", function() {
+          }), s.d(e2, "UserMedia", function() {
             return er;
-          }), s.d(e, "Oscillator", function() {
+          }), s.d(e2, "Oscillator", function() {
             return ir;
-          }), s.d(e, "AMOscillator", function() {
+          }), s.d(e2, "AMOscillator", function() {
             return hr;
-          }), s.d(e, "FMOscillator", function() {
+          }), s.d(e2, "FMOscillator", function() {
             return ur;
-          }), s.d(e, "PulseOscillator", function() {
+          }), s.d(e2, "PulseOscillator", function() {
             return lr;
-          }), s.d(e, "FatOscillator", function() {
+          }), s.d(e2, "FatOscillator", function() {
             return pr;
-          }), s.d(e, "PWMOscillator", function() {
+          }), s.d(e2, "PWMOscillator", function() {
             return dr;
-          }), s.d(e, "OmniOscillator", function() {
+          }), s.d(e2, "OmniOscillator", function() {
             return _r;
-          }), s.d(e, "ToneOscillatorNode", function() {
+          }), s.d(e2, "ToneOscillatorNode", function() {
             return nr;
-          }), s.d(e, "LFO", function() {
+          }), s.d(e2, "LFO", function() {
             return yr;
-          }), s.d(e, "ToneBufferSource", function() {
+          }), s.d(e2, "ToneBufferSource", function() {
             return $o;
-          }), s.d(e, "Player", function() {
+          }), s.d(e2, "Player", function() {
             return br;
-          }), s.d(e, "Players", function() {
+          }), s.d(e2, "Players", function() {
             return Tr;
-          }), s.d(e, "GrainPlayer", function() {
+          }), s.d(e2, "GrainPlayer", function() {
             return Sr;
-          }), s.d(e, "Add", function() {
+          }), s.d(e2, "Add", function() {
             return mr;
-          }), s.d(e, "Abs", function() {
+          }), s.d(e2, "Abs", function() {
             return kr;
-          }), s.d(e, "AudioToGain", function() {
+          }), s.d(e2, "AudioToGain", function() {
             return ar;
-          }), s.d(e, "GainToAudio", function() {
+          }), s.d(e2, "GainToAudio", function() {
             return Cr;
-          }), s.d(e, "GreaterThan", function() {
+          }), s.d(e2, "GreaterThan", function() {
             return Mr;
-          }), s.d(e, "GreaterThanZero", function() {
+          }), s.d(e2, "GreaterThanZero", function() {
             return Or;
-          }), s.d(e, "Multiply", function() {
+          }), s.d(e2, "Multiply", function() {
             return cr;
-          }), s.d(e, "Negate", function() {
+          }), s.d(e2, "Negate", function() {
             return Ar;
-          }), s.d(e, "Pow", function() {
+          }), s.d(e2, "Pow", function() {
             return Er;
-          }), s.d(e, "Signal", function() {
+          }), s.d(e2, "Signal", function() {
             return Do;
-          }), s.d(e, "connectSignal", function() {
+          }), s.d(e2, "connectSignal", function() {
             return Oo;
-          }), s.d(e, "Scale", function() {
+          }), s.d(e2, "Scale", function() {
             return gr;
-          }), s.d(e, "ScaleExp", function() {
+          }), s.d(e2, "ScaleExp", function() {
             return Rr;
-          }), s.d(e, "Subtract", function() {
+          }), s.d(e2, "Subtract", function() {
             return Dr;
-          }), s.d(e, "SyncedSignal", function() {
+          }), s.d(e2, "SyncedSignal", function() {
             return qr;
-          }), s.d(e, "WaveShaper", function() {
+          }), s.d(e2, "WaveShaper", function() {
             return rr;
-          }), s.d(e, "Zero", function() {
+          }), s.d(e2, "Zero", function() {
             return vr;
-          }), s.d(e, "AMSynth", function() {
+          }), s.d(e2, "AMSynth", function() {
             return zr;
-          }), s.d(e, "DuoSynth", function() {
+          }), s.d(e2, "DuoSynth", function() {
             return Qr;
-          }), s.d(e, "FMSynth", function() {
+          }), s.d(e2, "FMSynth", function() {
             return Zr;
-          }), s.d(e, "MetalSynth", function() {
+          }), s.d(e2, "MetalSynth", function() {
             return Yr;
-          }), s.d(e, "MembraneSynth", function() {
+          }), s.d(e2, "MembraneSynth", function() {
             return Hr;
-          }), s.d(e, "MonoSynth", function() {
+          }), s.d(e2, "MonoSynth", function() {
             return Ur;
-          }), s.d(e, "NoiseSynth", function() {
+          }), s.d(e2, "NoiseSynth", function() {
             return $r;
-          }), s.d(e, "PluckSynth", function() {
+          }), s.d(e2, "PluckSynth", function() {
             return oa;
-          }), s.d(e, "PolySynth", function() {
+          }), s.d(e2, "PolySynth", function() {
             return ra;
-          }), s.d(e, "Sampler", function() {
+          }), s.d(e2, "Sampler", function() {
             return aa;
-          }), s.d(e, "Synth", function() {
+          }), s.d(e2, "Synth", function() {
             return jr;
-          }), s.d(e, "Loop", function() {
+          }), s.d(e2, "Loop", function() {
             return ha;
-          }), s.d(e, "Part", function() {
+          }), s.d(e2, "Part", function() {
             return ua;
-          }), s.d(e, "Pattern", function() {
+          }), s.d(e2, "Pattern", function() {
             return xa;
-          }), s.d(e, "Sequence", function() {
+          }), s.d(e2, "Sequence", function() {
             return wa;
-          }), s.d(e, "ToneEvent", function() {
+          }), s.d(e2, "ToneEvent", function() {
             return ca;
-          }), s.d(e, "AutoFilter", function() {
+          }), s.d(e2, "AutoFilter", function() {
             return ka;
-          }), s.d(e, "AutoPanner", function() {
+          }), s.d(e2, "AutoPanner", function() {
             return Aa;
-          }), s.d(e, "AutoWah", function() {
+          }), s.d(e2, "AutoWah", function() {
             return Oa;
-          }), s.d(e, "BitCrusher", function() {
+          }), s.d(e2, "BitCrusher", function() {
             return Ma;
-          }), s.d(e, "Chebyshev", function() {
+          }), s.d(e2, "Chebyshev", function() {
             return Ra;
-          }), s.d(e, "Chorus", function() {
+          }), s.d(e2, "Chorus", function() {
             return Na;
-          }), s.d(e, "Distortion", function() {
+          }), s.d(e2, "Distortion", function() {
             return Pa;
-          }), s.d(e, "FeedbackDelay", function() {
+          }), s.d(e2, "FeedbackDelay", function() {
             return La;
-          }), s.d(e, "FrequencyShifter", function() {
+          }), s.d(e2, "FrequencyShifter", function() {
             return Ba;
-          }), s.d(e, "Freeverb", function() {
+          }), s.d(e2, "Freeverb", function() {
             return Ua;
-          }), s.d(e, "JCReverb", function() {
+          }), s.d(e2, "JCReverb", function() {
             return Ya;
-          }), s.d(e, "PingPongDelay", function() {
+          }), s.d(e2, "PingPongDelay", function() {
             return $a;
-          }), s.d(e, "PitchShift", function() {
+          }), s.d(e2, "PitchShift", function() {
             return Ja;
-          }), s.d(e, "Phaser", function() {
+          }), s.d(e2, "Phaser", function() {
             return Ka;
-          }), s.d(e, "Reverb", function() {
+          }), s.d(e2, "Reverb", function() {
             return tc;
-          }), s.d(e, "StereoWidener", function() {
+          }), s.d(e2, "StereoWidener", function() {
             return ic;
-          }), s.d(e, "Tremolo", function() {
+          }), s.d(e2, "Tremolo", function() {
             return oc;
-          }), s.d(e, "Vibrato", function() {
+          }), s.d(e2, "Vibrato", function() {
             return rc;
-          }), s.d(e, "Analyser", function() {
+          }), s.d(e2, "Analyser", function() {
             return ac;
-          }), s.d(e, "Meter", function() {
+          }), s.d(e2, "Meter", function() {
             return hc;
-          }), s.d(e, "FFT", function() {
+          }), s.d(e2, "FFT", function() {
             return uc;
-          }), s.d(e, "DCMeter", function() {
+          }), s.d(e2, "DCMeter", function() {
             return lc;
-          }), s.d(e, "Waveform", function() {
+          }), s.d(e2, "Waveform", function() {
             return pc;
-          }), s.d(e, "Follower", function() {
+          }), s.d(e2, "Follower", function() {
             return Da;
-          }), s.d(e, "Channel", function() {
+          }), s.d(e2, "Channel", function() {
             return _c;
-          }), s.d(e, "CrossFade", function() {
+          }), s.d(e2, "CrossFade", function() {
             return ba;
-          }), s.d(e, "Merge", function() {
+          }), s.d(e2, "Merge", function() {
             return Fa;
-          }), s.d(e, "MidSideMerge", function() {
+          }), s.d(e2, "MidSideMerge", function() {
             return sc;
-          }), s.d(e, "MidSideSplit", function() {
+          }), s.d(e2, "MidSideSplit", function() {
             return ec;
-          }), s.d(e, "Mono", function() {
+          }), s.d(e2, "Mono", function() {
             return mc;
-          }), s.d(e, "MultibandSplit", function() {
+          }), s.d(e2, "MultibandSplit", function() {
             return gc;
-          }), s.d(e, "Panner", function() {
+          }), s.d(e2, "Panner", function() {
             return Ca;
-          }), s.d(e, "Panner3D", function() {
+          }), s.d(e2, "Panner3D", function() {
             return yc;
-          }), s.d(e, "PanVol", function() {
+          }), s.d(e2, "PanVol", function() {
             return fc;
-          }), s.d(e, "Recorder", function() {
+          }), s.d(e2, "Recorder", function() {
             return xc;
-          }), s.d(e, "Solo", function() {
+          }), s.d(e2, "Solo", function() {
             return dc;
-          }), s.d(e, "Split", function() {
+          }), s.d(e2, "Split", function() {
             return qa;
-          }), s.d(e, "Volume", function() {
+          }), s.d(e2, "Volume", function() {
             return Go;
-          }), s.d(e, "Compressor", function() {
+          }), s.d(e2, "Compressor", function() {
             return wc;
-          }), s.d(e, "Gate", function() {
+          }), s.d(e2, "Gate", function() {
             return bc;
-          }), s.d(e, "Limiter", function() {
+          }), s.d(e2, "Limiter", function() {
             return Tc;
-          }), s.d(e, "MidSideCompressor", function() {
+          }), s.d(e2, "MidSideCompressor", function() {
             return Sc;
-          }), s.d(e, "MultibandCompressor", function() {
+          }), s.d(e2, "MultibandCompressor", function() {
             return kc;
-          }), s.d(e, "AmplitudeEnvelope", function() {
+          }), s.d(e2, "AmplitudeEnvelope", function() {
             return Pr;
-          }), s.d(e, "Envelope", function() {
+          }), s.d(e2, "Envelope", function() {
             return Fr;
-          }), s.d(e, "FrequencyEnvelope", function() {
+          }), s.d(e2, "FrequencyEnvelope", function() {
             return Gr;
-          }), s.d(e, "EQ3", function() {
+          }), s.d(e2, "EQ3", function() {
             return Cc;
-          }), s.d(e, "Filter", function() {
+          }), s.d(e2, "Filter", function() {
             return Wr;
-          }), s.d(e, "OnePoleFilter", function() {
+          }), s.d(e2, "OnePoleFilter", function() {
             return na;
-          }), s.d(e, "FeedbackCombFilter", function() {
+          }), s.d(e2, "FeedbackCombFilter", function() {
             return sa;
-          }), s.d(e, "LowpassCombFilter", function() {
+          }), s.d(e2, "LowpassCombFilter", function() {
             return ia;
-          }), s.d(e, "Convolver", function() {
+          }), s.d(e2, "Convolver", function() {
             return Ac;
-          }), s.d(e, "BiquadFilter", function() {
+          }), s.d(e2, "BiquadFilter", function() {
             return Br;
-          }), s.d(e, "version", function() {
+          }), s.d(e2, "version", function() {
             return o;
-          }), s.d(e, "start", function() {
+          }), s.d(e2, "start", function() {
             return to;
-          }), s.d(e, "supported", function() {
+          }), s.d(e2, "supported", function() {
             return Kn;
-          }), s.d(e, "now", function() {
+          }), s.d(e2, "now", function() {
             return Dc;
-          }), s.d(e, "immediate", function() {
+          }), s.d(e2, "immediate", function() {
             return Oc;
-          }), s.d(e, "Transport", function() {
+          }), s.d(e2, "Transport", function() {
             return Mc;
-          }), s.d(e, "getTransport", function() {
+          }), s.d(e2, "getTransport", function() {
             return Ec;
-          }), s.d(e, "Destination", function() {
+          }), s.d(e2, "Destination", function() {
             return Rc;
-          }), s.d(e, "Master", function() {
+          }), s.d(e2, "Master", function() {
             return qc;
-          }), s.d(e, "getDestination", function() {
+          }), s.d(e2, "getDestination", function() {
             return Fc;
-          }), s.d(e, "Listener", function() {
+          }), s.d(e2, "Listener", function() {
             return Ic;
-          }), s.d(e, "getListener", function() {
+          }), s.d(e2, "getListener", function() {
             return Vc;
-          }), s.d(e, "Draw", function() {
+          }), s.d(e2, "Draw", function() {
             return Nc;
-          }), s.d(e, "getDraw", function() {
+          }), s.d(e2, "getDraw", function() {
             return Pc;
-          }), s.d(e, "context", function() {
+          }), s.d(e2, "context", function() {
             return jc;
-          }), s.d(e, "loaded", function() {
+          }), s.d(e2, "loaded", function() {
             return Lc;
-          }), s.d(e, "Buffer", function() {
+          }), s.d(e2, "Buffer", function() {
             return zc;
-          }), s.d(e, "Buffers", function() {
+          }), s.d(e2, "Buffers", function() {
             return Bc;
-          }), s.d(e, "BufferSource", function() {
+          }), s.d(e2, "BufferSource", function() {
             return Wc;
           });
           var n = {};
@@ -840,11 +856,11 @@
           s.r(i);
           const o = "14.7.77";
           var r = s(0);
-          const a = /* @__PURE__ */ new WeakSet(), c = /* @__PURE__ */ new WeakMap(), h = /* @__PURE__ */ new WeakMap(), u = /* @__PURE__ */ new WeakMap(), l = /* @__PURE__ */ new WeakMap(), p = /* @__PURE__ */ new WeakMap(), d = /* @__PURE__ */ new WeakMap(), f = /* @__PURE__ */ new WeakMap(), _ = /* @__PURE__ */ new WeakMap(), m = /* @__PURE__ */ new WeakMap(), g = { construct: () => g }, v = /^import(?:(?:[\s]+[\w]+|(?:[\s]+[\w]+[\s]*,)?[\s]*\{[\s]*[\w]+(?:[\s]+as[\s]+[\w]+)?(?:[\s]*,[\s]*[\w]+(?:[\s]+as[\s]+[\w]+)?)*[\s]*}|(?:[\s]+[\w]+[\s]*,)?[\s]*\*[\s]+as[\s]+[\w]+)[\s]+from)?(?:[\s]*)("([^"\\]|\\.)+"|'([^'\\]|\\.)+')(?:[\s]*);?/, y = (t2, e2) => {
+          const a = /* @__PURE__ */ new WeakSet(), c = /* @__PURE__ */ new WeakMap(), h = /* @__PURE__ */ new WeakMap(), u = /* @__PURE__ */ new WeakMap(), l = /* @__PURE__ */ new WeakMap(), p = /* @__PURE__ */ new WeakMap(), d = /* @__PURE__ */ new WeakMap(), f = /* @__PURE__ */ new WeakMap(), _ = /* @__PURE__ */ new WeakMap(), m = /* @__PURE__ */ new WeakMap(), g = { construct: () => g }, v = /^import(?:(?:[\s]+[\w]+|(?:[\s]+[\w]+[\s]*,)?[\s]*\{[\s]*[\w]+(?:[\s]+as[\s]+[\w]+)?(?:[\s]*,[\s]*[\w]+(?:[\s]+as[\s]+[\w]+)?)*[\s]*}|(?:[\s]+[\w]+[\s]*,)?[\s]*\*[\s]+as[\s]+[\w]+)[\s]+from)?(?:[\s]*)("([^"\\]|\\.)+"|'([^'\\]|\\.)+')(?:[\s]*);?/, y = (t2, e3) => {
             const s2 = [];
             let n2 = t2.replace(/^[\s]+/, ""), i2 = n2.match(v);
             for (; i2 !== null; ) {
-              const t3 = i2[1].slice(1, -1), o2 = i2[0].replace(/([\s]+)?;?$/, "").replace(t3, new URL(t3, e2).toString());
+              const t3 = i2[1].slice(1, -1), o2 = i2[0].replace(/([\s]+)?;?$/, "").replace(t3, new URL(t3, e3).toString());
               s2.push(o2), n2 = n2.slice(i2[0].length).replace(/^[\s]+/, ""), i2 = n2.match(v);
             }
             return [s2.join(";"), n2];
@@ -863,22 +879,22 @@
               throw new TypeError("The given value for processorCtor should be a constructor.");
             if (t2.prototype === null || typeof t2.prototype != "object")
               throw new TypeError("The given value for processorCtor should have a prototype.");
-          }, b = (t2, e2) => {
-            const s2 = t2.get(e2);
+          }, b = (t2, e3) => {
+            const s2 = t2.get(e3);
             if (s2 === void 0)
               throw new Error("A value with the given key could not be found.");
             return s2;
-          }, T = (t2, e2) => {
-            const s2 = Array.from(t2).filter(e2);
+          }, T = (t2, e3) => {
+            const s2 = Array.from(t2).filter(e3);
             if (s2.length > 1)
               throw Error("More than one element was found.");
             if (s2.length === 0)
               throw Error("No element was found.");
             const [n2] = s2;
             return t2.delete(n2), n2;
-          }, S = (t2, e2, s2, n2) => {
-            const i2 = b(t2, e2), o2 = T(i2, (t3) => t3[0] === s2 && t3[1] === n2);
-            return i2.size === 0 && t2.delete(e2), o2;
+          }, S = (t2, e3, s2, n2) => {
+            const i2 = b(t2, e3), o2 = T(i2, (t3) => t3[0] === s2 && t3[1] === n2);
+            return i2.size === 0 && t2.delete(e3), o2;
           }, k = (t2) => b(d, t2), C = (t2) => {
             if (a.has(t2))
               throw new Error("The AudioNode is already stored.");
@@ -887,9 +903,9 @@
             if (!a.has(t2))
               throw new Error("The AudioNode is not stored.");
             a.delete(t2), k(t2).forEach((t3) => t3(false));
-          }, O = (t2, e2) => {
-            !A(t2) && e2.every((t3) => t3.size === 0) && D(t2);
-          }, M = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", fftSize: 2048, maxDecibels: -30, minDecibels: -100, smoothingTimeConstant: 0.8 }, E = (t2, e2) => t2.context === e2, R = (t2) => {
+          }, O = (t2, e3) => {
+            !A(t2) && e3.every((t3) => t3.size === 0) && D(t2);
+          }, M = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", fftSize: 2048, maxDecibels: -30, minDecibels: -100, smoothingTimeConstant: 0.8 }, E = (t2, e3) => t2.context === e3, R = (t2) => {
             try {
               t2.copyToChannel(new Float32Array(1), 0, -1);
             } catch {
@@ -897,110 +913,110 @@
             }
             return true;
           }, q = () => new DOMException("", "IndexSizeError"), F = (t2) => {
-            var e2;
-            t2.getChannelData = (e2 = t2.getChannelData, (s2) => {
+            var e3;
+            t2.getChannelData = (e3 = t2.getChannelData, (s2) => {
               try {
-                return e2.call(t2, s2);
+                return e3.call(t2, s2);
               } catch (t3) {
                 if (t3.code === 12)
                   throw q();
                 throw t3;
               }
             });
-          }, I = { numberOfChannels: 1 }, V = -34028234663852886e22, N = -V, P = (t2) => a.has(t2), j = { buffer: null, channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", loop: false, loopEnd: 0, loopStart: 0, playbackRate: 1 }, L = (t2) => b(c, t2), z = (t2) => b(u, t2), B = (t2, e2) => {
+          }, I = { numberOfChannels: 1 }, V = -34028234663852886e22, N = -V, P = (t2) => a.has(t2), j = { buffer: null, channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", loop: false, loopEnd: 0, loopStart: 0, playbackRate: 1 }, L = (t2) => b(c, t2), z = (t2) => b(u, t2), B = (t2, e3) => {
             const { activeInputs: s2 } = L(t2);
             s2.forEach((s3) => s3.forEach(([s4]) => {
-              e2.includes(t2) || B(s4, [...e2, t2]);
+              e3.includes(t2) || B(s4, [...e3, t2]);
             }));
             const n2 = ((t3) => "playbackRate" in t3)(t2) ? [t2.playbackRate] : A(t2) ? Array.from(t2.parameters.values()) : ((t3) => "frequency" in t3 && "gain" in t3)(t2) ? [t2.Q, t2.detune, t2.frequency, t2.gain] : ((t3) => "offset" in t3)(t2) ? [t2.offset] : ((t3) => !("frequency" in t3) && "gain" in t3)(t2) ? [t2.gain] : ((t3) => "detune" in t3 && "frequency" in t3)(t2) ? [t2.detune, t2.frequency] : ((t3) => "pan" in t3)(t2) ? [t2.pan] : [];
             for (const t3 of n2) {
               const s3 = z(t3);
-              s3 !== void 0 && s3.activeInputs.forEach(([t4]) => B(t4, e2));
+              s3 !== void 0 && s3.activeInputs.forEach(([t4]) => B(t4, e3));
             }
             P(t2) && D(t2);
           }, W = (t2) => {
             B(t2.destination, []);
-          }, G = (t2) => t2 === void 0 || typeof t2 == "number" || typeof t2 == "string" && (t2 === "balanced" || t2 === "interactive" || t2 === "playback"), U = (t2) => "context" in t2, Q = (t2) => U(t2[0]), Z = (t2, e2, s2, n2) => {
-            for (const e3 of t2)
-              if (s2(e3)) {
+          }, G = (t2) => t2 === void 0 || typeof t2 == "number" || typeof t2 == "string" && (t2 === "balanced" || t2 === "interactive" || t2 === "playback"), U = (t2) => "context" in t2, Q = (t2) => U(t2[0]), Z = (t2, e3, s2, n2) => {
+            for (const e4 of t2)
+              if (s2(e4)) {
                 if (n2)
                   return false;
                 throw Error("The set contains at least one similar element.");
               }
-            return t2.add(e2), true;
-          }, X = (t2, e2, [s2, n2], i2) => {
-            Z(t2, [e2, s2, n2], (t3) => t3[0] === e2 && t3[1] === s2, i2);
-          }, Y = (t2, [e2, s2, n2], i2) => {
-            const o2 = t2.get(e2);
-            o2 === void 0 ? t2.set(e2, /* @__PURE__ */ new Set([[s2, n2]])) : Z(o2, [s2, n2], (t3) => t3[0] === s2, i2);
-          }, H = (t2) => "inputs" in t2, $ = (t2, e2, s2, n2) => {
-            if (H(e2)) {
-              const i2 = e2.inputs[n2];
+            return t2.add(e3), true;
+          }, X = (t2, e3, [s2, n2], i2) => {
+            Z(t2, [e3, s2, n2], (t3) => t3[0] === e3 && t3[1] === s2, i2);
+          }, Y = (t2, [e3, s2, n2], i2) => {
+            const o2 = t2.get(e3);
+            o2 === void 0 ? t2.set(e3, /* @__PURE__ */ new Set([[s2, n2]])) : Z(o2, [s2, n2], (t3) => t3[0] === s2, i2);
+          }, H = (t2) => "inputs" in t2, $ = (t2, e3, s2, n2) => {
+            if (H(e3)) {
+              const i2 = e3.inputs[n2];
               return t2.connect(i2, s2, 0), [i2, s2, 0];
             }
-            return t2.connect(e2, s2, n2), [e2, s2, n2];
-          }, J = (t2, e2, s2) => {
+            return t2.connect(e3, s2, n2), [e3, s2, n2];
+          }, J = (t2, e3, s2) => {
             for (const n2 of t2)
-              if (n2[0] === e2 && n2[1] === s2)
+              if (n2[0] === e3 && n2[1] === s2)
                 return t2.delete(n2), n2;
             return null;
-          }, K = (t2, e2) => {
-            if (!k(t2).delete(e2))
+          }, K = (t2, e3) => {
+            if (!k(t2).delete(e3))
               throw new Error("Missing the expected event listener.");
-          }, tt = (t2, e2, s2) => {
-            const n2 = b(t2, e2), i2 = T(n2, (t3) => t3[0] === s2);
-            return n2.size === 0 && t2.delete(e2), i2;
-          }, et = (t2, e2, s2, n2) => {
-            H(e2) ? t2.disconnect(e2.inputs[n2], s2, 0) : t2.disconnect(e2, s2, n2);
-          }, st = (t2) => b(h, t2), nt = (t2) => b(l, t2), it = (t2) => f.has(t2), ot = (t2) => !a.has(t2), rt = (t2) => new Promise((e2) => {
+          }, tt = (t2, e3, s2) => {
+            const n2 = b(t2, e3), i2 = T(n2, (t3) => t3[0] === s2);
+            return n2.size === 0 && t2.delete(e3), i2;
+          }, et = (t2, e3, s2, n2) => {
+            H(e3) ? t2.disconnect(e3.inputs[n2], s2, 0) : t2.disconnect(e3, s2, n2);
+          }, st = (t2) => b(h, t2), nt = (t2) => b(l, t2), it = (t2) => f.has(t2), ot = (t2) => !a.has(t2), rt = (t2) => new Promise((e3) => {
             const s2 = t2.createScriptProcessor(256, 1, 1), n2 = t2.createGain(), i2 = t2.createBuffer(1, 2, 44100), o2 = i2.getChannelData(0);
             o2[0] = 1, o2[1] = 1;
             const r2 = t2.createBufferSource();
             r2.buffer = i2, r2.loop = true, r2.connect(s2).connect(t2.destination), r2.connect(n2), r2.disconnect(n2), s2.onaudioprocess = (n3) => {
               const i3 = n3.inputBuffer.getChannelData(0);
-              Array.prototype.some.call(i3, (t3) => t3 === 1) ? e2(true) : e2(false), r2.stop(), s2.onaudioprocess = null, r2.disconnect(s2), s2.disconnect(t2.destination);
+              Array.prototype.some.call(i3, (t3) => t3 === 1) ? e3(true) : e3(false), r2.stop(), s2.onaudioprocess = null, r2.disconnect(s2), s2.disconnect(t2.destination);
             }, r2.start();
-          }), at = (t2, e2) => {
+          }), at = (t2, e3) => {
             const s2 = /* @__PURE__ */ new Map();
-            for (const e3 of t2)
-              for (const t3 of e3) {
-                const e4 = s2.get(t3);
-                s2.set(t3, e4 === void 0 ? 1 : e4 + 1);
+            for (const e4 of t2)
+              for (const t3 of e4) {
+                const e5 = s2.get(t3);
+                s2.set(t3, e5 === void 0 ? 1 : e5 + 1);
               }
-            s2.forEach((t3, s3) => e2(s3, t3));
-          }, ct = (t2) => "context" in t2, ht = (t2, e2, s2, n2) => {
-            const { activeInputs: i2, passiveInputs: o2 } = z(e2), { outputs: r2 } = L(t2), a2 = k(t2), c2 = (r3) => {
-              const a3 = st(t2), c3 = nt(e2);
+            s2.forEach((t3, s3) => e3(s3, t3));
+          }, ct = (t2) => "context" in t2, ht = (t2, e3, s2, n2) => {
+            const { activeInputs: i2, passiveInputs: o2 } = z(e3), { outputs: r2 } = L(t2), a2 = k(t2), c2 = (r3) => {
+              const a3 = st(t2), c3 = nt(e3);
               if (r3) {
-                const e3 = tt(o2, t2, s2);
-                X(i2, t2, e3, false), n2 || it(t2) || a3.connect(c3, s2);
+                const e4 = tt(o2, t2, s2);
+                X(i2, t2, e4, false), n2 || it(t2) || a3.connect(c3, s2);
               } else {
-                const e3 = ((t3, e4, s3) => T(t3, (t4) => t4[0] === e4 && t4[1] === s3))(i2, t2, s2);
-                Y(o2, e3, false), n2 || it(t2) || a3.disconnect(c3, s2);
+                const e4 = ((t3, e5, s3) => T(t3, (t4) => t4[0] === e5 && t4[1] === s3))(i2, t2, s2);
+                Y(o2, e4, false), n2 || it(t2) || a3.disconnect(c3, s2);
               }
             };
-            return !!Z(r2, [e2, s2], (t3) => t3[0] === e2 && t3[1] === s2, true) && (a2.add(c2), P(t2) ? X(i2, t2, [s2, c2], true) : Y(o2, [t2, s2, c2], true), true);
-          }, ut = (t2, e2, s2, n2, i2) => {
-            const [o2, r2] = ((t3, e3, s3, n3) => {
-              const { activeInputs: i3, passiveInputs: o3 } = L(e3), r3 = J(i3[n3], t3, s3);
+            return !!Z(r2, [e3, s2], (t3) => t3[0] === e3 && t3[1] === s2, true) && (a2.add(c2), P(t2) ? X(i2, t2, [s2, c2], true) : Y(o2, [t2, s2, c2], true), true);
+          }, ut = (t2, e3, s2, n2, i2) => {
+            const [o2, r2] = ((t3, e4, s3, n3) => {
+              const { activeInputs: i3, passiveInputs: o3 } = L(e4), r3 = J(i3[n3], t3, s3);
               if (r3 === null) {
                 return [S(o3, t3, s3, n3)[2], false];
               }
               return [r3[2], true];
             })(t2, s2, n2, i2);
-            if (o2 !== null && (K(t2, o2), !r2 || e2 || it(t2) || et(st(t2), st(s2), n2, i2)), P(s2)) {
+            if (o2 !== null && (K(t2, o2), !r2 || e3 || it(t2) || et(st(t2), st(s2), n2, i2)), P(s2)) {
               const { activeInputs: t3 } = L(s2);
               O(s2, t3);
             }
-          }, lt = (t2, e2, s2, n2) => {
-            const [i2, o2] = ((t3, e3, s3) => {
-              const { activeInputs: n3, passiveInputs: i3 } = z(e3), o3 = J(n3, t3, s3);
+          }, lt = (t2, e3, s2, n2) => {
+            const [i2, o2] = ((t3, e4, s3) => {
+              const { activeInputs: n3, passiveInputs: i3 } = z(e4), o3 = J(n3, t3, s3);
               if (o3 === null) {
                 return [tt(i3, t3, s3)[1], false];
               }
               return [o3[2], true];
             })(t2, s2, n2);
-            i2 !== null && (K(t2, i2), !o2 || e2 || it(t2) || st(t2).disconnect(nt(s2), n2));
+            i2 !== null && (K(t2, i2), !o2 || e3 || it(t2) || st(t2).disconnect(nt(s2), n2));
           };
           class pt {
             constructor(t2) {
@@ -1012,8 +1028,8 @@
             entries() {
               return this._map.entries();
             }
-            forEach(t2, e2 = null) {
-              return this._map.forEach((s2, n2) => t2.call(e2, s2, n2, this));
+            forEach(t2, e3 = null) {
+              return this._map.forEach((s2, n2) => t2.call(e3, s2, n2, this));
             }
             get(t2) {
               return this._map.get(t2);
@@ -1029,134 +1045,134 @@
             }
           }
           const dt = { channelCount: 2, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: 1, numberOfOutputs: 1, parameterData: {}, processorOptions: {} };
-          function ft(t2, e2, s2, n2, i2) {
+          function ft(t2, e3, s2, n2, i2) {
             if (typeof t2.copyFromChannel == "function")
-              e2[s2].byteLength === 0 && (e2[s2] = new Float32Array(128)), t2.copyFromChannel(e2[s2], n2, i2);
+              e3[s2].byteLength === 0 && (e3[s2] = new Float32Array(128)), t2.copyFromChannel(e3[s2], n2, i2);
             else {
               const o2 = t2.getChannelData(n2);
-              if (e2[s2].byteLength === 0)
-                e2[s2] = o2.slice(i2, i2 + 128);
+              if (e3[s2].byteLength === 0)
+                e3[s2] = o2.slice(i2, i2 + 128);
               else {
                 const t3 = new Float32Array(o2.buffer, i2 * Float32Array.BYTES_PER_ELEMENT, 128);
-                e2[s2].set(t3);
+                e3[s2].set(t3);
               }
             }
           }
-          const _t = (t2, e2, s2, n2, i2) => {
-            typeof t2.copyToChannel == "function" ? e2[s2].byteLength !== 0 && t2.copyToChannel(e2[s2], n2, i2) : e2[s2].byteLength !== 0 && t2.getChannelData(n2).set(e2[s2], i2);
-          }, mt = (t2, e2) => {
+          const _t = (t2, e3, s2, n2, i2) => {
+            typeof t2.copyToChannel == "function" ? e3[s2].byteLength !== 0 && t2.copyToChannel(e3[s2], n2, i2) : e3[s2].byteLength !== 0 && t2.getChannelData(n2).set(e3[s2], i2);
+          }, mt = (t2, e3) => {
             const s2 = [];
             for (let n2 = 0; n2 < t2; n2 += 1) {
-              const t3 = [], i2 = typeof e2 == "number" ? e2 : e2[n2];
-              for (let e3 = 0; e3 < i2; e3 += 1)
+              const t3 = [], i2 = typeof e3 == "number" ? e3 : e3[n2];
+              for (let e4 = 0; e4 < i2; e4 += 1)
                 t3.push(new Float32Array(128));
               s2.push(t3);
             }
             return s2;
-          }, gt = async (t2, e2, s2, n2, i2, o2, r2) => {
-            const a2 = e2 === null ? 128 * Math.ceil(t2.context.length / 128) : e2.length, c2 = n2.channelCount * n2.numberOfInputs, h2 = i2.reduce((t3, e3) => t3 + e3, 0), u2 = h2 === 0 ? null : s2.createBuffer(h2, a2, s2.sampleRate);
+          }, gt = async (t2, e3, s2, n2, i2, o2, r2) => {
+            const a2 = e3 === null ? 128 * Math.ceil(t2.context.length / 128) : e3.length, c2 = n2.channelCount * n2.numberOfInputs, h2 = i2.reduce((t3, e4) => t3 + e4, 0), u2 = h2 === 0 ? null : s2.createBuffer(h2, a2, s2.sampleRate);
             if (o2 === void 0)
               throw new Error("Missing the processor constructor.");
-            const l2 = L(t2), p2 = await ((t3, e3) => {
-              const s3 = b(m, t3), n3 = st(e3);
+            const l2 = L(t2), p2 = await ((t3, e4) => {
+              const s3 = b(m, t3), n3 = st(e4);
               return b(s3, n3);
-            })(s2, t2), d2 = mt(n2.numberOfInputs, n2.channelCount), f2 = mt(n2.numberOfOutputs, i2), _2 = Array.from(t2.parameters.keys()).reduce((t3, e3) => ({ ...t3, [e3]: new Float32Array(128) }), {});
+            })(s2, t2), d2 = mt(n2.numberOfInputs, n2.channelCount), f2 = mt(n2.numberOfOutputs, i2), _2 = Array.from(t2.parameters.keys()).reduce((t3, e4) => ({ ...t3, [e4]: new Float32Array(128) }), {});
             for (let h3 = 0; h3 < a2; h3 += 128) {
-              if (n2.numberOfInputs > 0 && e2 !== null)
+              if (n2.numberOfInputs > 0 && e3 !== null)
                 for (let t3 = 0; t3 < n2.numberOfInputs; t3 += 1)
                   for (let s3 = 0; s3 < n2.channelCount; s3 += 1)
-                    ft(e2, d2[t3], s3, s3, h3);
-              o2.parameterDescriptors !== void 0 && e2 !== null && o2.parameterDescriptors.forEach(({ name: t3 }, s3) => {
-                ft(e2, _2, t3, c2 + s3, h3);
+                    ft(e3, d2[t3], s3, s3, h3);
+              o2.parameterDescriptors !== void 0 && e3 !== null && o2.parameterDescriptors.forEach(({ name: t3 }, s3) => {
+                ft(e3, _2, t3, c2 + s3, h3);
               });
               for (let t3 = 0; t3 < n2.numberOfInputs; t3 += 1)
-                for (let e3 = 0; e3 < i2[t3]; e3 += 1)
-                  f2[t3][e3].byteLength === 0 && (f2[t3][e3] = new Float32Array(128));
+                for (let e4 = 0; e4 < i2[t3]; e4 += 1)
+                  f2[t3][e4].byteLength === 0 && (f2[t3][e4] = new Float32Array(128));
               try {
-                const t3 = d2.map((t4, e4) => l2.activeInputs[e4].size === 0 ? [] : t4), e3 = r2(h3 / s2.sampleRate, s2.sampleRate, () => p2.process(t3, f2, _2));
+                const t3 = d2.map((t4, e5) => l2.activeInputs[e5].size === 0 ? [] : t4), e4 = r2(h3 / s2.sampleRate, s2.sampleRate, () => p2.process(t3, f2, _2));
                 if (u2 !== null)
-                  for (let t4 = 0, e4 = 0; t4 < n2.numberOfOutputs; t4 += 1) {
+                  for (let t4 = 0, e5 = 0; t4 < n2.numberOfOutputs; t4 += 1) {
                     for (let s3 = 0; s3 < i2[t4]; s3 += 1)
-                      _t(u2, f2[t4], s3, e4 + s3, h3);
-                    e4 += i2[t4];
+                      _t(u2, f2[t4], s3, e5 + s3, h3);
+                    e5 += i2[t4];
                   }
-                if (!e3)
+                if (!e4)
                   break;
-              } catch (e3) {
-                t2.dispatchEvent(new ErrorEvent("processorerror", { colno: e3.colno, filename: e3.filename, lineno: e3.lineno, message: e3.message }));
+              } catch (e4) {
+                t2.dispatchEvent(new ErrorEvent("processorerror", { colno: e4.colno, filename: e4.filename, lineno: e4.lineno, message: e4.message }));
                 break;
               }
             }
             return u2;
-          }, vt = { Q: 1, channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", detune: 0, frequency: 350, gain: 0, type: "lowpass" }, yt = { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: 6 }, xt = { channelCount: 6, channelCountMode: "explicit", channelInterpretation: "discrete", numberOfOutputs: 6 }, wt = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", offset: 1 }, bt = { buffer: null, channelCount: 2, channelCountMode: "clamped-max", channelInterpretation: "speakers", disableNormalization: false }, Tt = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", delayTime: 0, maxDelayTime: 1 }, St = (t2, e2, s2) => {
-            const n2 = e2[s2];
+          }, vt = { Q: 1, channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", detune: 0, frequency: 350, gain: 0, type: "lowpass" }, yt = { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: 6 }, xt = { channelCount: 6, channelCountMode: "explicit", channelInterpretation: "discrete", numberOfOutputs: 6 }, wt = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", offset: 1 }, bt = { buffer: null, channelCount: 2, channelCountMode: "clamped-max", channelInterpretation: "speakers", disableNormalization: false }, Tt = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", delayTime: 0, maxDelayTime: 1 }, St = (t2, e3, s2) => {
+            const n2 = e3[s2];
             if (n2 === void 0)
               throw t2();
             return n2;
-          }, kt = { attack: 3e-3, channelCount: 2, channelCountMode: "clamped-max", channelInterpretation: "speakers", knee: 30, ratio: 12, release: 0.25, threshold: -24 }, Ct = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", gain: 1 }, At = () => new DOMException("", "InvalidStateError"), Dt = () => new DOMException("", "InvalidAccessError"), Ot = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers" }, Mt = (t2, e2, s2, n2, i2, o2, r2, a2, c2, h2, u2) => {
+          }, kt = { attack: 3e-3, channelCount: 2, channelCountMode: "clamped-max", channelInterpretation: "speakers", knee: 30, ratio: 12, release: 0.25, threshold: -24 }, Ct = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", gain: 1 }, At = () => new DOMException("", "InvalidStateError"), Dt = () => new DOMException("", "InvalidAccessError"), Ot = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers" }, Mt = (t2, e3, s2, n2, i2, o2, r2, a2, c2, h2, u2) => {
             const l2 = h2.length;
             let p2 = a2;
             for (let a3 = 0; a3 < l2; a3 += 1) {
               let l3 = s2[0] * h2[a3];
-              for (let e3 = 1; e3 < i2; e3 += 1) {
-                const n3 = p2 - e3 & c2 - 1;
-                l3 += s2[e3] * o2[n3], l3 -= t2[e3] * r2[n3];
+              for (let e4 = 1; e4 < i2; e4 += 1) {
+                const n3 = p2 - e4 & c2 - 1;
+                l3 += s2[e4] * o2[n3], l3 -= t2[e4] * r2[n3];
               }
               for (let t3 = i2; t3 < n2; t3 += 1)
                 l3 += s2[t3] * o2[p2 - t3 & c2 - 1];
-              for (let s3 = i2; s3 < e2; s3 += 1)
+              for (let s3 = i2; s3 < e3; s3 += 1)
                 l3 -= t2[s3] * r2[p2 - s3 & c2 - 1];
               o2[p2] = h2[a3], r2[p2] = l3, p2 = p2 + 1 & c2 - 1, u2[a3] = l3;
             }
             return p2;
           }, Et = { channelCount: 2, channelCountMode: "explicit", channelInterpretation: "speakers" }, Rt = (t2) => {
-            const e2 = new Uint32Array([1179011410, 40, 1163280727, 544501094, 16, 131073, 44100, 176400, 1048580, 1635017060, 4, 0]);
+            const e3 = new Uint32Array([1179011410, 40, 1163280727, 544501094, 16, 131073, 44100, 176400, 1048580, 1635017060, 4, 0]);
             try {
-              const s2 = t2.decodeAudioData(e2.buffer, () => {
+              const s2 = t2.decodeAudioData(e3.buffer, () => {
               });
               return s2 !== void 0 && (s2.catch(() => {
               }), true);
             } catch {
             }
             return false;
-          }, qt = { numberOfChannels: 1 }, Ft = (t2, e2, s2) => {
-            const n2 = e2[s2];
+          }, qt = { numberOfChannels: 1 }, Ft = (t2, e3, s2) => {
+            const n2 = e3[s2];
             n2 !== void 0 && n2 !== t2[s2] && (t2[s2] = n2);
-          }, It = (t2, e2) => {
-            Ft(t2, e2, "channelCount"), Ft(t2, e2, "channelCountMode"), Ft(t2, e2, "channelInterpretation");
-          }, Vt = (t2) => typeof t2.getFloatTimeDomainData == "function", Nt = (t2, e2, s2) => {
-            const n2 = e2[s2];
+          }, It = (t2, e3) => {
+            Ft(t2, e3, "channelCount"), Ft(t2, e3, "channelCountMode"), Ft(t2, e3, "channelInterpretation");
+          }, Vt = (t2) => typeof t2.getFloatTimeDomainData == "function", Nt = (t2, e3, s2) => {
+            const n2 = e3[s2];
             n2 !== void 0 && n2 !== t2[s2].value && (t2[s2].value = n2);
           }, Pt = (t2) => {
-            var e2;
-            t2.start = (e2 = t2.start, (s2 = 0, n2 = 0, i2) => {
+            var e3;
+            t2.start = (e3 = t2.start, (s2 = 0, n2 = 0, i2) => {
               if (typeof i2 == "number" && i2 < 0 || n2 < 0 || s2 < 0)
                 throw new RangeError("The parameters can't be negative.");
-              e2.call(t2, s2, n2, i2);
+              e3.call(t2, s2, n2, i2);
             });
           }, jt = (t2) => {
-            var e2;
-            t2.stop = (e2 = t2.stop, (s2 = 0) => {
+            var e3;
+            t2.stop = (e3 = t2.stop, (s2 = 0) => {
               if (s2 < 0)
                 throw new RangeError("The parameter can't be negative.");
-              e2.call(t2, s2);
+              e3.call(t2, s2);
             });
-          }, Lt = (t2, e2) => t2 === null ? 512 : Math.max(512, Math.min(16384, Math.pow(2, Math.round(Math.log2(t2 * e2))))), zt = async (t2, e2) => new t2(await ((t3) => new Promise((e3, s2) => {
+          }, Lt = (t2, e3) => t2 === null ? 512 : Math.max(512, Math.min(16384, Math.pow(2, Math.round(Math.log2(t2 * e3))))), zt = async (t2, e3) => new t2(await ((t3) => new Promise((e4, s2) => {
             const { port1: n2, port2: i2 } = new MessageChannel();
             n2.onmessage = ({ data: t4 }) => {
-              n2.close(), i2.close(), e3(t4);
+              n2.close(), i2.close(), e4(t4);
             }, n2.onmessageerror = ({ data: t4 }) => {
               n2.close(), i2.close(), s2(t4);
             }, i2.postMessage(t3);
-          }))(e2)), Bt = (t2, e2) => {
+          }))(e3)), Bt = (t2, e3) => {
             const s2 = t2.createBiquadFilter();
-            return It(s2, e2), Nt(s2, e2, "Q"), Nt(s2, e2, "detune"), Nt(s2, e2, "frequency"), Nt(s2, e2, "gain"), Ft(s2, e2, "type"), s2;
-          }, Wt = (t2, e2) => {
-            const s2 = t2.createChannelSplitter(e2.numberOfOutputs);
-            return It(s2, e2), ((t3) => {
-              const e3 = t3.numberOfOutputs;
-              Object.defineProperty(t3, "channelCount", { get: () => e3, set: (t4) => {
-                if (t4 !== e3)
+            return It(s2, e3), Nt(s2, e3, "Q"), Nt(s2, e3, "detune"), Nt(s2, e3, "frequency"), Nt(s2, e3, "gain"), Ft(s2, e3, "type"), s2;
+          }, Wt = (t2, e3) => {
+            const s2 = t2.createChannelSplitter(e3.numberOfOutputs);
+            return It(s2, e3), ((t3) => {
+              const e4 = t3.numberOfOutputs;
+              Object.defineProperty(t3, "channelCount", { get: () => e4, set: (t4) => {
+                if (t4 !== e4)
                   throw At();
               } }), Object.defineProperty(t3, "channelCountMode", { get: () => "explicit", set: (t4) => {
                 if (t4 !== "explicit")
@@ -1166,63 +1182,63 @@
                   throw At();
               } });
             })(s2), s2;
-          }, Gt = (t2, e2) => (t2.connect = e2.connect.bind(e2), t2.disconnect = e2.disconnect.bind(e2), t2), Ut = (t2, e2) => {
-            const s2 = t2.createDelay(e2.maxDelayTime);
-            return It(s2, e2), Nt(s2, e2, "delayTime"), s2;
-          }, Qt = (t2, e2) => {
+          }, Gt = (t2, e3) => (t2.connect = e3.connect.bind(e3), t2.disconnect = e3.disconnect.bind(e3), t2), Ut = (t2, e3) => {
+            const s2 = t2.createDelay(e3.maxDelayTime);
+            return It(s2, e3), Nt(s2, e3, "delayTime"), s2;
+          }, Qt = (t2, e3) => {
             const s2 = t2.createGain();
-            return It(s2, e2), Nt(s2, e2, "gain"), s2;
+            return It(s2, e3), Nt(s2, e3, "gain"), s2;
           };
-          function Zt(t2, e2) {
-            const s2 = e2[0] * e2[0] + e2[1] * e2[1];
-            return [(t2[0] * e2[0] + t2[1] * e2[1]) / s2, (t2[1] * e2[0] - t2[0] * e2[1]) / s2];
+          function Zt(t2, e3) {
+            const s2 = e3[0] * e3[0] + e3[1] * e3[1];
+            return [(t2[0] * e3[0] + t2[1] * e3[1]) / s2, (t2[1] * e3[0] - t2[0] * e3[1]) / s2];
           }
-          function Xt(t2, e2) {
+          function Xt(t2, e3) {
             let s2 = [0, 0];
             for (let o2 = t2.length - 1; o2 >= 0; o2 -= 1)
-              i2 = e2, s2 = [(n2 = s2)[0] * i2[0] - n2[1] * i2[1], n2[0] * i2[1] + n2[1] * i2[0]], s2[0] += t2[o2];
+              i2 = e3, s2 = [(n2 = s2)[0] * i2[0] - n2[1] * i2[1], n2[0] * i2[1] + n2[1] * i2[0]], s2[0] += t2[o2];
             var n2, i2;
             return s2;
           }
-          const Yt = (t2, e2, s2, n2) => t2.createScriptProcessor(e2, s2, n2), Ht = () => new DOMException("", "NotSupportedError"), $t = { numberOfChannels: 1 }, Jt = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", detune: 0, frequency: 440, periodicWave: void 0, type: "sine" }, Kt = { channelCount: 2, channelCountMode: "clamped-max", channelInterpretation: "speakers", coneInnerAngle: 360, coneOuterAngle: 360, coneOuterGain: 0, distanceModel: "inverse", maxDistance: 1e4, orientationX: 1, orientationY: 0, orientationZ: 0, panningModel: "equalpower", positionX: 0, positionY: 0, positionZ: 0, refDistance: 1, rolloffFactor: 1 }, te = { disableNormalization: false }, ee = { channelCount: 2, channelCountMode: "explicit", channelInterpretation: "speakers", pan: 0 }, se = () => new DOMException("", "UnknownError"), ne = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", curve: null, oversample: "none" }, ie = (t2) => {
+          const Yt = (t2, e3, s2, n2) => t2.createScriptProcessor(e3, s2, n2), Ht = () => new DOMException("", "NotSupportedError"), $t = { numberOfChannels: 1 }, Jt = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", detune: 0, frequency: 440, periodicWave: void 0, type: "sine" }, Kt = { channelCount: 2, channelCountMode: "clamped-max", channelInterpretation: "speakers", coneInnerAngle: 360, coneOuterAngle: 360, coneOuterGain: 0, distanceModel: "inverse", maxDistance: 1e4, orientationX: 1, orientationY: 0, orientationZ: 0, panningModel: "equalpower", positionX: 0, positionY: 0, positionZ: 0, refDistance: 1, rolloffFactor: 1 }, te = { disableNormalization: false }, ee = { channelCount: 2, channelCountMode: "explicit", channelInterpretation: "speakers", pan: 0 }, se = () => new DOMException("", "UnknownError"), ne = { channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", curve: null, oversample: "none" }, ie = (t2) => {
             if (t2 === null)
               return false;
-            const e2 = t2.length;
-            return e2 % 2 != 0 ? t2[Math.floor(e2 / 2)] !== 0 : t2[e2 / 2 - 1] + t2[e2 / 2] !== 0;
-          }, oe = (t2, e2, s2, n2) => {
+            const e3 = t2.length;
+            return e3 % 2 != 0 ? t2[Math.floor(e3 / 2)] !== 0 : t2[e3 / 2 - 1] + t2[e3 / 2] !== 0;
+          }, oe = (t2, e3, s2, n2) => {
             let i2 = Object.getPrototypeOf(t2);
-            for (; !i2.hasOwnProperty(e2); )
+            for (; !i2.hasOwnProperty(e3); )
               i2 = Object.getPrototypeOf(i2);
-            const { get: o2, set: r2 } = Object.getOwnPropertyDescriptor(i2, e2);
-            Object.defineProperty(t2, e2, { get: s2(o2), set: n2(r2) });
-          }, re = (t2, e2, s2) => {
+            const { get: o2, set: r2 } = Object.getOwnPropertyDescriptor(i2, e3);
+            Object.defineProperty(t2, e3, { get: s2(o2), set: n2(r2) });
+          }, re = (t2, e3, s2) => {
             try {
-              t2.setValueAtTime(e2, s2);
+              t2.setValueAtTime(e3, s2);
             } catch (n2) {
               if (n2.code !== 9)
                 throw n2;
-              re(t2, e2, s2 + 1e-7);
+              re(t2, e3, s2 + 1e-7);
             }
           }, ae = (t2) => {
-            const e2 = t2.createOscillator();
+            const e3 = t2.createOscillator();
             try {
-              e2.start(-1);
+              e3.start(-1);
             } catch (t3) {
               return t3 instanceof RangeError;
             }
             return false;
           }, ce = (t2) => {
-            const e2 = t2.createBuffer(1, 1, 44100), s2 = t2.createBufferSource();
-            s2.buffer = e2, s2.start(), s2.stop();
+            const e3 = t2.createBuffer(1, 1, 44100), s2 = t2.createBufferSource();
+            s2.buffer = e3, s2.start(), s2.stop();
             try {
               return s2.stop(), true;
             } catch {
               return false;
             }
           }, he = (t2) => {
-            const e2 = t2.createOscillator();
+            const e3 = t2.createOscillator();
             try {
-              e2.stop(-1);
+              e3.stop(-1);
             } catch (t3) {
               return t3 instanceof RangeError;
             }
@@ -1235,42 +1251,42 @@
             }
             return true;
           }, le = () => new Promise((t2) => {
-            const e2 = new ArrayBuffer(0), { port1: s2, port2: n2 } = new MessageChannel();
-            s2.onmessage = ({ data: e3 }) => t2(e3 !== null), n2.postMessage(e2, [e2]);
-          }), pe = (t2, e2) => {
-            const s2 = e2.createGain();
+            const e3 = new ArrayBuffer(0), { port1: s2, port2: n2 } = new MessageChannel();
+            s2.onmessage = ({ data: e4 }) => t2(e4 !== null), n2.postMessage(e3, [e3]);
+          }), pe = (t2, e3) => {
+            const s2 = e3.createGain();
             t2.connect(s2);
             const n2 = (i2 = t2.disconnect, () => {
               i2.call(t2, s2), t2.removeEventListener("ended", n2);
             });
             var i2;
-            t2.addEventListener("ended", n2), Gt(t2, s2), t2.stop = ((e3) => {
+            t2.addEventListener("ended", n2), Gt(t2, s2), t2.stop = ((e4) => {
               let n3 = false;
               return (i3 = 0) => {
                 if (n3)
                   try {
-                    e3.call(t2, i3);
+                    e4.call(t2, i3);
                   } catch {
                     s2.gain.setValueAtTime(0, i3);
                   }
                 else
-                  e3.call(t2, i3), n3 = true;
+                  e4.call(t2, i3), n3 = true;
               };
             })(t2.stop);
-          }, de = (t2, e2) => (s2) => {
+          }, de = (t2, e3) => (s2) => {
             const n2 = { value: t2 };
-            return Object.defineProperties(s2, { currentTarget: n2, target: n2 }), typeof e2 == "function" ? e2.call(t2, s2) : e2.handleEvent.call(t2, s2);
-          }, fe = (_e = Z, (t2, e2, [s2, n2, i2], o2) => {
-            _e(t2[n2], [e2, s2, i2], (t3) => t3[0] === e2 && t3[1] === s2, o2);
+            return Object.defineProperties(s2, { currentTarget: n2, target: n2 }), typeof e3 == "function" ? e3.call(t2, s2) : e3.handleEvent.call(t2, s2);
+          }, fe = (_e = Z, (t2, e3, [s2, n2, i2], o2) => {
+            _e(t2[n2], [e3, s2, i2], (t3) => t3[0] === e3 && t3[1] === s2, o2);
           });
           var _e;
-          const me = ((t2) => (e2, s2, [n2, i2, o2], r2) => {
-            const a2 = e2.get(n2);
-            a2 === void 0 ? e2.set(n2, /* @__PURE__ */ new Set([[i2, s2, o2]])) : t2(a2, [i2, s2, o2], (t3) => t3[0] === i2 && t3[1] === s2, r2);
-          })(Z), ge = ((t2) => (e2, s2, n2, i2) => t2(e2[i2], (t3) => t3[0] === s2 && t3[1] === n2))(T), ve = /* @__PURE__ */ new WeakMap(), ye = ((t2) => (e2) => {
+          const me = ((t2) => (e3, s2, [n2, i2, o2], r2) => {
+            const a2 = e3.get(n2);
+            a2 === void 0 ? e3.set(n2, /* @__PURE__ */ new Set([[i2, s2, o2]])) : t2(a2, [i2, s2, o2], (t3) => t3[0] === i2 && t3[1] === s2, r2);
+          })(Z), ge = ((t2) => (e3, s2, n2, i2) => t2(e3[i2], (t3) => t3[0] === s2 && t3[1] === n2))(T), ve = /* @__PURE__ */ new WeakMap(), ye = ((t2) => (e3) => {
             var s2;
-            return (s2 = t2.get(e2)) !== null && s2 !== void 0 ? s2 : 0;
-          })(ve), xe = (we = /* @__PURE__ */ new Map(), be = /* @__PURE__ */ new WeakMap(), (t2, e2) => {
+            return (s2 = t2.get(e3)) !== null && s2 !== void 0 ? s2 : 0;
+          })(ve), xe = (we = /* @__PURE__ */ new Map(), be = /* @__PURE__ */ new WeakMap(), (t2, e3) => {
             const s2 = be.get(t2);
             if (s2 !== void 0)
               return s2;
@@ -1278,62 +1294,62 @@
             if (n2 !== void 0)
               return n2;
             try {
-              const s3 = e2();
-              return s3 instanceof Promise ? (we.set(t2, s3), s3.catch(() => false).then((e3) => (we.delete(t2), be.set(t2, e3), e3))) : (be.set(t2, s3), s3);
+              const s3 = e3();
+              return s3 instanceof Promise ? (we.set(t2, s3), s3.catch(() => false).then((e4) => (we.delete(t2), be.set(t2, e4), e4))) : (be.set(t2, s3), s3);
             } catch {
               return be.set(t2, false), false;
             }
           });
           var we, be;
-          const Te = typeof window == "undefined" ? null : window, Se = (ke = xe, Ce = q, (t2, e2) => {
+          const Te = typeof window == "undefined" ? null : window, Se = (ke = xe, Ce = q, (t2, e3) => {
             const s2 = t2.createAnalyser();
-            if (It(s2, e2), !(e2.maxDecibels > e2.minDecibels))
+            if (It(s2, e3), !(e3.maxDecibels > e3.minDecibels))
               throw Ce();
-            return Ft(s2, e2, "fftSize"), Ft(s2, e2, "maxDecibels"), Ft(s2, e2, "minDecibels"), Ft(s2, e2, "smoothingTimeConstant"), ke(Vt, () => Vt(s2)) || ((t3) => {
-              t3.getFloatTimeDomainData = (e3) => {
-                const s3 = new Uint8Array(e3.length);
+            return Ft(s2, e3, "fftSize"), Ft(s2, e3, "maxDecibels"), Ft(s2, e3, "minDecibels"), Ft(s2, e3, "smoothingTimeConstant"), ke(Vt, () => Vt(s2)) || ((t3) => {
+              t3.getFloatTimeDomainData = (e4) => {
+                const s3 = new Uint8Array(e4.length);
                 t3.getByteTimeDomainData(s3);
                 const n2 = Math.max(s3.length, t3.fftSize);
                 for (let t4 = 0; t4 < n2; t4 += 1)
-                  e3[t4] = 78125e-7 * (s3[t4] - 128);
-                return e3;
+                  e4[t4] = 78125e-7 * (s3[t4] - 128);
+                return e4;
               };
             })(s2), s2;
           });
           var ke, Ce;
           const Ae = (De = L, (t2) => {
-            const e2 = De(t2);
-            if (e2.renderer === null)
+            const e3 = De(t2);
+            if (e3.renderer === null)
               throw new Error("Missing the renderer of the given AudioNode in the audio graph.");
-            return e2.renderer;
+            return e3.renderer;
           });
           var De;
-          const Oe = ((t2, e2, s2) => async (n2, i2, o2, r2) => {
+          const Oe = ((t2, e3, s2) => async (n2, i2, o2, r2) => {
             const a2 = t2(n2), c2 = [...r2, n2];
             await Promise.all(a2.activeInputs.map((t3, r3) => Array.from(t3).filter(([t4]) => !c2.includes(t4)).map(async ([t4, a3]) => {
-              const h2 = e2(t4), u2 = await h2.render(t4, i2, c2), l2 = n2.context.destination;
+              const h2 = e3(t4), u2 = await h2.render(t4, i2, c2), l2 = n2.context.destination;
               s2(t4) || n2 === l2 && s2(n2) || u2.connect(o2, a3, r3);
-            })).reduce((t3, e3) => [...t3, ...e3], []));
+            })).reduce((t3, e4) => [...t3, ...e4], []));
           })(L, Ae, it), Me = (Ee = Se, Re = st, qe = Oe, () => {
             const t2 = /* @__PURE__ */ new WeakMap();
-            return { render(e2, s2, n2) {
+            return { render(e3, s2, n2) {
               const i2 = t2.get(s2);
-              return i2 !== void 0 ? Promise.resolve(i2) : (async (e3, s3, n3) => {
-                let i3 = Re(e3);
+              return i2 !== void 0 ? Promise.resolve(i2) : (async (e4, s3, n3) => {
+                let i3 = Re(e4);
                 if (!E(i3, s3)) {
                   const t3 = { channelCount: i3.channelCount, channelCountMode: i3.channelCountMode, channelInterpretation: i3.channelInterpretation, fftSize: i3.fftSize, maxDecibels: i3.maxDecibels, minDecibels: i3.minDecibels, smoothingTimeConstant: i3.smoothingTimeConstant };
                   i3 = Ee(s3, t3);
                 }
-                return t2.set(s3, i3), await qe(e3, s3, i3, n3), i3;
-              })(e2, s2, n2);
+                return t2.set(s3, i3), await qe(e4, s3, i3, n3), i3;
+              })(e3, s2, n2);
             } };
           });
           var Ee, Re, qe;
           const Fe = (Ie = p, (t2) => {
-            const e2 = Ie.get(t2);
-            if (e2 === void 0)
+            const e3 = Ie.get(t2);
+            if (e3 === void 0)
               throw At();
-            return e2;
+            return e3;
           });
           var Ie;
           const Ve = ((t2) => t2 === null ? null : t2.hasOwnProperty("OfflineAudioContext") ? t2.OfflineAudioContext : t2.hasOwnProperty("webkitOfflineAudioContext") ? t2.webkitOfflineAudioContext : null)(Te), Ne = (Pe = Ve, (t2) => Pe !== null && t2 instanceof Pe);
@@ -1342,57 +1358,57 @@
             constructor(t2) {
               this._nativeEventTarget = t2, this._listeners = /* @__PURE__ */ new WeakMap();
             }
-            addEventListener(t2, e2, s2) {
-              if (e2 !== null) {
-                let n2 = this._listeners.get(e2);
-                n2 === void 0 && (n2 = ze(this, e2), typeof e2 == "function" && this._listeners.set(e2, n2)), this._nativeEventTarget.addEventListener(t2, n2, s2);
+            addEventListener(t2, e3, s2) {
+              if (e3 !== null) {
+                let n2 = this._listeners.get(e3);
+                n2 === void 0 && (n2 = ze(this, e3), typeof e3 == "function" && this._listeners.set(e3, n2)), this._nativeEventTarget.addEventListener(t2, n2, s2);
               }
             }
             dispatchEvent(t2) {
               return this._nativeEventTarget.dispatchEvent(t2);
             }
-            removeEventListener(t2, e2, s2) {
-              const n2 = e2 === null ? void 0 : this._listeners.get(e2);
+            removeEventListener(t2, e3, s2) {
+              const n2 = e3 === null ? void 0 : this._listeners.get(e3);
               this._nativeEventTarget.removeEventListener(t2, n2 === void 0 ? null : n2, s2);
             }
           });
           var ze;
           const Be = ((t2) => t2 === null ? null : t2.hasOwnProperty("AudioContext") ? t2.AudioContext : t2.hasOwnProperty("webkitAudioContext") ? t2.webkitAudioContext : null)(Te), We = (Ge = Be, (t2) => Ge !== null && t2 instanceof Ge);
           var Ge;
-          const Ue = ((t2) => (e2) => t2 !== null && typeof t2.AudioNode == "function" && e2 instanceof t2.AudioNode)(Te), Qe = ((t2) => (e2) => t2 !== null && typeof t2.AudioParam == "function" && e2 instanceof t2.AudioParam)(Te), Ze = ((t2, e2, s2, n2, i2, o2, r2, a2, c2, u2, l2, p2, f2, _2, m2) => class extends u2 {
-            constructor(e3, n3, i3, o3) {
-              super(i3), this._context = e3, this._nativeAudioNode = i3;
-              const r3 = l2(e3);
+          const Ue = ((t2) => (e3) => t2 !== null && typeof t2.AudioNode == "function" && e3 instanceof t2.AudioNode)(Te), Qe = ((t2) => (e3) => t2 !== null && typeof t2.AudioParam == "function" && e3 instanceof t2.AudioParam)(Te), Ze = ((t2, e3, s2, n2, i2, o2, r2, a2, c2, u2, l2, p2, f2, _2, m2) => class extends u2 {
+            constructor(e4, n3, i3, o3) {
+              super(i3), this._context = e4, this._nativeAudioNode = i3;
+              const r3 = l2(e4);
               p2(r3) && s2(rt, () => rt(r3)) !== true && ((t3) => {
-                const e4 = /* @__PURE__ */ new Map();
+                const e5 = /* @__PURE__ */ new Map();
                 var s3, n4;
                 t3.connect = (s3 = t3.connect.bind(t3), (t4, n5 = 0, i4 = 0) => {
-                  const o4 = ct(t4) ? s3(t4, n5, i4) : s3(t4, n5), r4 = e4.get(t4);
-                  return r4 === void 0 ? e4.set(t4, [{ input: i4, output: n5 }]) : r4.every((t5) => t5.input !== i4 || t5.output !== n5) && r4.push({ input: i4, output: n5 }), o4;
+                  const o4 = ct(t4) ? s3(t4, n5, i4) : s3(t4, n5), r4 = e5.get(t4);
+                  return r4 === void 0 ? e5.set(t4, [{ input: i4, output: n5 }]) : r4.every((t5) => t5.input !== i4 || t5.output !== n5) && r4.push({ input: i4, output: n5 }), o4;
                 }), t3.disconnect = (n4 = t3.disconnect, (s4, i4, o4) => {
                   if (n4.apply(t3), s4 === void 0)
-                    e4.clear();
+                    e5.clear();
                   else if (typeof s4 == "number")
-                    for (const [t4, n5] of e4) {
+                    for (const [t4, n5] of e5) {
                       const i5 = n5.filter((t5) => t5.output !== s4);
-                      i5.length === 0 ? e4.delete(t4) : e4.set(t4, i5);
+                      i5.length === 0 ? e5.delete(t4) : e5.set(t4, i5);
                     }
-                  else if (e4.has(s4))
+                  else if (e5.has(s4))
                     if (i4 === void 0)
-                      e4.delete(s4);
+                      e5.delete(s4);
                     else {
-                      const t4 = e4.get(s4);
+                      const t4 = e5.get(s4);
                       if (t4 !== void 0) {
                         const n5 = t4.filter((t5) => t5.output !== i4 && (t5.input !== o4 || o4 === void 0));
-                        n5.length === 0 ? e4.delete(s4) : e4.set(s4, n5);
+                        n5.length === 0 ? e5.delete(s4) : e5.set(s4, n5);
                       }
                     }
-                  for (const [s5, n5] of e4)
-                    n5.forEach((e5) => {
-                      ct(s5) ? t3.connect(s5, e5.output, e5.input) : t3.connect(s5, e5.output);
+                  for (const [s5, n5] of e5)
+                    n5.forEach((e6) => {
+                      ct(s5) ? t3.connect(s5, e6.output, e6.input) : t3.connect(s5, e6.output);
                     });
                 });
-              })(i3), h.set(this, i3), d.set(this, /* @__PURE__ */ new Set()), e3.state !== "closed" && n3 && C(this), t2(this, o3, i3);
+              })(i3), h.set(this, i3), d.set(this, /* @__PURE__ */ new Set()), e4.state !== "closed" && n3 && C(this), t2(this, o3, i3);
             }
             get channelCount() {
               return this._nativeAudioNode.channelCount;
@@ -1430,16 +1446,16 @@
               if (U(t3)) {
                 const i3 = st(t3);
                 try {
-                  const e3 = $(this._nativeAudioNode, i3, s3, a3), n3 = ot(this);
-                  (u3 || n3) && this._nativeAudioNode.disconnect(...e3), this.context.state !== "closed" && !n3 && ot(t3) && C(t3);
+                  const e4 = $(this._nativeAudioNode, i3, s3, a3), n3 = ot(this);
+                  (u3 || n3) && this._nativeAudioNode.disconnect(...e4), this.context.state !== "closed" && !n3 && ot(t3) && C(t3);
                 } catch (t4) {
                   if (t4.code === 12)
                     throw o2();
                   throw t4;
                 }
-                if (e2(this, t3, s3, a3, u3)) {
-                  const e3 = c2([this], t3);
-                  at(e3, n2(u3));
+                if (e3(this, t3, s3, a3, u3)) {
+                  const e4 = c2([this], t3);
+                  at(e4, n2(u3));
                 }
                 return t3;
               }
@@ -1454,67 +1470,67 @@
                 throw t4;
               }
               if (ht(this, t3, s3, u3)) {
-                const e3 = c2([this], t3);
-                at(e3, n2(u3));
+                const e4 = c2([this], t3);
+                at(e4, n2(u3));
               }
             }
-            disconnect(t3, e3, s3) {
+            disconnect(t3, e4, s3) {
               let n3;
               const r3 = l2(this._context), h2 = m2(r3);
               if (t3 === void 0)
-                n3 = ((t4, e4) => {
+                n3 = ((t4, e5) => {
                   const s4 = L(t4), n4 = [];
                   for (const i3 of s4.outputs)
-                    Q(i3) ? ut(t4, e4, ...i3) : lt(t4, e4, ...i3), n4.push(i3[0]);
+                    Q(i3) ? ut(t4, e5, ...i3) : lt(t4, e5, ...i3), n4.push(i3[0]);
                   return s4.outputs.clear(), n4;
                 })(this, h2);
               else if (typeof t3 == "number") {
                 if (t3 < 0 || t3 >= this.numberOfOutputs)
                   throw i2();
-                n3 = ((t4, e4, s4) => {
+                n3 = ((t4, e5, s4) => {
                   const n4 = L(t4), i3 = [];
                   for (const o3 of n4.outputs)
-                    o3[1] === s4 && (Q(o3) ? ut(t4, e4, ...o3) : lt(t4, e4, ...o3), i3.push(o3[0]), n4.outputs.delete(o3));
+                    o3[1] === s4 && (Q(o3) ? ut(t4, e5, ...o3) : lt(t4, e5, ...o3), i3.push(o3[0]), n4.outputs.delete(o3));
                   return i3;
                 })(this, h2, t3);
               } else {
-                if (e3 !== void 0 && (e3 < 0 || e3 >= this.numberOfOutputs))
+                if (e4 !== void 0 && (e4 < 0 || e4 >= this.numberOfOutputs))
                   throw i2();
                 if (U(t3) && s3 !== void 0 && (s3 < 0 || s3 >= t3.numberOfInputs))
                   throw i2();
-                if (n3 = ((t4, e4, s4, n4, i3) => {
+                if (n3 = ((t4, e5, s4, n4, i3) => {
                   const o3 = L(t4);
-                  return Array.from(o3.outputs).filter((t5) => !(t5[0] !== s4 || n4 !== void 0 && t5[1] !== n4 || i3 !== void 0 && t5[2] !== i3)).map((s5) => (Q(s5) ? ut(t4, e4, ...s5) : lt(t4, e4, ...s5), o3.outputs.delete(s5), s5[0]));
-                })(this, h2, t3, e3, s3), n3.length === 0)
+                  return Array.from(o3.outputs).filter((t5) => !(t5[0] !== s4 || n4 !== void 0 && t5[1] !== n4 || i3 !== void 0 && t5[2] !== i3)).map((s5) => (Q(s5) ? ut(t4, e5, ...s5) : lt(t4, e5, ...s5), o3.outputs.delete(s5), s5[0]));
+                })(this, h2, t3, e4, s3), n3.length === 0)
                   throw o2();
               }
               for (const t4 of n3) {
-                const e4 = c2([this], t4);
-                at(e4, a2);
+                const e5 = c2([this], t4);
+                at(e5, a2);
               }
             }
-          })((Xe = c, (t2, e2, s2) => {
+          })((Xe = c, (t2, e3, s2) => {
             const n2 = [];
             for (let t3 = 0; t3 < s2.numberOfInputs; t3 += 1)
               n2.push(/* @__PURE__ */ new Set());
-            Xe.set(t2, { activeInputs: n2, outputs: /* @__PURE__ */ new Set(), passiveInputs: /* @__PURE__ */ new WeakMap(), renderer: e2 });
-          }), ((t2, e2, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2) => (d2, f2, _2, m2, g2) => {
+            Xe.set(t2, { activeInputs: n2, outputs: /* @__PURE__ */ new Set(), passiveInputs: /* @__PURE__ */ new WeakMap(), renderer: e3 });
+          }), ((t2, e3, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2) => (d2, f2, _2, m2, g2) => {
             const { activeInputs: v2, passiveInputs: y2 } = o2(f2), { outputs: x2 } = o2(d2), w2 = a2(d2), b2 = (o3) => {
               const a3 = c2(f2), h3 = c2(d2);
               if (o3) {
-                const e3 = S(y2, d2, _2, m2);
-                t2(v2, d2, e3, false), g2 || l2(d2) || s2(h3, a3, _2, m2), p2(f2) && C(f2);
+                const e4 = S(y2, d2, _2, m2);
+                t2(v2, d2, e4, false), g2 || l2(d2) || s2(h3, a3, _2, m2), p2(f2) && C(f2);
               } else {
                 const t3 = n2(v2, d2, _2, m2);
-                e2(y2, m2, t3, false), g2 || l2(d2) || i2(h3, a3, _2, m2);
+                e3(y2, m2, t3, false), g2 || l2(d2) || i2(h3, a3, _2, m2);
                 const s3 = r2(f2);
                 s3 === 0 ? u2(f2) && O(f2, v2) : setTimeout(() => {
                   u2(f2) && O(f2, v2);
                 }, 1e3 * s3);
               }
             };
-            return !!h2(x2, [f2, _2, m2], (t3) => t3[0] === f2 && t3[1] === _2 && t3[2] === m2, true) && (w2.add(b2), u2(d2) ? t2(v2, d2, [_2, m2, b2], true) : e2(y2, m2, [d2, _2, b2], true), true);
-          })(fe, me, $, ge, et, L, ye, k, st, Z, P, it, ot), xe, ((t2, e2, s2, n2, i2, o2) => (r2) => (a2, c2) => {
+            return !!h2(x2, [f2, _2, m2], (t3) => t3[0] === f2 && t3[1] === _2 && t3[2] === m2, true) && (w2.add(b2), u2(d2) ? t2(v2, d2, [_2, m2, b2], true) : e3(y2, m2, [d2, _2, b2], true), true);
+          })(fe, me, $, ge, et, L, ye, k, st, Z, P, it, ot), xe, ((t2, e3, s2, n2, i2, o2) => (r2) => (a2, c2) => {
             const h2 = t2.get(a2);
             if (h2 === void 0) {
               if (!r2 && o2(a2)) {
@@ -1522,35 +1538,35 @@
                 for (const s3 of o3)
                   if (Q(s3)) {
                     const i3 = n2(s3[0]);
-                    e2(t3, i3, s3[1], s3[2]);
+                    e3(t3, i3, s3[1], s3[2]);
                   } else {
-                    const e3 = i2(s3[0]);
-                    t3.disconnect(e3, s3[1]);
+                    const e4 = i2(s3[0]);
+                    t3.disconnect(e4, s3[1]);
                   }
               }
               t2.set(a2, c2);
             } else
               t2.set(a2, h2 + c2);
-          })(f, et, L, st, nt, P), q, Dt, Ht, ((t2, e2, s2, n2, i2, o2, r2, a2) => (c2, h2) => {
-            const u2 = e2.get(c2);
+          })(f, et, L, st, nt, P), q, Dt, Ht, ((t2, e3, s2, n2, i2, o2, r2, a2) => (c2, h2) => {
+            const u2 = e3.get(c2);
             if (u2 === void 0)
               throw new Error("Missing the expected cycle count.");
             const l2 = o2(c2.context), p2 = a2(l2);
             if (u2 === h2) {
-              if (e2.delete(c2), !p2 && r2(c2)) {
-                const e3 = n2(c2), { outputs: o3 } = s2(c2);
+              if (e3.delete(c2), !p2 && r2(c2)) {
+                const e4 = n2(c2), { outputs: o3 } = s2(c2);
                 for (const s3 of o3)
                   if (Q(s3)) {
                     const i3 = n2(s3[0]);
-                    t2(e3, i3, s3[1], s3[2]);
+                    t2(e4, i3, s3[1], s3[2]);
                   } else {
                     const t3 = i2(s3[0]);
-                    e3.connect(t3, s3[1]);
+                    e4.connect(t3, s3[1]);
                   }
               }
             } else
-              e2.set(c2, u2 - h2);
-          })($, f, L, st, nt, Fe, P, Ne), ((t2, e2, s2) => function n2(i2, o2) {
+              e3.set(c2, u2 - h2);
+          })($, f, L, st, nt, Fe, P, Ne), ((t2, e3, s2) => function n2(i2, o2) {
             const r2 = U(o2) ? o2 : s2(t2, o2);
             if (((t3) => "delayTime" in t3)(r2))
               return [];
@@ -1558,14 +1574,14 @@
               return [i2];
             if (i2.includes(r2))
               return [];
-            const { outputs: a2 } = e2(r2);
-            return Array.from(a2).map((t3) => n2([...i2, r2], t3[0])).reduce((t3, e3) => t3.concat(e3), []);
+            const { outputs: a2 } = e3(r2);
+            return Array.from(a2).map((t3) => n2([...i2, r2], t3[0])).reduce((t3, e4) => t3.concat(e4), []);
           })(je, L, b), Le, Fe, We, Ue, Qe, Ne);
           var Xe;
-          const Ye = ((t2, e2, s2, n2, i2, o2) => class extends t2 {
+          const Ye = ((t2, e3, s2, n2, i2, o2) => class extends t2 {
             constructor(t3, s3) {
               const r2 = i2(t3), a2 = { ...M, ...s3 }, c2 = n2(r2, a2);
-              super(t3, false, c2, o2(r2) ? e2() : null), this._nativeAnalyserNode = c2;
+              super(t3, false, c2, o2(r2) ? e3() : null), this._nativeAnalyserNode = c2;
             }
             get fftSize() {
               return this._nativeAnalyserNode.fftSize;
@@ -1580,17 +1596,17 @@
               return this._nativeAnalyserNode.maxDecibels;
             }
             set maxDecibels(t3) {
-              const e3 = this._nativeAnalyserNode.maxDecibels;
+              const e4 = this._nativeAnalyserNode.maxDecibels;
               if (this._nativeAnalyserNode.maxDecibels = t3, !(t3 > this._nativeAnalyserNode.minDecibels))
-                throw this._nativeAnalyserNode.maxDecibels = e3, s2();
+                throw this._nativeAnalyserNode.maxDecibels = e4, s2();
             }
             get minDecibels() {
               return this._nativeAnalyserNode.minDecibels;
             }
             set minDecibels(t3) {
-              const e3 = this._nativeAnalyserNode.minDecibels;
+              const e4 = this._nativeAnalyserNode.minDecibels;
               if (this._nativeAnalyserNode.minDecibels = t3, !(this._nativeAnalyserNode.maxDecibels > t3))
-                throw this._nativeAnalyserNode.minDecibels = e3, s2();
+                throw this._nativeAnalyserNode.minDecibels = e4, s2();
             }
             get smoothingTimeConstant() {
               return this._nativeAnalyserNode.smoothingTimeConstant;
@@ -1612,33 +1628,33 @@
             }
           })(Ze, Me, q, Se, Fe, Ne), He = /* @__PURE__ */ new WeakSet(), $e = ((t2) => t2 === null ? null : t2.hasOwnProperty("AudioBuffer") ? t2.AudioBuffer : null)(Te), Je = (Ke = new Uint32Array(1), (t2) => (Ke[0] = t2, Ke[0]));
           var Ke;
-          const ts = ((t2, e2) => (s2) => {
+          const ts = ((t2, e3) => (s2) => {
             s2.copyFromChannel = (n2, i2, o2 = 0) => {
               const r2 = t2(o2), a2 = t2(i2);
               if (a2 >= s2.numberOfChannels)
-                throw e2();
+                throw e3();
               const c2 = s2.length, h2 = s2.getChannelData(a2), u2 = n2.length;
               for (let t3 = r2 < 0 ? -r2 : 0; t3 + r2 < c2 && t3 < u2; t3 += 1)
                 n2[t3] = h2[t3 + r2];
             }, s2.copyToChannel = (n2, i2, o2 = 0) => {
               const r2 = t2(o2), a2 = t2(i2);
               if (a2 >= s2.numberOfChannels)
-                throw e2();
+                throw e3();
               const c2 = s2.length, h2 = s2.getChannelData(a2), u2 = n2.length;
               for (let t3 = r2 < 0 ? -r2 : 0; t3 + r2 < c2 && t3 < u2; t3 += 1)
                 h2[t3 + r2] = n2[t3];
             };
-          })(Je, q), es = ((t2) => (e2) => {
-            e2.copyFromChannel = ((s2) => (n2, i2, o2 = 0) => {
+          })(Je, q), es = ((t2) => (e3) => {
+            e3.copyFromChannel = ((s2) => (n2, i2, o2 = 0) => {
               const r2 = t2(o2), a2 = t2(i2);
-              if (r2 < e2.length)
-                return s2.call(e2, n2, a2, r2);
-            })(e2.copyFromChannel), e2.copyToChannel = ((s2) => (n2, i2, o2 = 0) => {
+              if (r2 < e3.length)
+                return s2.call(e3, n2, a2, r2);
+            })(e3.copyFromChannel), e3.copyToChannel = ((s2) => (n2, i2, o2 = 0) => {
               const r2 = t2(o2), a2 = t2(i2);
-              if (r2 < e2.length)
-                return s2.call(e2, n2, a2, r2);
-            })(e2.copyToChannel);
-          })(Je), ss = ((t2, e2, s2, n2, i2, o2, r2, a2) => {
+              if (r2 < e3.length)
+                return s2.call(e3, n2, a2, r2);
+            })(e3.copyToChannel);
+          })(Je), ss = ((t2, e3, s2, n2, i2, o2, r2, a2) => {
             let c2 = null;
             return class h2 {
               constructor(h3) {
@@ -1646,13 +1662,13 @@
                   throw new Error("Missing the native OfflineAudioContext constructor.");
                 const { length: u2, numberOfChannels: l2, sampleRate: p2 } = { ...I, ...h3 };
                 c2 === null && (c2 = new i2(1, 1, 44100));
-                const d2 = n2 !== null && e2(o2, o2) ? new n2({ length: u2, numberOfChannels: l2, sampleRate: p2 }) : c2.createBuffer(l2, u2, p2);
+                const d2 = n2 !== null && e3(o2, o2) ? new n2({ length: u2, numberOfChannels: l2, sampleRate: p2 }) : c2.createBuffer(l2, u2, p2);
                 if (d2.numberOfChannels === 0)
                   throw s2();
-                return typeof d2.copyFromChannel != "function" ? (r2(d2), F(d2)) : e2(R, () => R(d2)) || a2(d2), t2.add(d2), d2;
+                return typeof d2.copyFromChannel != "function" ? (r2(d2), F(d2)) : e3(R, () => R(d2)) || a2(d2), t2.add(d2), d2;
               }
-              static [Symbol.hasInstance](e3) {
-                return e3 !== null && typeof e3 == "object" && Object.getPrototypeOf(e3) === h2.prototype || t2.has(e3);
+              static [Symbol.hasInstance](e4) {
+                return e4 !== null && typeof e4 == "object" && Object.getPrototypeOf(e4) === h2.prototype || t2.has(e4);
               }
             };
           })(He, xe, Ht, $e, Ve, (ns = $e, () => {
@@ -1666,80 +1682,80 @@
             return true;
           }), ts, es);
           var ns;
-          const is = (os = Qt, (t2, e2) => {
+          const is = (os = Qt, (t2, e3) => {
             const s2 = os(t2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", gain: 0 });
-            e2.connect(s2).connect(t2.destination);
+            e3.connect(s2).connect(t2.destination);
             const n2 = () => {
-              e2.removeEventListener("ended", n2), e2.disconnect(s2), s2.disconnect();
+              e3.removeEventListener("ended", n2), e3.disconnect(s2), s2.disconnect();
             };
-            e2.addEventListener("ended", n2);
+            e3.addEventListener("ended", n2);
           });
           var os;
-          const rs = ((t2, e2, s2) => async (n2, i2, o2, r2) => {
-            const a2 = e2(n2);
-            await Promise.all(Array.from(a2.activeInputs).map(async ([e3, n3]) => {
-              const a3 = t2(e3), c2 = await a3.render(e3, i2, r2);
-              s2(e3) || c2.connect(o2, n3);
+          const rs = ((t2, e3, s2) => async (n2, i2, o2, r2) => {
+            const a2 = e3(n2);
+            await Promise.all(Array.from(a2.activeInputs).map(async ([e4, n3]) => {
+              const a3 = t2(e4), c2 = await a3.render(e4, i2, r2);
+              s2(e4) || c2.connect(o2, n3);
             }));
-          })(Ae, z, it), as = ((t2) => (e2, s2, n2, i2) => t2(s2, e2, n2, i2))(rs), cs = ((t2, e2, s2, n2, i2, o2, r2, a2, c2, h2, u2) => (l2, p2) => {
+          })(Ae, z, it), as = ((t2) => (e3, s2, n2, i2) => t2(s2, e3, n2, i2))(rs), cs = ((t2, e3, s2, n2, i2, o2, r2, a2, c2, h2, u2) => (l2, p2) => {
             const d2 = l2.createBufferSource();
-            return It(d2, p2), Nt(d2, p2, "playbackRate"), Ft(d2, p2, "buffer"), Ft(d2, p2, "loop"), Ft(d2, p2, "loopEnd"), Ft(d2, p2, "loopStart"), e2(s2, () => s2(l2)) || ((t3) => {
-              t3.start = ((e3) => {
+            return It(d2, p2), Nt(d2, p2, "playbackRate"), Ft(d2, p2, "buffer"), Ft(d2, p2, "loop"), Ft(d2, p2, "loopEnd"), Ft(d2, p2, "loopStart"), e3(s2, () => s2(l2)) || ((t3) => {
+              t3.start = ((e4) => {
                 let s3 = false;
                 return (n3 = 0, i3 = 0, o3) => {
                   if (s3)
                     throw At();
-                  e3.call(t3, n3, i3, o3), s3 = true;
+                  e4.call(t3, n3, i3, o3), s3 = true;
                 };
               })(t3.start);
-            })(d2), e2(n2, () => n2(l2)) || c2(d2), e2(i2, () => i2(l2)) || h2(d2, l2), e2(o2, () => o2(l2)) || Pt(d2), e2(r2, () => r2(l2)) || u2(d2, l2), e2(a2, () => a2(l2)) || jt(d2), t2(l2, d2), d2;
+            })(d2), e3(n2, () => n2(l2)) || c2(d2), e3(i2, () => i2(l2)) || h2(d2, l2), e3(o2, () => o2(l2)) || Pt(d2), e3(r2, () => r2(l2)) || u2(d2, l2), e3(a2, () => a2(l2)) || jt(d2), t2(l2, d2), d2;
           })(is, xe, (t2) => {
-            const e2 = t2.createBufferSource();
-            e2.start();
+            const e3 = t2.createBufferSource();
+            e3.start();
             try {
-              e2.start();
+              e3.start();
             } catch {
               return true;
             }
             return false;
           }, (t2) => {
-            const e2 = t2.createBufferSource(), s2 = t2.createBuffer(1, 1, 44100);
-            e2.buffer = s2;
+            const e3 = t2.createBufferSource(), s2 = t2.createBuffer(1, 1, 44100);
+            e3.buffer = s2;
             try {
-              e2.start(0, 1);
+              e3.start(0, 1);
             } catch {
               return false;
             }
             return true;
           }, (t2) => {
-            const e2 = t2.createBufferSource();
-            e2.start();
+            const e3 = t2.createBufferSource();
+            e3.start();
             try {
-              e2.stop();
+              e3.stop();
             } catch {
               return false;
             }
             return true;
           }, ae, ce, he, (t2) => {
-            var e2;
-            t2.start = (e2 = t2.start, (s2 = 0, n2 = 0, i2) => {
+            var e3;
+            t2.start = (e3 = t2.start, (s2 = 0, n2 = 0, i2) => {
               const o2 = t2.buffer, r2 = o2 === null ? n2 : Math.min(o2.duration, n2);
-              o2 !== null && r2 > o2.duration - 0.5 / t2.context.sampleRate ? e2.call(t2, s2, 0, 0) : e2.call(t2, s2, r2, i2);
+              o2 !== null && r2 > o2.duration - 0.5 / t2.context.sampleRate ? e3.call(t2, s2, 0, 0) : e3.call(t2, s2, r2, i2);
             });
-          }, (hs = oe, (t2, e2) => {
-            const s2 = e2.createBuffer(1, 1, 44100);
-            t2.buffer === null && (t2.buffer = s2), hs(t2, "buffer", (e3) => () => {
-              const n2 = e3.call(t2);
+          }, (hs = oe, (t2, e3) => {
+            const s2 = e3.createBuffer(1, 1, 44100);
+            t2.buffer === null && (t2.buffer = s2), hs(t2, "buffer", (e4) => () => {
+              const n2 = e4.call(t2);
               return n2 === s2 ? null : n2;
-            }, (e3) => (n2) => e3.call(t2, n2 === null ? s2 : n2));
+            }, (e4) => (n2) => e4.call(t2, n2 === null ? s2 : n2));
           }), pe);
           var hs;
-          const us = ((t2, e2) => (s2, n2, i2, o2) => (t2(n2).replay(i2), e2(n2, s2, i2, o2)))(((t2) => (e2) => {
-            const s2 = t2(e2);
+          const us = ((t2, e3) => (s2, n2, i2, o2) => (t2(n2).replay(i2), e3(n2, s2, i2, o2)))(((t2) => (e3) => {
+            const s2 = t2(e3);
             if (s2.renderer === null)
               throw new Error("Missing the renderer of the given AudioParam in the audio graph.");
             return s2.renderer;
-          })(z), rs), ls = ((t2, e2, s2, n2, i2) => () => {
+          })(z), rs), ls = ((t2, e3, s2, n2, i2) => () => {
             const o2 = /* @__PURE__ */ new WeakMap();
             let r2 = null, a2 = null;
             return { set start(t3) {
@@ -1753,12 +1769,12 @@
                 const p2 = E(l3, h3);
                 if (!p2) {
                   const t3 = { buffer: l3.buffer, channelCount: l3.channelCount, channelCountMode: l3.channelCountMode, channelInterpretation: l3.channelInterpretation, loop: l3.loop, loopEnd: l3.loopEnd, loopStart: l3.loopStart, playbackRate: l3.playbackRate.value };
-                  l3 = e2(h3, t3), r2 !== null && l3.start(...r2), a2 !== null && l3.stop(a2);
+                  l3 = e3(h3, t3), r2 !== null && l3.start(...r2), a2 !== null && l3.stop(a2);
                 }
                 return o2.set(h3, l3), p2 ? await t2(h3, c3.playbackRate, l3.playbackRate, u3) : await n2(h3, c3.playbackRate, l3.playbackRate, u3), await i2(c3, h3, l3, u3), l3;
               })(c2, h2, u2);
             } };
-          })(as, cs, st, us, Oe), ps = ((t2, e2, s2, n2, i2, o2, a2, c2, h2, u2, l2, p2, d2) => (f2, _2, m2, g2 = null, v2 = null) => {
+          })(as, cs, st, us, Oe), ps = ((t2, e3, s2, n2, i2, o2, a2, c2, h2, u2, l2, p2, d2) => (f2, _2, m2, g2 = null, v2 = null) => {
             const y2 = new r.AutomationEventList(m2.defaultValue), x2 = _2 ? n2(y2) : null, w2 = { get defaultValue() {
               return m2.defaultValue;
             }, get maxValue() {
@@ -1773,63 +1789,63 @@
               if (typeof m2.cancelAndHoldAtTime == "function")
                 x2 === null && y2.flush(f2.context.currentTime), y2.add(i2(t3)), m2.cancelAndHoldAtTime(t3);
               else {
-                const e3 = Array.from(y2).pop();
+                const e4 = Array.from(y2).pop();
                 x2 === null && y2.flush(f2.context.currentTime), y2.add(i2(t3));
                 const s3 = Array.from(y2).pop();
-                m2.cancelScheduledValues(t3), e3 !== s3 && s3 !== void 0 && (s3.type === "exponentialRampToValue" ? m2.exponentialRampToValueAtTime(s3.value, s3.endTime) : s3.type === "linearRampToValue" ? m2.linearRampToValueAtTime(s3.value, s3.endTime) : s3.type === "setValue" ? m2.setValueAtTime(s3.value, s3.startTime) : s3.type === "setValueCurve" && m2.setValueCurveAtTime(s3.values, s3.startTime, s3.duration));
+                m2.cancelScheduledValues(t3), e4 !== s3 && s3 !== void 0 && (s3.type === "exponentialRampToValue" ? m2.exponentialRampToValueAtTime(s3.value, s3.endTime) : s3.type === "linearRampToValue" ? m2.linearRampToValueAtTime(s3.value, s3.endTime) : s3.type === "setValue" ? m2.setValueAtTime(s3.value, s3.startTime) : s3.type === "setValueCurve" && m2.setValueCurveAtTime(s3.values, s3.startTime, s3.duration));
               }
               return w2;
-            }, cancelScheduledValues: (t3) => (x2 === null && y2.flush(f2.context.currentTime), y2.add(o2(t3)), m2.cancelScheduledValues(t3), w2), exponentialRampToValueAtTime(t3, e3) {
+            }, cancelScheduledValues: (t3) => (x2 === null && y2.flush(f2.context.currentTime), y2.add(o2(t3)), m2.cancelScheduledValues(t3), w2), exponentialRampToValueAtTime(t3, e4) {
               if (t3 === 0)
                 throw new RangeError();
-              if (!Number.isFinite(e3) || e3 < 0)
+              if (!Number.isFinite(e4) || e4 < 0)
                 throw new RangeError();
-              return x2 === null && y2.flush(f2.context.currentTime), y2.add(a2(t3, e3)), m2.exponentialRampToValueAtTime(t3, e3), w2;
-            }, linearRampToValueAtTime: (t3, e3) => (x2 === null && y2.flush(f2.context.currentTime), y2.add(c2(t3, e3)), m2.linearRampToValueAtTime(t3, e3), w2), setTargetAtTime: (t3, e3, s3) => (x2 === null && y2.flush(f2.context.currentTime), y2.add(h2(t3, e3, s3)), m2.setTargetAtTime(t3, e3, s3), w2), setValueAtTime: (t3, e3) => (x2 === null && y2.flush(f2.context.currentTime), y2.add(u2(t3, e3)), m2.setValueAtTime(t3, e3), w2), setValueCurveAtTime(t3, e3, s3) {
+              return x2 === null && y2.flush(f2.context.currentTime), y2.add(a2(t3, e4)), m2.exponentialRampToValueAtTime(t3, e4), w2;
+            }, linearRampToValueAtTime: (t3, e4) => (x2 === null && y2.flush(f2.context.currentTime), y2.add(c2(t3, e4)), m2.linearRampToValueAtTime(t3, e4), w2), setTargetAtTime: (t3, e4, s3) => (x2 === null && y2.flush(f2.context.currentTime), y2.add(h2(t3, e4, s3)), m2.setTargetAtTime(t3, e4, s3), w2), setValueAtTime: (t3, e4) => (x2 === null && y2.flush(f2.context.currentTime), y2.add(u2(t3, e4)), m2.setValueAtTime(t3, e4), w2), setValueCurveAtTime(t3, e4, s3) {
               const n3 = t3 instanceof Float32Array ? t3 : new Float32Array(t3);
               if (p2 !== null && p2.name === "webkitAudioContext") {
-                const t4 = e3 + s3, i3 = f2.context.sampleRate, o3 = Math.ceil(e3 * i3), r2 = Math.floor(t4 * i3), a3 = r2 - o3, c3 = new Float32Array(a3);
+                const t4 = e4 + s3, i3 = f2.context.sampleRate, o3 = Math.ceil(e4 * i3), r2 = Math.floor(t4 * i3), a3 = r2 - o3, c3 = new Float32Array(a3);
                 for (let t5 = 0; t5 < a3; t5 += 1) {
-                  const r3 = (n3.length - 1) / s3 * ((o3 + t5) / i3 - e3), a4 = Math.floor(r3), h4 = Math.ceil(r3);
+                  const r3 = (n3.length - 1) / s3 * ((o3 + t5) / i3 - e4), a4 = Math.floor(r3), h4 = Math.ceil(r3);
                   c3[t5] = a4 === h4 ? n3[a4] : (1 - (r3 - a4)) * n3[a4] + (1 - (h4 - r3)) * n3[h4];
                 }
-                x2 === null && y2.flush(f2.context.currentTime), y2.add(l2(c3, e3, s3)), m2.setValueCurveAtTime(c3, e3, s3);
+                x2 === null && y2.flush(f2.context.currentTime), y2.add(l2(c3, e4, s3)), m2.setValueCurveAtTime(c3, e4, s3);
                 const h3 = r2 / i3;
                 h3 < t4 && d2(w2, c3[c3.length - 1], h3), d2(w2, n3[n3.length - 1], t4);
               } else
-                x2 === null && y2.flush(f2.context.currentTime), y2.add(l2(n3, e3, s3)), m2.setValueCurveAtTime(n3, e3, s3);
+                x2 === null && y2.flush(f2.context.currentTime), y2.add(l2(n3, e4, s3)), m2.setValueCurveAtTime(n3, e4, s3);
               return w2;
             } };
-            return s2.set(w2, m2), e2.set(w2, f2), t2(w2, x2), w2;
-          })((ds = u, (t2, e2) => {
-            ds.set(t2, { activeInputs: /* @__PURE__ */ new Set(), passiveInputs: /* @__PURE__ */ new WeakMap(), renderer: e2 });
-          }), je, l, (t2) => ({ replay(e2) {
+            return s2.set(w2, m2), e3.set(w2, f2), t2(w2, x2), w2;
+          })((ds = u, (t2, e3) => {
+            ds.set(t2, { activeInputs: /* @__PURE__ */ new Set(), passiveInputs: /* @__PURE__ */ new WeakMap(), renderer: e3 });
+          }), je, l, (t2) => ({ replay(e3) {
             for (const s2 of t2)
               if (s2.type === "exponentialRampToValue") {
                 const { endTime: t3, value: n2 } = s2;
-                e2.exponentialRampToValueAtTime(n2, t3);
+                e3.exponentialRampToValueAtTime(n2, t3);
               } else if (s2.type === "linearRampToValue") {
                 const { endTime: t3, value: n2 } = s2;
-                e2.linearRampToValueAtTime(n2, t3);
+                e3.linearRampToValueAtTime(n2, t3);
               } else if (s2.type === "setTarget") {
                 const { startTime: t3, target: n2, timeConstant: i2 } = s2;
-                e2.setTargetAtTime(n2, t3, i2);
+                e3.setTargetAtTime(n2, t3, i2);
               } else if (s2.type === "setValue") {
                 const { startTime: t3, value: n2 } = s2;
-                e2.setValueAtTime(n2, t3);
+                e3.setValueAtTime(n2, t3);
               } else {
                 if (s2.type !== "setValueCurve")
                   throw new Error("Can't apply an unknown automation.");
                 {
                   const { duration: t3, startTime: n2, values: i2 } = s2;
-                  e2.setValueCurveAtTime(i2, n2, t3);
+                  e3.setValueCurveAtTime(i2, n2, t3);
                 }
               }
           } }), r.createCancelAndHoldAutomationEvent, r.createCancelScheduledValuesAutomationEvent, r.createExponentialRampToValueAutomationEvent, r.createLinearRampToValueAutomationEvent, r.createSetTargetAutomationEvent, r.createSetValueAutomationEvent, r.createSetValueCurveAutomationEvent, Be, re);
           var ds;
-          const fs = ((t2, e2, s2, n2, i2, o2, r2, a2) => class extends t2 {
+          const fs = ((t2, e3, s2, n2, i2, o2, r2, a2) => class extends t2 {
             constructor(t3, n3) {
-              const a3 = o2(t3), c2 = { ...j, ...n3 }, h2 = i2(a3, c2), u2 = r2(a3), l2 = u2 ? e2() : null;
+              const a3 = o2(t3), c2 = { ...j, ...n3 }, h2 = i2(a3, c2), u2 = r2(a3), l2 = u2 ? e3() : null;
               super(t3, false, h2, l2), this._audioBufferSourceNodeRenderer = l2, this._isBufferNullified = false, this._isBufferSet = c2.buffer !== null, this._nativeAudioBufferSourceNode = h2, this._onended = null, this._playbackRate = s2(this, u2, h2.playbackRate, N, V);
             }
             get buffer() {
@@ -1864,16 +1880,16 @@
               return this._onended;
             }
             set onended(t3) {
-              const e3 = typeof t3 == "function" ? a2(this, t3) : null;
-              this._nativeAudioBufferSourceNode.onended = e3;
+              const e4 = typeof t3 == "function" ? a2(this, t3) : null;
+              this._nativeAudioBufferSourceNode.onended = e4;
               const s3 = this._nativeAudioBufferSourceNode.onended;
-              this._onended = s3 !== null && s3 === e3 ? t3 : s3;
+              this._onended = s3 !== null && s3 === e4 ? t3 : s3;
             }
             get playbackRate() {
               return this._playbackRate;
             }
-            start(t3 = 0, e3 = 0, s3) {
-              if (this._nativeAudioBufferSourceNode.start(t3, e3, s3), this._audioBufferSourceNodeRenderer !== null && (this._audioBufferSourceNodeRenderer.start = s3 === void 0 ? [t3, e3] : [t3, e3, s3]), this.context.state !== "closed") {
+            start(t3 = 0, e4 = 0, s3) {
+              if (this._nativeAudioBufferSourceNode.start(t3, e4, s3), this._audioBufferSourceNodeRenderer !== null && (this._audioBufferSourceNodeRenderer.start = s3 === void 0 ? [t3, e4] : [t3, e4, s3]), this.context.state !== "closed") {
                 C(this);
                 const t4 = () => {
                   this._nativeAudioBufferSourceNode.removeEventListener("ended", t4), P(this) && D(this);
@@ -1884,10 +1900,10 @@
             stop(t3 = 0) {
               this._nativeAudioBufferSourceNode.stop(t3), this._audioBufferSourceNodeRenderer !== null && (this._audioBufferSourceNodeRenderer.stop = t3);
             }
-          })(Ze, ls, ps, At, cs, Fe, Ne, de), _s = ((t2, e2, s2, n2, i2, o2, r2, a2) => class extends t2 {
+          })(Ze, ls, ps, At, cs, Fe, Ne, de), _s = ((t2, e3, s2, n2, i2, o2, r2, a2) => class extends t2 {
             constructor(t3, s3) {
               const n3 = o2(t3), c2 = r2(n3), h2 = i2(n3, s3, c2);
-              super(t3, false, h2, c2 ? e2(a2) : null), this._isNodeOfNativeOfflineAudioContext = c2, this._nativeAudioDestinationNode = h2;
+              super(t3, false, h2, c2 ? e3(a2) : null), this._isNodeOfNativeOfflineAudioContext = c2, this._nativeAudioDestinationNode = h2;
             }
             get channelCount() {
               return this._nativeAudioDestinationNode.channelCount;
@@ -1911,12 +1927,12 @@
               return this._nativeAudioDestinationNode.maxChannelCount;
             }
           })(Ze, (t2) => {
-            let e2 = null;
-            return { render: (s2, n2, i2) => (e2 === null && (e2 = (async (e3, s3, n3) => {
+            let e3 = null;
+            return { render: (s2, n2, i2) => (e3 === null && (e3 = (async (e4, s3, n3) => {
               const i3 = s3.destination;
-              return await t2(e3, s3, i3, n3), i3;
-            })(s2, n2, i2)), e2) };
-          }, q, At, ((t2, e2) => (s2, n2, i2) => {
+              return await t2(e4, s3, i3, n3), i3;
+            })(s2, n2, i2)), e3) };
+          }, q, At, ((t2, e3) => (s2, n2, i2) => {
             const o2 = s2.destination;
             if (o2.channelCount !== n2)
               try {
@@ -1925,20 +1941,20 @@
               }
             i2 && o2.channelCountMode !== "explicit" && (o2.channelCountMode = "explicit"), o2.maxChannelCount === 0 && Object.defineProperty(o2, "maxChannelCount", { value: n2 });
             const r2 = t2(s2, { channelCount: n2, channelCountMode: o2.channelCountMode, channelInterpretation: o2.channelInterpretation, gain: 1 });
-            return e2(r2, "channelCount", (t3) => () => t3.call(r2), (t3) => (e3) => {
-              t3.call(r2, e3);
+            return e3(r2, "channelCount", (t3) => () => t3.call(r2), (t3) => (e4) => {
+              t3.call(r2, e4);
               try {
-                o2.channelCount = e3;
+                o2.channelCount = e4;
               } catch (t4) {
-                if (e3 > o2.maxChannelCount)
+                if (e4 > o2.maxChannelCount)
                   throw t4;
               }
-            }), e2(r2, "channelCountMode", (t3) => () => t3.call(r2), (t3) => (e3) => {
-              t3.call(r2, e3), o2.channelCountMode = e3;
-            }), e2(r2, "channelInterpretation", (t3) => () => t3.call(r2), (t3) => (e3) => {
-              t3.call(r2, e3), o2.channelInterpretation = e3;
+            }), e3(r2, "channelCountMode", (t3) => () => t3.call(r2), (t3) => (e4) => {
+              t3.call(r2, e4), o2.channelCountMode = e4;
+            }), e3(r2, "channelInterpretation", (t3) => () => t3.call(r2), (t3) => (e4) => {
+              t3.call(r2, e4), o2.channelInterpretation = e4;
             }), Object.defineProperty(r2, "maxChannelCount", { get: () => o2.maxChannelCount }), r2.connect(o2), r2;
-          })(Qt, oe), Fe, Ne, Oe), ms = ((t2, e2, s2, n2, i2) => () => {
+          })(Qt, oe), Fe, Ne, Oe), ms = ((t2, e3, s2, n2, i2) => () => {
             const o2 = /* @__PURE__ */ new WeakMap();
             return { render(r2, a2, c2) {
               const h2 = o2.get(a2);
@@ -1947,14 +1963,14 @@
                 const u2 = E(h3, a3);
                 if (!u2) {
                   const t3 = { Q: h3.Q.value, channelCount: h3.channelCount, channelCountMode: h3.channelCountMode, channelInterpretation: h3.channelInterpretation, detune: h3.detune.value, frequency: h3.frequency.value, gain: h3.gain.value, type: h3.type };
-                  h3 = e2(a3, t3);
+                  h3 = e3(a3, t3);
                 }
                 return o2.set(a3, h3), u2 ? (await t2(a3, r3.Q, h3.Q, c3), await t2(a3, r3.detune, h3.detune, c3), await t2(a3, r3.frequency, h3.frequency, c3), await t2(a3, r3.gain, h3.gain, c3)) : (await n2(a3, r3.Q, h3.Q, c3), await n2(a3, r3.detune, h3.detune, c3), await n2(a3, r3.frequency, h3.frequency, c3), await n2(a3, r3.gain, h3.gain, c3)), await i2(r3, a3, h3, c3), h3;
               })(r2, a2, c2);
             } };
-          })(as, Bt, st, us, Oe), gs = ((t2) => (e2, s2) => t2.set(e2, s2))(ve), vs = (ys = Ze, xs = ps, ws = ms, bs = Dt, Ts = Bt, Ss = Fe, ks = Ne, Cs = gs, class extends ys {
-            constructor(t2, e2) {
-              const s2 = Ss(t2), n2 = { ...vt, ...e2 }, i2 = Ts(s2, n2), o2 = ks(s2);
+          })(as, Bt, st, us, Oe), gs = ((t2) => (e3, s2) => t2.set(e3, s2))(ve), vs = (ys = Ze, xs = ps, ws = ms, bs = Dt, Ts = Bt, Ss = Fe, ks = Ne, Cs = gs, class extends ys {
+            constructor(t2, e3) {
+              const s2 = Ss(t2), n2 = { ...vt, ...e3 }, i2 = Ts(s2, n2), o2 = ks(s2);
               super(t2, false, i2, o2 ? ws() : null), this._Q = xs(this, o2, i2.Q, N, V), this._detune = xs(this, o2, i2.detune, 1200 * Math.log2(N), -1200 * Math.log2(N)), this._frequency = xs(this, o2, i2.frequency, t2.sampleRate / 2, 0), this._gain = xs(this, o2, i2.gain, 40 * Math.log10(N), V), this._nativeBiquadFilterNode = i2, Cs(this, 1);
             }
             get detune() {
@@ -1975,25 +1991,25 @@
             set type(t2) {
               this._nativeBiquadFilterNode.type = t2;
             }
-            getFrequencyResponse(t2, e2, s2) {
+            getFrequencyResponse(t2, e3, s2) {
               try {
-                this._nativeBiquadFilterNode.getFrequencyResponse(t2, e2, s2);
+                this._nativeBiquadFilterNode.getFrequencyResponse(t2, e3, s2);
               } catch (t3) {
                 if (t3.code === 11)
                   throw bs();
                 throw t3;
               }
-              if (t2.length !== e2.length || e2.length !== s2.length)
+              if (t2.length !== e3.length || e3.length !== s2.length)
                 throw bs();
             }
           });
           var ys, xs, ws, bs, Ts, Ss, ks, Cs;
-          const As = ((t2, e2) => (s2, n2, i2) => {
+          const As = ((t2, e3) => (s2, n2, i2) => {
             const o2 = /* @__PURE__ */ new Set();
             var r2, a2;
             return s2.connect = (r2 = s2.connect, (i3, a3 = 0, c2 = 0) => {
               const h2 = o2.size === 0;
-              if (e2(i3))
+              if (e3(i3))
                 return r2.call(s2, i3, a3, c2), t2(o2, [i3, a3, c2], (t3) => t3[0] === i3 && t3[1] === a3 && t3[2] === c2, true), h2 && n2(), i3;
               r2.call(s2, i3, a3), t2(o2, [i3, a3], (t3) => t3[0] === i3 && t3[1] === a3, true), h2 && n2();
             }), s2.disconnect = (a2 = s2.disconnect, (t3, n3, r3) => {
@@ -2002,71 +2018,71 @@
                 a2.apply(s2), o2.clear();
               else if (typeof t3 == "number") {
                 a2.call(s2, t3);
-                for (const e3 of o2)
-                  e3[1] === t3 && o2.delete(e3);
+                for (const e4 of o2)
+                  e4[1] === t3 && o2.delete(e4);
               } else {
-                e2(t3) ? a2.call(s2, t3, n3, r3) : a2.call(s2, t3, n3);
-                for (const e3 of o2)
-                  e3[0] !== t3 || n3 !== void 0 && e3[1] !== n3 || r3 !== void 0 && e3[2] !== r3 || o2.delete(e3);
+                e3(t3) ? a2.call(s2, t3, n3, r3) : a2.call(s2, t3, n3);
+                for (const e4 of o2)
+                  e4[0] !== t3 || n3 !== void 0 && e4[1] !== n3 || r3 !== void 0 && e4[2] !== r3 || o2.delete(e4);
               }
               const h2 = o2.size === 0;
               c2 && h2 && i2();
             }), s2;
-          })(Z, Ue), Ds = (Os = At, Ms = As, (t2, e2) => {
-            e2.channelCount = 1, e2.channelCountMode = "explicit", Object.defineProperty(e2, "channelCount", { get: () => 1, set: () => {
+          })(Z, Ue), Ds = (Os = At, Ms = As, (t2, e3) => {
+            e3.channelCount = 1, e3.channelCountMode = "explicit", Object.defineProperty(e3, "channelCount", { get: () => 1, set: () => {
               throw Os();
-            } }), Object.defineProperty(e2, "channelCountMode", { get: () => "explicit", set: () => {
+            } }), Object.defineProperty(e3, "channelCountMode", { get: () => "explicit", set: () => {
               throw Os();
             } });
             const s2 = t2.createBufferSource();
-            Ms(e2, () => {
-              const t3 = e2.numberOfInputs;
+            Ms(e3, () => {
+              const t3 = e3.numberOfInputs;
               for (let n2 = 0; n2 < t3; n2 += 1)
-                s2.connect(e2, 0, n2);
-            }, () => s2.disconnect(e2));
+                s2.connect(e3, 0, n2);
+            }, () => s2.disconnect(e3));
           });
           var Os, Ms;
-          const Es = ((t2, e2) => (s2, n2) => {
+          const Es = ((t2, e3) => (s2, n2) => {
             const i2 = s2.createChannelMerger(n2.numberOfInputs);
-            return t2 !== null && t2.name === "webkitAudioContext" && e2(s2, i2), It(i2, n2), i2;
-          })(Be, Ds), Rs = ((t2, e2, s2, n2, i2) => class extends t2 {
+            return t2 !== null && t2.name === "webkitAudioContext" && e3(s2, i2), It(i2, n2), i2;
+          })(Be, Ds), Rs = ((t2, e3, s2, n2, i2) => class extends t2 {
             constructor(t3, o2) {
               const r2 = n2(t3), a2 = { ...yt, ...o2 };
-              super(t3, false, s2(r2, a2), i2(r2) ? e2() : null);
+              super(t3, false, s2(r2, a2), i2(r2) ? e3() : null);
             }
-          })(Ze, ((t2, e2, s2) => () => {
+          })(Ze, ((t2, e3, s2) => () => {
             const n2 = /* @__PURE__ */ new WeakMap();
             return { render(i2, o2, r2) {
               const a2 = n2.get(o2);
               return a2 !== void 0 ? Promise.resolve(a2) : (async (i3, o3, r3) => {
-                let a3 = e2(i3);
+                let a3 = e3(i3);
                 if (!E(a3, o3)) {
-                  const e3 = { channelCount: a3.channelCount, channelCountMode: a3.channelCountMode, channelInterpretation: a3.channelInterpretation, numberOfInputs: a3.numberOfInputs };
-                  a3 = t2(o3, e3);
+                  const e4 = { channelCount: a3.channelCount, channelCountMode: a3.channelCountMode, channelInterpretation: a3.channelInterpretation, numberOfInputs: a3.numberOfInputs };
+                  a3 = t2(o3, e4);
                 }
                 return n2.set(o3, a3), await s2(i3, o3, a3, r3), a3;
               })(i2, o2, r2);
             } };
-          })(Es, st, Oe), Es, Fe, Ne), qs = ((t2, e2, s2, n2, i2, o2) => class extends t2 {
+          })(Es, st, Oe), Es, Fe, Ne), qs = ((t2, e3, s2, n2, i2, o2) => class extends t2 {
             constructor(t3, r2) {
               const a2 = n2(t3), c2 = o2({ ...xt, ...r2 });
-              super(t3, false, s2(a2, c2), i2(a2) ? e2() : null);
+              super(t3, false, s2(a2, c2), i2(a2) ? e3() : null);
             }
-          })(Ze, ((t2, e2, s2) => () => {
+          })(Ze, ((t2, e3, s2) => () => {
             const n2 = /* @__PURE__ */ new WeakMap();
             return { render(i2, o2, r2) {
               const a2 = n2.get(o2);
               return a2 !== void 0 ? Promise.resolve(a2) : (async (i3, o3, r3) => {
-                let a3 = e2(i3);
+                let a3 = e3(i3);
                 if (!E(a3, o3)) {
-                  const e3 = { channelCount: a3.channelCount, channelCountMode: a3.channelCountMode, channelInterpretation: a3.channelInterpretation, numberOfOutputs: a3.numberOfOutputs };
-                  a3 = t2(o3, e3);
+                  const e4 = { channelCount: a3.channelCount, channelCountMode: a3.channelCountMode, channelInterpretation: a3.channelInterpretation, numberOfOutputs: a3.numberOfOutputs };
+                  a3 = t2(o3, e4);
                 }
                 return n2.set(o3, a3), await s2(i3, o3, a3, r3), a3;
               })(i2, o2, r2);
             } };
-          })(Wt, st, Oe), Wt, Fe, Ne, (t2) => ({ ...t2, channelCount: t2.numberOfOutputs })), Fs = ((t2, e2, s2, n2) => (i2, { offset: o2, ...r2 }) => {
-            const a2 = i2.createBuffer(1, 2, 44100), c2 = e2(i2, { buffer: null, channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", loop: false, loopEnd: 0, loopStart: 0, playbackRate: 1 }), h2 = s2(i2, { ...r2, gain: o2 }), u2 = a2.getChannelData(0);
+          })(Wt, st, Oe), Wt, Fe, Ne, (t2) => ({ ...t2, channelCount: t2.numberOfOutputs })), Fs = ((t2, e3, s2, n2) => (i2, { offset: o2, ...r2 }) => {
+            const a2 = i2.createBuffer(1, 2, 44100), c2 = e3(i2, { buffer: null, channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", loop: false, loopEnd: 0, loopStart: 0, playbackRate: 1 }), h2 = s2(i2, { ...r2, gain: o2 }), u2 = a2.getChannelData(0);
             u2[0] = 1, u2[1] = 1, c2.buffer = a2, c2.loop = true;
             const l2 = { get bufferSize() {
             }, get channelCount() {
@@ -2101,15 +2117,15 @@
               c2.stop.call(c2, t3);
             } };
             return t2(i2, c2), n2(Gt(l2, h2), () => c2.connect(h2), () => c2.disconnect(h2));
-          })(is, cs, Qt, As), Is = ((t2, e2, s2, n2, i2) => (o2, r2) => {
+          })(is, cs, Qt, As), Is = ((t2, e3, s2, n2, i2) => (o2, r2) => {
             if (o2.createConstantSource === void 0)
               return s2(o2, r2);
             const a2 = o2.createConstantSource();
-            return It(a2, r2), Nt(a2, r2, "offset"), e2(n2, () => n2(o2)) || Pt(a2), e2(i2, () => i2(o2)) || jt(a2), t2(o2, a2), a2;
-          })(is, xe, Fs, ae, he), Vs = ((t2, e2, s2, n2, i2, o2, r2) => class extends t2 {
+            return It(a2, r2), Nt(a2, r2, "offset"), e3(n2, () => n2(o2)) || Pt(a2), e3(i2, () => i2(o2)) || jt(a2), t2(o2, a2), a2;
+          })(is, xe, Fs, ae, he), Vs = ((t2, e3, s2, n2, i2, o2, r2) => class extends t2 {
             constructor(t3, r3) {
               const a2 = i2(t3), c2 = { ...wt, ...r3 }, h2 = n2(a2, c2), u2 = o2(a2), l2 = u2 ? s2() : null;
-              super(t3, false, h2, l2), this._constantSourceNodeRenderer = l2, this._nativeConstantSourceNode = h2, this._offset = e2(this, u2, h2.offset, N, V), this._onended = null;
+              super(t3, false, h2, l2), this._constantSourceNodeRenderer = l2, this._nativeConstantSourceNode = h2, this._offset = e3(this, u2, h2.offset, N, V), this._onended = null;
             }
             get offset() {
               return this._offset;
@@ -2118,10 +2134,10 @@
               return this._onended;
             }
             set onended(t3) {
-              const e3 = typeof t3 == "function" ? r2(this, t3) : null;
-              this._nativeConstantSourceNode.onended = e3;
+              const e4 = typeof t3 == "function" ? r2(this, t3) : null;
+              this._nativeConstantSourceNode.onended = e4;
               const s3 = this._nativeConstantSourceNode.onended;
-              this._onended = s3 !== null && s3 === e3 ? t3 : s3;
+              this._onended = s3 !== null && s3 === e4 ? t3 : s3;
             }
             start(t3 = 0) {
               if (this._nativeConstantSourceNode.start(t3), this._constantSourceNodeRenderer !== null && (this._constantSourceNodeRenderer.start = t3), this.context.state !== "closed") {
@@ -2135,7 +2151,7 @@
             stop(t3 = 0) {
               this._nativeConstantSourceNode.stop(t3), this._constantSourceNodeRenderer !== null && (this._constantSourceNodeRenderer.stop = t3);
             }
-          })(Ze, ps, ((t2, e2, s2, n2, i2) => () => {
+          })(Ze, ps, ((t2, e3, s2, n2, i2) => () => {
             const o2 = /* @__PURE__ */ new WeakMap();
             let r2 = null, a2 = null;
             return { set start(t3) {
@@ -2149,30 +2165,30 @@
                 const p2 = E(l3, h3);
                 if (!p2) {
                   const t3 = { channelCount: l3.channelCount, channelCountMode: l3.channelCountMode, channelInterpretation: l3.channelInterpretation, offset: l3.offset.value };
-                  l3 = e2(h3, t3), r2 !== null && l3.start(r2), a2 !== null && l3.stop(a2);
+                  l3 = e3(h3, t3), r2 !== null && l3.start(r2), a2 !== null && l3.stop(a2);
                 }
                 return o2.set(h3, l3), p2 ? await t2(h3, c3.offset, l3.offset, u3) : await n2(h3, c3.offset, l3.offset, u3), await i2(c3, h3, l3, u3), l3;
               })(c2, h2, u2);
             } };
-          })(as, Is, st, us, Oe), Is, Fe, Ne, de), Ns = ((t2, e2) => (s2, n2) => {
+          })(as, Is, st, us, Oe), Is, Fe, Ne, de), Ns = ((t2, e3) => (s2, n2) => {
             const i2 = s2.createConvolver();
             if (It(i2, n2), n2.disableNormalization === i2.normalize && (i2.normalize = !n2.disableNormalization), Ft(i2, n2, "buffer"), n2.channelCount > 2)
               throw t2();
-            if (e2(i2, "channelCount", (t3) => () => t3.call(i2), (e3) => (s3) => {
+            if (e3(i2, "channelCount", (t3) => () => t3.call(i2), (e4) => (s3) => {
               if (s3 > 2)
                 throw t2();
-              return e3.call(i2, s3);
+              return e4.call(i2, s3);
             }), n2.channelCountMode === "max")
               throw t2();
-            return e2(i2, "channelCountMode", (t3) => () => t3.call(i2), (e3) => (s3) => {
+            return e3(i2, "channelCountMode", (t3) => () => t3.call(i2), (e4) => (s3) => {
               if (s3 === "max")
                 throw t2();
-              return e3.call(i2, s3);
+              return e4.call(i2, s3);
             }), i2;
-          })(Ht, oe), Ps = ((t2, e2, s2, n2, i2, o2) => class extends t2 {
+          })(Ht, oe), Ps = ((t2, e3, s2, n2, i2, o2) => class extends t2 {
             constructor(t3, r2) {
               const a2 = n2(t3), c2 = { ...bt, ...r2 }, h2 = s2(a2, c2);
-              super(t3, false, h2, i2(a2) ? e2() : null), this._isBufferNullified = false, this._nativeConvolverNode = h2, c2.buffer !== null && o2(this, c2.buffer.duration);
+              super(t3, false, h2, i2(a2) ? e3() : null), this._isBufferNullified = false, this._nativeConvolverNode = h2, c2.buffer !== null && o2(this, c2.buffer.duration);
             }
             get buffer() {
               return this._isBufferNullified ? null : this._nativeConvolverNode.buffer;
@@ -2190,28 +2206,28 @@
             set normalize(t3) {
               this._nativeConvolverNode.normalize = t3;
             }
-          })(Ze, ((t2, e2, s2) => () => {
+          })(Ze, ((t2, e3, s2) => () => {
             const n2 = /* @__PURE__ */ new WeakMap();
             return { render(i2, o2, r2) {
               const a2 = n2.get(o2);
               return a2 !== void 0 ? Promise.resolve(a2) : (async (i3, o3, r3) => {
-                let a3 = e2(i3);
+                let a3 = e3(i3);
                 if (!E(a3, o3)) {
-                  const e3 = { buffer: a3.buffer, channelCount: a3.channelCount, channelCountMode: a3.channelCountMode, channelInterpretation: a3.channelInterpretation, disableNormalization: !a3.normalize };
-                  a3 = t2(o3, e3);
+                  const e4 = { buffer: a3.buffer, channelCount: a3.channelCount, channelCountMode: a3.channelCountMode, channelInterpretation: a3.channelInterpretation, disableNormalization: !a3.normalize };
+                  a3 = t2(o3, e4);
                 }
                 return n2.set(o3, a3), H(a3) ? await s2(i3, o3, a3.inputs[0], r3) : await s2(i3, o3, a3, r3), a3;
               })(i2, o2, r2);
             } };
-          })(Ns, st, Oe), Ns, Fe, Ne, gs), js = ((t2, e2, s2, n2, i2, o2, r2) => class extends t2 {
+          })(Ns, st, Oe), Ns, Fe, Ne, gs), js = ((t2, e3, s2, n2, i2, o2, r2) => class extends t2 {
             constructor(t3, a2) {
               const c2 = i2(t3), h2 = { ...Tt, ...a2 }, u2 = n2(c2, h2), l2 = o2(c2);
-              super(t3, false, u2, l2 ? s2(h2.maxDelayTime) : null), this._delayTime = e2(this, l2, u2.delayTime), r2(this, h2.maxDelayTime);
+              super(t3, false, u2, l2 ? s2(h2.maxDelayTime) : null), this._delayTime = e3(this, l2, u2.delayTime), r2(this, h2.maxDelayTime);
             }
             get delayTime() {
               return this._delayTime;
             }
-          })(Ze, ps, ((t2, e2, s2, n2, i2) => (o2) => {
+          })(Ze, ps, ((t2, e3, s2, n2, i2) => (o2) => {
             const r2 = /* @__PURE__ */ new WeakMap();
             return { render(a2, c2, h2) {
               const u2 = r2.get(c2);
@@ -2220,24 +2236,24 @@
                 const l2 = E(u3, c3);
                 if (!l2) {
                   const t3 = { channelCount: u3.channelCount, channelCountMode: u3.channelCountMode, channelInterpretation: u3.channelInterpretation, delayTime: u3.delayTime.value, maxDelayTime: o2 };
-                  u3 = e2(c3, t3);
+                  u3 = e3(c3, t3);
                 }
                 return r2.set(c3, u3), l2 ? await t2(c3, a3.delayTime, u3.delayTime, h3) : await n2(c3, a3.delayTime, u3.delayTime, h3), await i2(a3, c3, u3, h3), u3;
               })(a2, c2, h2);
             } };
-          })(as, Ut, st, us, Oe), Ut, Fe, Ne, gs), Ls = (zs = Ht, (t2, e2) => {
+          })(as, Ut, st, us, Oe), Ut, Fe, Ne, gs), Ls = (zs = Ht, (t2, e3) => {
             const s2 = t2.createDynamicsCompressor();
-            if (It(s2, e2), e2.channelCount > 2)
+            if (It(s2, e3), e3.channelCount > 2)
               throw zs();
-            if (e2.channelCountMode === "max")
+            if (e3.channelCountMode === "max")
               throw zs();
-            return Nt(s2, e2, "attack"), Nt(s2, e2, "knee"), Nt(s2, e2, "ratio"), Nt(s2, e2, "release"), Nt(s2, e2, "threshold"), s2;
+            return Nt(s2, e3, "attack"), Nt(s2, e3, "knee"), Nt(s2, e3, "ratio"), Nt(s2, e3, "release"), Nt(s2, e3, "threshold"), s2;
           });
           var zs;
-          const Bs = ((t2, e2, s2, n2, i2, o2, r2, a2) => class extends t2 {
+          const Bs = ((t2, e3, s2, n2, i2, o2, r2, a2) => class extends t2 {
             constructor(t3, i3) {
               const c2 = o2(t3), h2 = { ...kt, ...i3 }, u2 = n2(c2, h2), l2 = r2(c2);
-              super(t3, false, u2, l2 ? s2() : null), this._attack = e2(this, l2, u2.attack), this._knee = e2(this, l2, u2.knee), this._nativeDynamicsCompressorNode = u2, this._ratio = e2(this, l2, u2.ratio), this._release = e2(this, l2, u2.release), this._threshold = e2(this, l2, u2.threshold), a2(this, 6e-3);
+              super(t3, false, u2, l2 ? s2() : null), this._attack = e3(this, l2, u2.attack), this._knee = e3(this, l2, u2.knee), this._nativeDynamicsCompressorNode = u2, this._ratio = e3(this, l2, u2.ratio), this._release = e3(this, l2, u2.release), this._threshold = e3(this, l2, u2.threshold), a2(this, 6e-3);
             }
             get attack() {
               return this._attack;
@@ -2246,17 +2262,17 @@
               return this._nativeDynamicsCompressorNode.channelCount;
             }
             set channelCount(t3) {
-              const e3 = this._nativeDynamicsCompressorNode.channelCount;
+              const e4 = this._nativeDynamicsCompressorNode.channelCount;
               if (this._nativeDynamicsCompressorNode.channelCount = t3, t3 > 2)
-                throw this._nativeDynamicsCompressorNode.channelCount = e3, i2();
+                throw this._nativeDynamicsCompressorNode.channelCount = e4, i2();
             }
             get channelCountMode() {
               return this._nativeDynamicsCompressorNode.channelCountMode;
             }
             set channelCountMode(t3) {
-              const e3 = this._nativeDynamicsCompressorNode.channelCountMode;
+              const e4 = this._nativeDynamicsCompressorNode.channelCountMode;
               if (this._nativeDynamicsCompressorNode.channelCountMode = t3, t3 === "max")
-                throw this._nativeDynamicsCompressorNode.channelCountMode = e3, i2();
+                throw this._nativeDynamicsCompressorNode.channelCountMode = e4, i2();
             }
             get knee() {
               return this._knee;
@@ -2273,7 +2289,7 @@
             get threshold() {
               return this._threshold;
             }
-          })(Ze, ps, ((t2, e2, s2, n2, i2) => () => {
+          })(Ze, ps, ((t2, e3, s2, n2, i2) => () => {
             const o2 = /* @__PURE__ */ new WeakMap();
             return { render(r2, a2, c2) {
               const h2 = o2.get(a2);
@@ -2282,20 +2298,20 @@
                 const u2 = E(h3, a3);
                 if (!u2) {
                   const t3 = { attack: h3.attack.value, channelCount: h3.channelCount, channelCountMode: h3.channelCountMode, channelInterpretation: h3.channelInterpretation, knee: h3.knee.value, ratio: h3.ratio.value, release: h3.release.value, threshold: h3.threshold.value };
-                  h3 = e2(a3, t3);
+                  h3 = e3(a3, t3);
                 }
                 return o2.set(a3, h3), u2 ? (await t2(a3, r3.attack, h3.attack, c3), await t2(a3, r3.knee, h3.knee, c3), await t2(a3, r3.ratio, h3.ratio, c3), await t2(a3, r3.release, h3.release, c3), await t2(a3, r3.threshold, h3.threshold, c3)) : (await n2(a3, r3.attack, h3.attack, c3), await n2(a3, r3.knee, h3.knee, c3), await n2(a3, r3.ratio, h3.ratio, c3), await n2(a3, r3.release, h3.release, c3), await n2(a3, r3.threshold, h3.threshold, c3)), await i2(r3, a3, h3, c3), h3;
               })(r2, a2, c2);
             } };
-          })(as, Ls, st, us, Oe), Ls, Ht, Fe, Ne, gs), Ws = ((t2, e2, s2, n2, i2, o2) => class extends t2 {
+          })(as, Ls, st, us, Oe), Ls, Ht, Fe, Ne, gs), Ws = ((t2, e3, s2, n2, i2, o2) => class extends t2 {
             constructor(t3, r2) {
               const a2 = i2(t3), c2 = { ...Ct, ...r2 }, h2 = n2(a2, c2), u2 = o2(a2);
-              super(t3, false, h2, u2 ? s2() : null), this._gain = e2(this, u2, h2.gain, N, V);
+              super(t3, false, h2, u2 ? s2() : null), this._gain = e3(this, u2, h2.gain, N, V);
             }
             get gain() {
               return this._gain;
             }
-          })(Ze, ps, ((t2, e2, s2, n2, i2) => () => {
+          })(Ze, ps, ((t2, e3, s2, n2, i2) => () => {
             const o2 = /* @__PURE__ */ new WeakMap();
             return { render(r2, a2, c2) {
               const h2 = o2.get(a2);
@@ -2304,21 +2320,21 @@
                 const u2 = E(h3, a3);
                 if (!u2) {
                   const t3 = { channelCount: h3.channelCount, channelCountMode: h3.channelCountMode, channelInterpretation: h3.channelInterpretation, gain: h3.gain.value };
-                  h3 = e2(a3, t3);
+                  h3 = e3(a3, t3);
                 }
                 return o2.set(a3, h3), u2 ? await t2(a3, r3.gain, h3.gain, c3) : await n2(a3, r3.gain, h3.gain, c3), await i2(r3, a3, h3, c3), h3;
               })(r2, a2, c2);
             } };
-          })(as, Qt, st, us, Oe), Qt, Fe, Ne), Gs = ((t2, e2, s2, n2) => (i2, o2, { channelCount: r2, channelCountMode: a2, channelInterpretation: c2, feedback: h2, feedforward: u2 }) => {
+          })(as, Qt, st, us, Oe), Qt, Fe, Ne), Gs = ((t2, e3, s2, n2) => (i2, o2, { channelCount: r2, channelCountMode: a2, channelInterpretation: c2, feedback: h2, feedforward: u2 }) => {
             const l2 = Lt(o2, i2.sampleRate), p2 = h2 instanceof Float64Array ? h2 : new Float64Array(h2), d2 = u2 instanceof Float64Array ? u2 : new Float64Array(u2), f2 = p2.length, _2 = d2.length, m2 = Math.min(f2, _2);
             if (f2 === 0 || f2 > 20)
               throw n2();
             if (p2[0] === 0)
-              throw e2();
+              throw e3();
             if (_2 === 0 || _2 > 20)
               throw n2();
             if (d2[0] === 0)
-              throw e2();
+              throw e3();
             if (p2[0] !== 1) {
               for (let t3 = 0; t3 < _2; t3 += 1)
                 d2[t3] /= p2[0];
@@ -2330,13 +2346,13 @@
             const v2 = [], y2 = [], x2 = [];
             for (let t3 = 0; t3 < r2; t3 += 1) {
               v2.push(0);
-              const t4 = new Float32Array(32), e3 = new Float32Array(32);
-              t4.fill(0), e3.fill(0), y2.push(t4), x2.push(e3);
+              const t4 = new Float32Array(32), e4 = new Float32Array(32);
+              t4.fill(0), e4.fill(0), y2.push(t4), x2.push(e4);
             }
             g2.onaudioprocess = (t3) => {
-              const e3 = t3.inputBuffer, s3 = t3.outputBuffer, n3 = e3.numberOfChannels;
+              const e4 = t3.inputBuffer, s3 = t3.outputBuffer, n3 = e4.numberOfChannels;
               for (let t4 = 0; t4 < n3; t4 += 1) {
-                const n4 = e3.getChannelData(t4), i3 = s3.getChannelData(t4);
+                const n4 = e4.getChannelData(t4), i3 = s3.getChannelData(t4);
                 v2[t4] = Mt(p2, f2, d2, _2, m2, y2[t4], x2[t4], v2[t4], 32, n4, i3);
               }
             };
@@ -2363,16 +2379,16 @@
               return g2.numberOfInputs;
             }, get numberOfOutputs() {
               return g2.numberOfOutputs;
-            }, addEventListener: (...t3) => g2.addEventListener(t3[0], t3[1], t3[2]), dispatchEvent: (...t3) => g2.dispatchEvent(t3[0]), getFrequencyResponse(e3, s3, n3) {
-              if (e3.length !== s3.length || s3.length !== n3.length)
+            }, addEventListener: (...t3) => g2.addEventListener(t3[0], t3[1], t3[2]), dispatchEvent: (...t3) => g2.dispatchEvent(t3[0]), getFrequencyResponse(e4, s3, n3) {
+              if (e4.length !== s3.length || s3.length !== n3.length)
                 throw t2();
-              const i3 = e3.length;
+              const i3 = e4.length;
               for (let t3 = 0; t3 < i3; t3 += 1) {
-                const i4 = -Math.PI * (e3[t3] / w2), o3 = [Math.cos(i4), Math.sin(i4)], r3 = Zt(Xt(d2, o3), Xt(p2, o3));
+                const i4 = -Math.PI * (e4[t3] / w2), o3 = [Math.cos(i4), Math.sin(i4)], r3 = Zt(Xt(d2, o3), Xt(p2, o3));
                 s3[t3] = Math.sqrt(r3[0] * r3[0] + r3[1] * r3[1]), n3[t3] = Math.atan2(r3[1], r3[0]);
               }
             }, removeEventListener: (...t3) => g2.removeEventListener(t3[0], t3[1], t3[2]) }, g2);
-          })(Dt, At, Yt, Ht), Us = ((t2, e2, s2, n2) => (i2) => t2(Rt, () => Rt(i2)) ? Promise.resolve(t2(n2, n2)).then((t3) => {
+          })(Dt, At, Yt, Ht), Us = ((t2, e3, s2, n2) => (i2) => t2(Rt, () => Rt(i2)) ? Promise.resolve(t2(n2, n2)).then((t3) => {
             if (!t3) {
               const t4 = s2(i2, 512, 0, 1);
               i2.oncomplete = () => {
@@ -2381,24 +2397,24 @@
             }
             return i2.startRendering();
           }) : new Promise((t3) => {
-            const s3 = e2(i2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", gain: 0 });
-            i2.oncomplete = (e3) => {
-              s3.disconnect(), t3(e3.renderedBuffer);
+            const s3 = e3(i2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", gain: 0 });
+            i2.oncomplete = (e4) => {
+              s3.disconnect(), t3(e4.renderedBuffer);
             }, s3.connect(i2.destination), i2.startRendering();
-          }))(xe, Qt, Yt, ((t2, e2) => () => {
-            if (e2 === null)
+          }))(xe, Qt, Yt, ((t2, e3) => () => {
+            if (e3 === null)
               return Promise.resolve(false);
-            const s2 = new e2(1, 1, 44100), n2 = t2(s2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", gain: 0 });
+            const s2 = new e3(1, 1, 44100), n2 = t2(s2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", gain: 0 });
             return new Promise((t3) => {
               s2.oncomplete = () => {
                 n2.disconnect(), t3(s2.currentTime !== 0);
               }, s2.startRendering();
             });
-          })(Qt, Ve)), Qs = ((t2, e2, s2, n2, i2) => (o2, r2) => {
+          })(Qt, Ve)), Qs = ((t2, e3, s2, n2, i2) => (o2, r2) => {
             const a2 = /* @__PURE__ */ new WeakMap();
             let c2 = null;
             const h2 = async (h3, u2, l2) => {
-              let p2 = null, d2 = e2(h3);
+              let p2 = null, d2 = e3(h3);
               const f2 = E(d2, u2);
               if (u2.createIIRFilter === void 0 ? p2 = t2(u2, { buffer: null, channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", loop: false, loopEnd: 0, loopStart: 0, playbackRate: 1 }) : f2 || (d2 = u2.createIIRFilter(r2, o2)), a2.set(u2, p2 === null ? d2 : p2), p2 !== null) {
                 if (c2 === null) {
@@ -2407,7 +2423,7 @@
                   const t4 = new s2(h3.context.destination.channelCount, h3.context.length, u2.sampleRate);
                   c2 = (async () => {
                     await n2(h3, t4, t4.destination, l2);
-                    return ((t5, e3, s3, n3) => {
+                    return ((t5, e4, s3, n3) => {
                       const i3 = s3 instanceof Float64Array ? s3 : new Float64Array(s3), o3 = n3 instanceof Float64Array ? n3 : new Float64Array(n3), r3 = i3.length, a3 = o3.length, c3 = Math.min(r3, a3);
                       if (i3[0] !== 1) {
                         for (let t6 = 0; t6 < r3; t6 += 1)
@@ -2415,9 +2431,9 @@
                         for (let t6 = 1; t6 < a3; t6 += 1)
                           i3[t6] /= i3[0];
                       }
-                      const h4 = new Float32Array(32), u3 = new Float32Array(32), l3 = e3.createBuffer(t5.numberOfChannels, t5.length, t5.sampleRate), p3 = t5.numberOfChannels;
-                      for (let e4 = 0; e4 < p3; e4 += 1) {
-                        const s4 = t5.getChannelData(e4), n4 = l3.getChannelData(e4);
+                      const h4 = new Float32Array(32), u3 = new Float32Array(32), l3 = e4.createBuffer(t5.numberOfChannels, t5.length, t5.sampleRate), p3 = t5.numberOfChannels;
+                      for (let e5 = 0; e5 < p3; e5 += 1) {
+                        const s4 = t5.getChannelData(e5), n4 = l3.getChannelData(e5);
                         h4.fill(0), u3.fill(0), Mt(i3, r3, o3, a3, c3, h4, u3, 0, 32, s4, n4);
                       }
                       return l3;
@@ -2429,44 +2445,44 @@
               }
               return await n2(h3, u2, d2, l2), d2;
             };
-            return { render(t3, e3, s3) {
-              const n3 = a2.get(e3);
-              return n3 !== void 0 ? Promise.resolve(n3) : h2(t3, e3, s3);
+            return { render(t3, e4, s3) {
+              const n3 = a2.get(e4);
+              return n3 !== void 0 ? Promise.resolve(n3) : h2(t3, e4, s3);
             } };
           })(cs, st, Ve, Oe, Us);
           var Zs;
-          const Xs = ((t2, e2, s2, n2, i2, o2) => class extends t2 {
+          const Xs = ((t2, e3, s2, n2, i2, o2) => class extends t2 {
             constructor(t3, r2) {
-              const a2 = n2(t3), c2 = i2(a2), h2 = { ...Ot, ...r2 }, u2 = e2(a2, c2 ? null : t3.baseLatency, h2);
+              const a2 = n2(t3), c2 = i2(a2), h2 = { ...Ot, ...r2 }, u2 = e3(a2, c2 ? null : t3.baseLatency, h2);
               super(t3, false, u2, c2 ? s2(h2.feedback, h2.feedforward) : null), ((t4) => {
-                var e3;
-                t4.getFrequencyResponse = (e3 = t4.getFrequencyResponse, (s3, n3, i3) => {
+                var e4;
+                t4.getFrequencyResponse = (e4 = t4.getFrequencyResponse, (s3, n3, i3) => {
                   if (s3.length !== n3.length || n3.length !== i3.length)
                     throw Dt();
-                  return e3.call(t4, s3, n3, i3);
+                  return e4.call(t4, s3, n3, i3);
                 });
               })(u2), this._nativeIIRFilterNode = u2, o2(this, 1);
             }
-            getFrequencyResponse(t3, e3, s3) {
-              return this._nativeIIRFilterNode.getFrequencyResponse(t3, e3, s3);
+            getFrequencyResponse(t3, e4, s3) {
+              return this._nativeIIRFilterNode.getFrequencyResponse(t3, e4, s3);
             }
-          })(Ze, (Zs = Gs, (t2, e2, s2) => {
+          })(Ze, (Zs = Gs, (t2, e3, s2) => {
             if (t2.createIIRFilter === void 0)
-              return Zs(t2, e2, s2);
+              return Zs(t2, e3, s2);
             const n2 = t2.createIIRFilter(s2.feedforward, s2.feedback);
             return It(n2, s2), n2;
-          }), Qs, Fe, Ne, gs), Ys = ((t2, e2, s2, n2, i2) => (o2, r2) => {
+          }), Qs, Fe, Ne, gs), Ys = ((t2, e3, s2, n2, i2) => (o2, r2) => {
             const a2 = r2.listener, { forwardX: c2, forwardY: h2, forwardZ: u2, positionX: l2, positionY: p2, positionZ: d2, upX: f2, upY: _2, upZ: m2 } = a2.forwardX === void 0 ? (() => {
-              const c3 = e2(r2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: 9 }), h3 = i2(r2), u3 = n2(r2, 256, 9, 0), l3 = (e3, n3) => {
+              const c3 = e3(r2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: 9 }), h3 = i2(r2), u3 = n2(r2, 256, 9, 0), l3 = (e4, n3) => {
                 const i3 = s2(r2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", offset: n3 });
-                return i3.connect(c3, 0, e3), i3.start(), Object.defineProperty(i3.offset, "defaultValue", { get: () => n3 }), t2({ context: o2 }, h3, i3.offset, N, V);
+                return i3.connect(c3, 0, e4), i3.start(), Object.defineProperty(i3.offset, "defaultValue", { get: () => n3 }), t2({ context: o2 }, h3, i3.offset, N, V);
               };
               let p3 = [0, 0, -1, 0, 1, 0], d3 = [0, 0, 0];
               return u3.onaudioprocess = ({ inputBuffer: t3 }) => {
-                const e3 = [t3.getChannelData(0)[0], t3.getChannelData(1)[0], t3.getChannelData(2)[0], t3.getChannelData(3)[0], t3.getChannelData(4)[0], t3.getChannelData(5)[0]];
-                e3.some((t4, e4) => t4 !== p3[e4]) && (a2.setOrientation(...e3), p3 = e3);
+                const e4 = [t3.getChannelData(0)[0], t3.getChannelData(1)[0], t3.getChannelData(2)[0], t3.getChannelData(3)[0], t3.getChannelData(4)[0], t3.getChannelData(5)[0]];
+                e4.some((t4, e5) => t4 !== p3[e5]) && (a2.setOrientation(...e4), p3 = e4);
                 const s3 = [t3.getChannelData(6)[0], t3.getChannelData(7)[0], t3.getChannelData(8)[0]];
-                s3.some((t4, e4) => t4 !== d3[e4]) && (a2.setPosition(...s3), d3 = s3);
+                s3.some((t4, e5) => t4 !== d3[e5]) && (a2.setPosition(...s3), d3 = s3);
               }, c3.connect(u3), { forwardX: l3(0, 0), forwardY: l3(1, 0), forwardZ: l3(2, -1), positionX: l3(6, 0), positionY: l3(7, 0), positionZ: l3(8, 0), upX: l3(3, 0), upY: l3(4, 1), upZ: l3(5, 0) };
             })() : a2;
             return { get forwardX() {
@@ -2488,9 +2504,9 @@
             }, get upZ() {
               return m2;
             } };
-          })(ps, Es, Is, Yt, Ne), Hs = /* @__PURE__ */ new WeakMap(), $s = ((t2, e2, s2, n2, i2, o2) => class extends s2 {
+          })(ps, Es, Is, Yt, Ne), Hs = /* @__PURE__ */ new WeakMap(), $s = ((t2, e3, s2, n2, i2, o2) => class extends s2 {
             constructor(s3, o3) {
-              super(s3), this._nativeContext = s3, p.set(this, s3), n2(s3) && i2.set(s3, /* @__PURE__ */ new Set()), this._destination = new t2(this, o3), this._listener = e2(this, s3), this._onstatechange = null;
+              super(s3), this._nativeContext = s3, p.set(this, s3), n2(s3) && i2.set(s3, /* @__PURE__ */ new Set()), this._destination = new t2(this, o3), this._listener = e3(this, s3), this._onstatechange = null;
             }
             get currentTime() {
               return this._nativeContext.currentTime;
@@ -2505,10 +2521,10 @@
               return this._onstatechange;
             }
             set onstatechange(t3) {
-              const e3 = typeof t3 == "function" ? o2(this, t3) : null;
-              this._nativeContext.onstatechange = e3;
+              const e4 = typeof t3 == "function" ? o2(this, t3) : null;
+              this._nativeContext.onstatechange = e4;
               const s3 = this._nativeContext.onstatechange;
-              this._onstatechange = s3 !== null && s3 === e3 ? t3 : s3;
+              this._onstatechange = s3 !== null && s3 === e4 ? t3 : s3;
             }
             get sampleRate() {
               return this._nativeContext.sampleRate;
@@ -2516,13 +2532,13 @@
             get state() {
               return this._nativeContext.state;
             }
-          })(_s, Ys, Le, Ne, Hs, de), Js = ((t2, e2, s2, n2, i2, o2) => (r2, a2) => {
+          })(_s, Ys, Le, Ne, Hs, de), Js = ((t2, e3, s2, n2, i2, o2) => (r2, a2) => {
             const c2 = r2.createOscillator();
-            return It(c2, a2), Nt(c2, a2, "detune"), Nt(c2, a2, "frequency"), a2.periodicWave !== void 0 ? c2.setPeriodicWave(a2.periodicWave) : Ft(c2, a2, "type"), e2(s2, () => s2(r2)) || Pt(c2), e2(n2, () => n2(r2)) || o2(c2, r2), e2(i2, () => i2(r2)) || jt(c2), t2(r2, c2), c2;
-          })(is, xe, ae, ce, he, pe), Ks = ((t2, e2, s2, n2, i2, o2, r2) => class extends t2 {
+            return It(c2, a2), Nt(c2, a2, "detune"), Nt(c2, a2, "frequency"), a2.periodicWave !== void 0 ? c2.setPeriodicWave(a2.periodicWave) : Ft(c2, a2, "type"), e3(s2, () => s2(r2)) || Pt(c2), e3(n2, () => n2(r2)) || o2(c2, r2), e3(i2, () => i2(r2)) || jt(c2), t2(r2, c2), c2;
+          })(is, xe, ae, ce, he, pe), Ks = ((t2, e3, s2, n2, i2, o2, r2) => class extends t2 {
             constructor(t3, r3) {
               const a2 = i2(t3), c2 = { ...Jt, ...r3 }, h2 = s2(a2, c2), u2 = o2(a2), l2 = u2 ? n2() : null, p2 = t3.sampleRate / 2;
-              super(t3, false, h2, l2), this._detune = e2(this, u2, h2.detune, 153600, -153600), this._frequency = e2(this, u2, h2.frequency, p2, -p2), this._nativeOscillatorNode = h2, this._onended = null, this._oscillatorNodeRenderer = l2, this._oscillatorNodeRenderer !== null && c2.periodicWave !== void 0 && (this._oscillatorNodeRenderer.periodicWave = c2.periodicWave);
+              super(t3, false, h2, l2), this._detune = e3(this, u2, h2.detune, 153600, -153600), this._frequency = e3(this, u2, h2.frequency, p2, -p2), this._nativeOscillatorNode = h2, this._onended = null, this._oscillatorNodeRenderer = l2, this._oscillatorNodeRenderer !== null && c2.periodicWave !== void 0 && (this._oscillatorNodeRenderer.periodicWave = c2.periodicWave);
             }
             get detune() {
               return this._detune;
@@ -2534,10 +2550,10 @@
               return this._onended;
             }
             set onended(t3) {
-              const e3 = typeof t3 == "function" ? r2(this, t3) : null;
-              this._nativeOscillatorNode.onended = e3;
+              const e4 = typeof t3 == "function" ? r2(this, t3) : null;
+              this._nativeOscillatorNode.onended = e4;
               const s3 = this._nativeOscillatorNode.onended;
-              this._onended = s3 !== null && s3 === e3 ? t3 : s3;
+              this._onended = s3 !== null && s3 === e4 ? t3 : s3;
             }
             get type() {
               return this._nativeOscillatorNode.type;
@@ -2560,7 +2576,7 @@
             stop(t3 = 0) {
               this._nativeOscillatorNode.stop(t3), this._oscillatorNodeRenderer !== null && (this._oscillatorNodeRenderer.stop = t3);
             }
-          })(Ze, ps, Js, ((t2, e2, s2, n2, i2) => () => {
+          })(Ze, ps, Js, ((t2, e3, s2, n2, i2) => () => {
             const o2 = /* @__PURE__ */ new WeakMap();
             let r2 = null, a2 = null, c2 = null;
             return { set periodicWave(t3) {
@@ -2576,19 +2592,19 @@
                 const d2 = E(p3, u3);
                 if (!d2) {
                   const t3 = { channelCount: p3.channelCount, channelCountMode: p3.channelCountMode, channelInterpretation: p3.channelInterpretation, detune: p3.detune.value, frequency: p3.frequency.value, periodicWave: r2 === null ? void 0 : r2, type: p3.type };
-                  p3 = e2(u3, t3), a2 !== null && p3.start(a2), c2 !== null && p3.stop(c2);
+                  p3 = e3(u3, t3), a2 !== null && p3.start(a2), c2 !== null && p3.stop(c2);
                 }
                 return o2.set(u3, p3), d2 ? (await t2(u3, h3.detune, p3.detune, l3), await t2(u3, h3.frequency, p3.frequency, l3)) : (await n2(u3, h3.detune, p3.detune, l3), await n2(u3, h3.frequency, p3.frequency, l3)), await i2(h3, u3, p3, l3), p3;
               })(h2, u2, l2);
             } };
-          })(as, Js, st, us, Oe), Fe, Ne, de), tn = (en = cs, (t2, e2) => {
+          })(as, Js, st, us, Oe), Fe, Ne, de), tn = (en = cs, (t2, e3) => {
             const s2 = en(t2, { buffer: null, channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", loop: false, loopEnd: 0, loopStart: 0, playbackRate: 1 }), n2 = t2.createBuffer(1, 2, 44100);
-            return s2.buffer = n2, s2.loop = true, s2.connect(e2), s2.start(), () => {
-              s2.stop(), s2.disconnect(e2);
+            return s2.buffer = n2, s2.loop = true, s2.connect(e3), s2.start(), () => {
+              s2.stop(), s2.disconnect(e3);
             };
           });
           var en;
-          const sn = ((t2, e2, s2, n2, i2) => (o2, { curve: r2, oversample: a2, ...c2 }) => {
+          const sn = ((t2, e3, s2, n2, i2) => (o2, { curve: r2, oversample: a2, ...c2 }) => {
             const h2 = o2.createWaveShaper(), u2 = o2.createWaveShaper();
             It(h2, c2), It(u2, c2);
             const l2 = s2(o2, { ...c2, gain: 1 }), p2 = s2(o2, { ...c2, gain: -1 }), d2 = s2(o2, { ...c2, gain: 1 }), f2 = s2(o2, { ...c2, gain: -1 });
@@ -2612,18 +2628,18 @@
               return g2;
             }, set curve(s3) {
               if (s3 !== null && s3.length < 2)
-                throw e2();
+                throw e3();
               if (s3 === null)
                 h2.curve = s3, u2.curve = s3;
               else {
-                const t3 = s3.length, e3 = new Float32Array(t3 + 2 - t3 % 2), n3 = new Float32Array(t3 + 2 - t3 % 2);
-                e3[0] = s3[0], n3[0] = -s3[t3 - 1];
+                const t3 = s3.length, e4 = new Float32Array(t3 + 2 - t3 % 2), n3 = new Float32Array(t3 + 2 - t3 % 2);
+                e4[0] = s3[0], n3[0] = -s3[t3 - 1];
                 const i3 = Math.ceil((t3 + 1) / 2), o3 = (t3 + 1) / 2 - 1;
                 for (let r3 = 1; r3 < i3; r3 += 1) {
                   const a3 = r3 / i3 * o3, c3 = Math.floor(a3), h3 = Math.ceil(a3);
-                  e3[r3] = c3 === h3 ? s3[c3] : (1 - (a3 - c3)) * s3[c3] + (1 - (h3 - a3)) * s3[h3], n3[r3] = c3 === h3 ? -s3[t3 - 1 - c3] : -(1 - (a3 - c3)) * s3[t3 - 1 - c3] - (1 - (h3 - a3)) * s3[t3 - 1 - h3];
+                  e4[r3] = c3 === h3 ? s3[c3] : (1 - (a3 - c3)) * s3[c3] + (1 - (h3 - a3)) * s3[h3], n3[r3] = c3 === h3 ? -s3[t3 - 1 - c3] : -(1 - (a3 - c3)) * s3[t3 - 1 - c3] - (1 - (h3 - a3)) * s3[t3 - 1 - h3];
                 }
-                e3[i3] = t3 % 2 == 1 ? s3[i3 - 1] : (s3[i3 - 2] + s3[i3 - 1]) / 2, h2.curve = e3, u2.curve = n3;
+                e4[i3] = t3 % 2 == 1 ? s3[i3 - 1] : (s3[i3 - 2] + s3[i3 - 1]) / 2, h2.curve = e4, u2.curve = n3;
               }
               g2 = s3, m2 && (n2(g2) && _2 === null ? _2 = t2(o2, l2) : _2 !== null && (_2(), _2 = null));
             }, get inputs() {
@@ -2643,23 +2659,23 @@
             }, () => {
               l2.disconnect(h2), h2.disconnect(d2), l2.disconnect(p2), p2.disconnect(u2), u2.disconnect(f2), f2.disconnect(d2), m2 = false, _2 !== null && (_2(), _2 = null);
             });
-          })(tn, At, Qt, ie, As), nn = ((t2, e2, s2, n2, i2, o2, r2) => (a2, c2) => {
+          })(tn, At, Qt, ie, As), nn = ((t2, e3, s2, n2, i2, o2, r2) => (a2, c2) => {
             const h2 = a2.createWaveShaper();
             if (o2 !== null && o2.name === "webkitAudioContext" && a2.createGain().gain.automationRate === void 0)
               return s2(a2, c2);
             It(h2, c2);
             const u2 = c2.curve === null || c2.curve instanceof Float32Array ? c2.curve : new Float32Array(c2.curve);
             if (u2 !== null && u2.length < 2)
-              throw e2();
+              throw e3();
             Ft(h2, { curve: u2 }, "curve"), Ft(h2, c2, "oversample");
             let l2 = null, p2 = false;
-            r2(h2, "curve", (t3) => () => t3.call(h2), (e3) => (s3) => (e3.call(h2, s3), p2 && (n2(s3) && l2 === null ? l2 = t2(a2, h2) : n2(s3) || l2 === null || (l2(), l2 = null)), s3));
+            r2(h2, "curve", (t3) => () => t3.call(h2), (e4) => (s3) => (e4.call(h2, s3), p2 && (n2(s3) && l2 === null ? l2 = t2(a2, h2) : n2(s3) || l2 === null || (l2(), l2 = null)), s3));
             return i2(h2, () => {
               p2 = true, n2(h2.curve) && (l2 = t2(a2, h2));
             }, () => {
               p2 = false, l2 !== null && (l2(), l2 = null);
             });
-          })(tn, At, sn, ie, As, Be, oe), on = ((t2, e2, s2, n2, i2, o2, r2, a2, c2) => (h2, { coneInnerAngle: u2, coneOuterAngle: l2, coneOuterGain: p2, distanceModel: d2, maxDistance: f2, orientationX: _2, orientationY: m2, orientationZ: g2, panningModel: v2, positionX: y2, positionY: x2, positionZ: w2, refDistance: b2, rolloffFactor: T2, ...S2 }) => {
+          })(tn, At, sn, ie, As, Be, oe), on = ((t2, e3, s2, n2, i2, o2, r2, a2, c2) => (h2, { coneInnerAngle: u2, coneOuterAngle: l2, coneOuterGain: p2, distanceModel: d2, maxDistance: f2, orientationX: _2, orientationY: m2, orientationZ: g2, panningModel: v2, positionX: y2, positionY: x2, positionZ: w2, refDistance: b2, rolloffFactor: T2, ...S2 }) => {
             const k2 = h2.createPanner();
             if (S2.channelCount > 2)
               throw r2();
@@ -2669,10 +2685,10 @@
             const C2 = { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete" }, A2 = s2(h2, { ...C2, channelInterpretation: "speakers", numberOfInputs: 6 }), D2 = n2(h2, { ...S2, gain: 1 }), O2 = n2(h2, { ...C2, gain: 1 }), M2 = n2(h2, { ...C2, gain: 0 }), E2 = n2(h2, { ...C2, gain: 0 }), R2 = n2(h2, { ...C2, gain: 0 }), q2 = n2(h2, { ...C2, gain: 0 }), F2 = n2(h2, { ...C2, gain: 0 }), I2 = i2(h2, 256, 6, 1), V2 = o2(h2, { ...C2, curve: new Float32Array([1, 1]), oversample: "none" });
             let N2 = [_2, m2, g2], P2 = [y2, x2, w2];
             I2.onaudioprocess = ({ inputBuffer: t3 }) => {
-              const e3 = [t3.getChannelData(0)[0], t3.getChannelData(1)[0], t3.getChannelData(2)[0]];
-              e3.some((t4, e4) => t4 !== N2[e4]) && (k2.setOrientation(...e3), N2 = e3);
+              const e4 = [t3.getChannelData(0)[0], t3.getChannelData(1)[0], t3.getChannelData(2)[0]];
+              e4.some((t4, e5) => t4 !== N2[e5]) && (k2.setOrientation(...e4), N2 = e4);
               const s3 = [t3.getChannelData(3)[0], t3.getChannelData(4)[0], t3.getChannelData(5)[0]];
-              s3.some((t4, e4) => t4 !== P2[e4]) && (k2.setPosition(...s3), P2 = s3);
+              s3.some((t4, e5) => t4 !== P2[e5]) && (k2.setPosition(...s3), P2 = s3);
             }, Object.defineProperty(M2.gain, "defaultValue", { get: () => 0 }), Object.defineProperty(E2.gain, "defaultValue", { get: () => 0 }), Object.defineProperty(R2.gain, "defaultValue", { get: () => 0 }), Object.defineProperty(q2.gain, "defaultValue", { get: () => 0 }), Object.defineProperty(F2.gain, "defaultValue", { get: () => 0 });
             const j2 = { get bufferSize() {
             }, get channelCount() {
@@ -2703,7 +2719,7 @@
               return k2.coneOuterGain;
             }, set coneOuterGain(t3) {
               if (t3 < 0 || t3 > 1)
-                throw e2();
+                throw e3();
               k2.coneOuterGain = t3;
             }, get context() {
               return k2.context;
@@ -2758,15 +2774,15 @@
             }, () => {
               D2.disconnect(k2), a2(D2, V2, 0, 0), V2.disconnect(O2), O2.disconnect(A2), V2.disconnect(M2), M2.disconnect(A2), V2.disconnect(E2), E2.disconnect(A2), V2.disconnect(R2), R2.disconnect(A2), V2.disconnect(q2), q2.disconnect(A2), V2.disconnect(F2), F2.disconnect(A2), A2.disconnect(I2), I2.disconnect(h2.destination);
             });
-          })($, At, Es, Qt, Yt, nn, Ht, et, As), rn = (an = on, (t2, e2) => {
+          })($, At, Es, Qt, Yt, nn, Ht, et, As), rn = (an = on, (t2, e3) => {
             const s2 = t2.createPanner();
-            return s2.orientationX === void 0 ? an(t2, e2) : (It(s2, e2), Nt(s2, e2, "orientationX"), Nt(s2, e2, "orientationY"), Nt(s2, e2, "orientationZ"), Nt(s2, e2, "positionX"), Nt(s2, e2, "positionY"), Nt(s2, e2, "positionZ"), Ft(s2, e2, "coneInnerAngle"), Ft(s2, e2, "coneOuterAngle"), Ft(s2, e2, "coneOuterGain"), Ft(s2, e2, "distanceModel"), Ft(s2, e2, "maxDistance"), Ft(s2, e2, "panningModel"), Ft(s2, e2, "refDistance"), Ft(s2, e2, "rolloffFactor"), s2);
+            return s2.orientationX === void 0 ? an(t2, e3) : (It(s2, e3), Nt(s2, e3, "orientationX"), Nt(s2, e3, "orientationY"), Nt(s2, e3, "orientationZ"), Nt(s2, e3, "positionX"), Nt(s2, e3, "positionY"), Nt(s2, e3, "positionZ"), Ft(s2, e3, "coneInnerAngle"), Ft(s2, e3, "coneOuterAngle"), Ft(s2, e3, "coneOuterGain"), Ft(s2, e3, "distanceModel"), Ft(s2, e3, "maxDistance"), Ft(s2, e3, "panningModel"), Ft(s2, e3, "refDistance"), Ft(s2, e3, "rolloffFactor"), s2);
           });
           var an;
-          const cn = ((t2, e2, s2, n2, i2, o2, r2) => class extends t2 {
+          const cn = ((t2, e3, s2, n2, i2, o2, r2) => class extends t2 {
             constructor(t3, a2) {
               const c2 = i2(t3), h2 = { ...Kt, ...a2 }, u2 = s2(c2, h2), l2 = o2(c2);
-              super(t3, false, u2, l2 ? n2() : null), this._nativePannerNode = u2, this._orientationX = e2(this, l2, u2.orientationX, N, V), this._orientationY = e2(this, l2, u2.orientationY, N, V), this._orientationZ = e2(this, l2, u2.orientationZ, N, V), this._positionX = e2(this, l2, u2.positionX, N, V), this._positionY = e2(this, l2, u2.positionY, N, V), this._positionZ = e2(this, l2, u2.positionZ, N, V), r2(this, 1);
+              super(t3, false, u2, l2 ? n2() : null), this._nativePannerNode = u2, this._orientationX = e3(this, l2, u2.orientationX, N, V), this._orientationY = e3(this, l2, u2.orientationY, N, V), this._orientationZ = e3(this, l2, u2.orientationZ, N, V), this._positionX = e3(this, l2, u2.positionX, N, V), this._positionY = e3(this, l2, u2.positionY, N, V), this._positionZ = e3(this, l2, u2.positionZ, N, V), r2(this, 1);
             }
             get coneInnerAngle() {
               return this._nativePannerNode.coneInnerAngle;
@@ -2834,7 +2850,7 @@
             set rolloffFactor(t3) {
               this._nativePannerNode.rolloffFactor = t3;
             }
-          })(Ze, ps, rn, ((t2, e2, s2, n2, i2, o2, r2, a2, c2, h2) => () => {
+          })(Ze, ps, rn, ((t2, e3, s2, n2, i2, o2, r2, a2, c2, h2) => () => {
             const u2 = /* @__PURE__ */ new WeakMap();
             let l2 = null;
             return { render(p2, d2, f2) {
@@ -2852,29 +2868,29 @@
                   if (l2 === null) {
                     if (r2 === null)
                       throw new Error("Missing the native OfflineAudioContext constructor.");
-                    const t4 = new r2(6, p3.context.length, d3.sampleRate), n3 = e2(t4, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: 6 });
+                    const t4 = new r2(6, p3.context.length, d3.sampleRate), n3 = e3(t4, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: 6 });
                     n3.connect(t4.destination), l2 = (async () => {
-                      const e3 = await Promise.all([p3.orientationX, p3.orientationY, p3.orientationZ, p3.positionX, p3.positionY, p3.positionZ].map(async (e4, n4) => {
+                      const e4 = await Promise.all([p3.orientationX, p3.orientationY, p3.orientationZ, p3.positionX, p3.positionY, p3.positionZ].map(async (e5, n4) => {
                         const i3 = s2(t4, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", offset: n4 === 0 ? 1 : 0 });
-                        return await a2(t4, e4, i3.offset, f3), i3;
+                        return await a2(t4, e5, i3.offset, f3), i3;
                       }));
                       for (let t5 = 0; t5 < 6; t5 += 1)
-                        e3[t5].connect(n3, 0, t5), e3[t5].start(0);
+                        e4[t5].connect(n3, 0, t5), e4[t5].start(0);
                       return h2(t4);
                     })();
                   }
                   const t3 = await l2, o3 = n2(d3, { ...g2, gain: 1 });
                   await c2(p3, d3, o3, f3);
                   const u3 = [];
-                  for (let e3 = 0; e3 < t3.numberOfChannels; e3 += 1)
-                    u3.push(t3.getChannelData(e3));
+                  for (let e4 = 0; e4 < t3.numberOfChannels; e4 += 1)
+                    u3.push(t3.getChannelData(e4));
                   let m3 = [u3[0][0], u3[1][0], u3[2][0]], y3 = [u3[3][0], u3[4][0], u3[5][0]], x2 = n2(d3, { ...g2, gain: 1 }), w2 = i2(d3, { ...v2, orientationX: m3[0], orientationY: m3[1], orientationZ: m3[2], positionX: y3[0], positionY: y3[1], positionZ: y3[2] });
                   o3.connect(x2).connect(w2.inputs[0]), w2.connect(_3);
-                  for (let e3 = 128; e3 < t3.length; e3 += 128) {
-                    const t4 = [u3[0][e3], u3[1][e3], u3[2][e3]], s3 = [u3[3][e3], u3[4][e3], u3[5][e3]];
-                    if (t4.some((t5, e4) => t5 !== m3[e4]) || s3.some((t5, e4) => t5 !== y3[e4])) {
+                  for (let e4 = 128; e4 < t3.length; e4 += 128) {
+                    const t4 = [u3[0][e4], u3[1][e4], u3[2][e4]], s3 = [u3[3][e4], u3[4][e4], u3[5][e4]];
+                    if (t4.some((t5, e5) => t5 !== m3[e5]) || s3.some((t5, e5) => t5 !== y3[e5])) {
                       m3 = t4, y3 = s3;
-                      const r3 = e3 / d3.sampleRate;
+                      const r3 = e4 / d3.sampleRate;
                       x2.gain.setValueAtTime(0, r3), x2 = n2(d3, { ...g2, gain: 0 }), w2 = i2(d3, { ...v2, orientationX: m3[0], orientationY: m3[1], orientationZ: m3[2], positionX: y3[0], positionY: y3[1], positionZ: y3[2] }), x2.gain.setValueAtTime(1, r3), o3.connect(x2).connect(w2.inputs[0]), w2.connect(_3);
                     }
                   }
@@ -2883,47 +2899,47 @@
                 return y2 ? (await t2(d3, p3.orientationX, m2.orientationX, f3), await t2(d3, p3.orientationY, m2.orientationY, f3), await t2(d3, p3.orientationZ, m2.orientationZ, f3), await t2(d3, p3.positionX, m2.positionX, f3), await t2(d3, p3.positionY, m2.positionY, f3), await t2(d3, p3.positionZ, m2.positionZ, f3)) : (await a2(d3, p3.orientationX, m2.orientationX, f3), await a2(d3, p3.orientationY, m2.orientationY, f3), await a2(d3, p3.orientationZ, m2.orientationZ, f3), await a2(d3, p3.positionX, m2.positionX, f3), await a2(d3, p3.positionY, m2.positionY, f3), await a2(d3, p3.positionZ, m2.positionZ, f3)), H(m2) ? await c2(p3, d3, m2.inputs[0], f3) : await c2(p3, d3, m2, f3), m2;
               })(p2, d2, f2);
             } };
-          })(as, Es, Is, Qt, rn, st, Ve, us, Oe, Us), Fe, Ne, gs), hn = ((t2, e2, s2, n2) => class i2 {
+          })(as, Es, Is, Qt, rn, st, Ve, us, Oe, Us), Fe, Ne, gs), hn = ((t2, e3, s2, n2) => class i2 {
             constructor(i3, o2) {
-              const r2 = e2(i3), a2 = n2({ ...te, ...o2 }), c2 = t2(r2, a2);
+              const r2 = e3(i3), a2 = n2({ ...te, ...o2 }), c2 = t2(r2, a2);
               return s2.add(c2), c2;
             }
             static [Symbol.hasInstance](t3) {
               return t3 !== null && typeof t3 == "object" && Object.getPrototypeOf(t3) === i2.prototype || s2.has(t3);
             }
-          })(((t2) => (e2, { disableNormalization: s2, imag: n2, real: i2 }) => {
-            const o2 = n2 instanceof Float32Array ? n2 : new Float32Array(n2), r2 = i2 instanceof Float32Array ? i2 : new Float32Array(i2), a2 = e2.createPeriodicWave(r2, o2, { disableNormalization: s2 });
+          })(((t2) => (e3, { disableNormalization: s2, imag: n2, real: i2 }) => {
+            const o2 = n2 instanceof Float32Array ? n2 : new Float32Array(n2), r2 = i2 instanceof Float32Array ? i2 : new Float32Array(i2), a2 = e3.createPeriodicWave(r2, o2, { disableNormalization: s2 });
             if (Array.from(n2).length < 2)
               throw t2();
             return a2;
           })(q), Fe, /* @__PURE__ */ new WeakSet(), (t2) => {
-            const { imag: e2, real: s2 } = t2;
-            return e2 === void 0 ? s2 === void 0 ? { ...t2, imag: [0, 0], real: [0, 0] } : { ...t2, imag: Array.from(s2, () => 0), real: s2 } : s2 === void 0 ? { ...t2, imag: e2, real: Array.from(e2, () => 0) } : { ...t2, imag: e2, real: s2 };
-          }), un = ((t2, e2) => (s2, n2) => {
+            const { imag: e3, real: s2 } = t2;
+            return e3 === void 0 ? s2 === void 0 ? { ...t2, imag: [0, 0], real: [0, 0] } : { ...t2, imag: Array.from(s2, () => 0), real: s2 } : s2 === void 0 ? { ...t2, imag: e3, real: Array.from(e3, () => 0) } : { ...t2, imag: e3, real: s2 };
+          }), un = ((t2, e3) => (s2, n2) => {
             const i2 = n2.channelCountMode;
             if (i2 === "clamped-max")
-              throw e2();
+              throw e3();
             if (s2.createStereoPanner === void 0)
               return t2(s2, n2);
             const o2 = s2.createStereoPanner();
             return It(o2, n2), Nt(o2, n2, "pan"), Object.defineProperty(o2, "channelCountMode", { get: () => i2, set: (t3) => {
               if (t3 !== i2)
-                throw e2();
+                throw e3();
             } }), o2;
-          })(((t2, e2, s2, n2, i2, o2) => {
+          })(((t2, e3, s2, n2, i2, o2) => {
             const r2 = new Float32Array([1, 1]), a2 = Math.PI / 2, c2 = { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete" }, h2 = { ...c2, oversample: "none" }, u2 = (t3, o3, u3, l2, p2) => {
               if (o3 === 1)
-                return ((t4, e3, i3, o4) => {
+                return ((t4, e4, i3, o4) => {
                   const u4 = new Float32Array(16385), l3 = new Float32Array(16385);
                   for (let t5 = 0; t5 < 16385; t5 += 1) {
-                    const e4 = t5 / 16384 * a2;
-                    u4[t5] = Math.cos(e4), l3[t5] = Math.sin(e4);
+                    const e5 = t5 / 16384 * a2;
+                    u4[t5] = Math.cos(e5), l3[t5] = Math.sin(e5);
                   }
                   const p3 = s2(t4, { ...c2, gain: 0 }), d2 = n2(t4, { ...h2, curve: u4 }), f2 = n2(t4, { ...h2, curve: r2 }), _2 = s2(t4, { ...c2, gain: 0 }), m2 = n2(t4, { ...h2, curve: l3 });
                   return { connectGraph() {
-                    e3.connect(p3), e3.connect(f2.inputs === void 0 ? f2 : f2.inputs[0]), e3.connect(_2), f2.connect(i3), i3.connect(d2.inputs === void 0 ? d2 : d2.inputs[0]), i3.connect(m2.inputs === void 0 ? m2 : m2.inputs[0]), d2.connect(p3.gain), m2.connect(_2.gain), p3.connect(o4, 0, 0), _2.connect(o4, 0, 1);
+                    e4.connect(p3), e4.connect(f2.inputs === void 0 ? f2 : f2.inputs[0]), e4.connect(_2), f2.connect(i3), i3.connect(d2.inputs === void 0 ? d2 : d2.inputs[0]), i3.connect(m2.inputs === void 0 ? m2 : m2.inputs[0]), d2.connect(p3.gain), m2.connect(_2.gain), p3.connect(o4, 0, 0), _2.connect(o4, 0, 1);
                   }, disconnectGraph() {
-                    e3.disconnect(p3), e3.disconnect(f2.inputs === void 0 ? f2 : f2.inputs[0]), e3.disconnect(_2), f2.disconnect(i3), i3.disconnect(d2.inputs === void 0 ? d2 : d2.inputs[0]), i3.disconnect(m2.inputs === void 0 ? m2 : m2.inputs[0]), d2.disconnect(p3.gain), m2.disconnect(_2.gain), p3.disconnect(o4, 0, 0), _2.disconnect(o4, 0, 1);
+                    e4.disconnect(p3), e4.disconnect(f2.inputs === void 0 ? f2 : f2.inputs[0]), e4.disconnect(_2), f2.disconnect(i3), i3.disconnect(d2.inputs === void 0 ? d2 : d2.inputs[0]), i3.disconnect(m2.inputs === void 0 ? m2 : m2.inputs[0]), d2.disconnect(p3.gain), m2.disconnect(_2.gain), p3.disconnect(o4, 0, 0), _2.disconnect(o4, 0, 1);
                   } };
                 })(t3, u3, l2, p2);
               if (o3 === 2)
@@ -2931,13 +2947,13 @@
                   const l3 = new Float32Array(16385), p3 = new Float32Array(16385), d2 = new Float32Array(16385), f2 = new Float32Array(16385), _2 = Math.floor(8192.5);
                   for (let t5 = 0; t5 < 16385; t5 += 1)
                     if (t5 > _2) {
-                      const e3 = (t5 - _2) / (16384 - _2) * a2;
-                      l3[t5] = Math.cos(e3), p3[t5] = Math.sin(e3), d2[t5] = 0, f2[t5] = 1;
+                      const e4 = (t5 - _2) / (16384 - _2) * a2;
+                      l3[t5] = Math.cos(e4), p3[t5] = Math.sin(e4), d2[t5] = 0, f2[t5] = 1;
                     } else {
-                      const e3 = t5 / (16384 - _2) * a2;
-                      l3[t5] = 1, p3[t5] = 0, d2[t5] = Math.cos(e3), f2[t5] = Math.sin(e3);
+                      const e4 = t5 / (16384 - _2) * a2;
+                      l3[t5] = 1, p3[t5] = 0, d2[t5] = Math.cos(e4), f2[t5] = Math.sin(e4);
                     }
-                  const m2 = e2(t4, { channelCount: 2, channelCountMode: "explicit", channelInterpretation: "discrete", numberOfOutputs: 2 }), g2 = s2(t4, { ...c2, gain: 0 }), v2 = n2(t4, { ...h2, curve: l3 }), y2 = s2(t4, { ...c2, gain: 0 }), x2 = n2(t4, { ...h2, curve: p3 }), w2 = n2(t4, { ...h2, curve: r2 }), b2 = s2(t4, { ...c2, gain: 0 }), T2 = n2(t4, { ...h2, curve: d2 }), S2 = s2(t4, { ...c2, gain: 0 }), k2 = n2(t4, { ...h2, curve: f2 });
+                  const m2 = e3(t4, { channelCount: 2, channelCountMode: "explicit", channelInterpretation: "discrete", numberOfOutputs: 2 }), g2 = s2(t4, { ...c2, gain: 0 }), v2 = n2(t4, { ...h2, curve: l3 }), y2 = s2(t4, { ...c2, gain: 0 }), x2 = n2(t4, { ...h2, curve: p3 }), w2 = n2(t4, { ...h2, curve: r2 }), b2 = s2(t4, { ...c2, gain: 0 }), T2 = n2(t4, { ...h2, curve: d2 }), S2 = s2(t4, { ...c2, gain: 0 }), k2 = n2(t4, { ...h2, curve: f2 });
                   return { connectGraph() {
                     i3.connect(m2), i3.connect(w2.inputs === void 0 ? w2 : w2.inputs[0]), m2.connect(g2, 0), m2.connect(y2, 0), m2.connect(b2, 1), m2.connect(S2, 1), w2.connect(o4), o4.connect(v2.inputs === void 0 ? v2 : v2.inputs[0]), o4.connect(x2.inputs === void 0 ? x2 : x2.inputs[0]), o4.connect(T2.inputs === void 0 ? T2 : T2.inputs[0]), o4.connect(k2.inputs === void 0 ? k2 : k2.inputs[0]), v2.connect(g2.gain), x2.connect(y2.gain), T2.connect(b2.gain), k2.connect(S2.gain), g2.connect(u4, 0, 0), b2.connect(u4, 0, 0), y2.connect(u4, 0, 1), S2.connect(u4, 0, 1);
                   }, disconnectGraph() {
@@ -2946,17 +2962,17 @@
                 })(t3, u3, l2, p2);
               throw i2();
             };
-            return (e3, { channelCount: n3, channelCountMode: r3, pan: a3, ...c3 }) => {
+            return (e4, { channelCount: n3, channelCountMode: r3, pan: a3, ...c3 }) => {
               if (r3 === "max")
                 throw i2();
-              const h3 = t2(e3, { ...c3, channelCount: 1, channelCountMode: r3, numberOfInputs: 2 }), l2 = s2(e3, { ...c3, channelCount: n3, channelCountMode: r3, gain: 1 }), p2 = s2(e3, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", gain: a3 });
-              let { connectGraph: d2, disconnectGraph: f2 } = u2(e3, n3, l2, p2, h3);
+              const h3 = t2(e4, { ...c3, channelCount: 1, channelCountMode: r3, numberOfInputs: 2 }), l2 = s2(e4, { ...c3, channelCount: n3, channelCountMode: r3, gain: 1 }), p2 = s2(e4, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", gain: a3 });
+              let { connectGraph: d2, disconnectGraph: f2 } = u2(e4, n3, l2, p2, h3);
               Object.defineProperty(p2.gain, "defaultValue", { get: () => 0 }), Object.defineProperty(p2.gain, "maxValue", { get: () => 1 }), Object.defineProperty(p2.gain, "minValue", { get: () => -1 });
               const _2 = { get bufferSize() {
               }, get channelCount() {
                 return l2.channelCount;
               }, set channelCount(t3) {
-                l2.channelCount !== t3 && (m2 && f2(), { connectGraph: d2, disconnectGraph: f2 } = u2(e3, t3, l2, p2, h3), m2 && d2()), l2.channelCount = t3;
+                l2.channelCount !== t3 && (m2 && f2(), { connectGraph: d2, disconnectGraph: f2 } = u2(e4, t3, l2, p2, h3), m2 && d2()), l2.channelCount = t3;
               }, get channelCountMode() {
                 return l2.channelCountMode;
               }, set channelCountMode(t3) {
@@ -2985,15 +3001,15 @@
                 f2(), m2 = false;
               });
             };
-          })(Es, Wt, Qt, nn, Ht, As), Ht), ln = ((t2, e2, s2, n2, i2, o2) => class extends t2 {
+          })(Es, Wt, Qt, nn, Ht, As), Ht), ln = ((t2, e3, s2, n2, i2, o2) => class extends t2 {
             constructor(t3, r2) {
               const a2 = i2(t3), c2 = { ...ee, ...r2 }, h2 = s2(a2, c2), u2 = o2(a2);
-              super(t3, false, h2, u2 ? n2() : null), this._pan = e2(this, u2, h2.pan);
+              super(t3, false, h2, u2 ? n2() : null), this._pan = e3(this, u2, h2.pan);
             }
             get pan() {
               return this._pan;
             }
-          })(Ze, ps, un, ((t2, e2, s2, n2, i2) => () => {
+          })(Ze, ps, un, ((t2, e3, s2, n2, i2) => () => {
             const o2 = /* @__PURE__ */ new WeakMap();
             return { render(r2, a2, c2) {
               const h2 = o2.get(a2);
@@ -3002,27 +3018,27 @@
                 const u2 = E(h3, a3);
                 if (!u2) {
                   const t3 = { channelCount: h3.channelCount, channelCountMode: h3.channelCountMode, channelInterpretation: h3.channelInterpretation, pan: h3.pan.value };
-                  h3 = e2(a3, t3);
+                  h3 = e3(a3, t3);
                 }
                 return o2.set(a3, h3), u2 ? await t2(a3, r3.pan, h3.pan, c3) : await n2(a3, r3.pan, h3.pan, c3), H(h3) ? await i2(r3, a3, h3.inputs[0], c3) : await i2(r3, a3, h3, c3), h3;
               })(r2, a2, c2);
             } };
-          })(as, un, st, us, Oe), Fe, Ne), pn = ((t2, e2, s2) => () => {
+          })(as, un, st, us, Oe), Fe, Ne), pn = ((t2, e3, s2) => () => {
             const n2 = /* @__PURE__ */ new WeakMap();
             return { render(i2, o2, r2) {
               const a2 = n2.get(o2);
               return a2 !== void 0 ? Promise.resolve(a2) : (async (i3, o3, r3) => {
-                let a3 = e2(i3);
+                let a3 = e3(i3);
                 if (!E(a3, o3)) {
-                  const e3 = { channelCount: a3.channelCount, channelCountMode: a3.channelCountMode, channelInterpretation: a3.channelInterpretation, curve: a3.curve, oversample: a3.oversample };
-                  a3 = t2(o3, e3);
+                  const e4 = { channelCount: a3.channelCount, channelCountMode: a3.channelCountMode, channelInterpretation: a3.channelInterpretation, curve: a3.curve, oversample: a3.oversample };
+                  a3 = t2(o3, e4);
                 }
                 return n2.set(o3, a3), H(a3) ? await s2(i3, o3, a3.inputs[0], r3) : await s2(i3, o3, a3, r3), a3;
               })(i2, o2, r2);
             } };
-          })(nn, st, Oe), dn = ((t2, e2, s2, n2, i2, o2, r2) => class extends t2 {
-            constructor(t3, e3) {
-              const a2 = i2(t3), c2 = { ...ne, ...e3 }, h2 = s2(a2, c2);
+          })(nn, st, Oe), dn = ((t2, e3, s2, n2, i2, o2, r2) => class extends t2 {
+            constructor(t3, e4) {
+              const a2 = i2(t3), c2 = { ...ne, ...e4 }, h2 = s2(a2, c2);
               super(t3, true, h2, o2(a2) ? n2() : null), this._isCurveNullified = false, this._nativeWaveShaperNode = h2, r2(this, 1);
             }
             get curve() {
@@ -3033,7 +3049,7 @@
                 this._isCurveNullified = true, this._nativeWaveShaperNode.curve = new Float32Array([0, 0]);
               else {
                 if (t3.length < 2)
-                  throw e2();
+                  throw e3();
                 this._isCurveNullified = false, this._nativeWaveShaperNode.curve = t3;
               }
             }
@@ -3043,25 +3059,25 @@
             set oversample(t3) {
               this._nativeWaveShaperNode.oversample = t3;
             }
-          })(Ze, At, nn, pn, Fe, Ne, gs), fn = ((t2) => t2 !== null && t2.isSecureContext)(Te), _n = ((t2) => (e2, s2, n2) => {
-            Object.defineProperties(t2, { currentFrame: { configurable: true, get: () => Math.round(e2 * s2) }, currentTime: { configurable: true, get: () => e2 } });
+          })(Ze, At, nn, pn, Fe, Ne, gs), fn = ((t2) => t2 !== null && t2.isSecureContext)(Te), _n = ((t2) => (e3, s2, n2) => {
+            Object.defineProperties(t2, { currentFrame: { configurable: true, get: () => Math.round(e3 * s2) }, currentTime: { configurable: true, get: () => e3 } });
             try {
               return n2();
             } finally {
               t2 !== null && (delete t2.currentFrame, delete t2.currentTime);
             }
-          })(Te), mn = /* @__PURE__ */ new WeakMap(), gn = ((t2, e2) => (s2) => {
+          })(Te), mn = /* @__PURE__ */ new WeakMap(), gn = ((t2, e3) => (s2) => {
             let n2 = t2.get(s2);
             if (n2 !== void 0)
               return n2;
-            if (e2 === null)
+            if (e3 === null)
               throw new Error("Missing the native OfflineAudioContext constructor.");
-            return n2 = new e2(1, 1, 8e3), t2.set(s2, n2), n2;
-          })(mn, Ve), vn = ((t2) => t2 === null ? null : t2.hasOwnProperty("AudioWorkletNode") ? t2.AudioWorkletNode : null)(Te), yn = fn ? ((t2, e2, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2) => (p2, d2, f2 = { credentials: "omit" }) => {
+            return n2 = new e3(1, 1, 8e3), t2.set(s2, n2), n2;
+          })(mn, Ve), vn = ((t2) => t2 === null ? null : t2.hasOwnProperty("AudioWorkletNode") ? t2.AudioWorkletNode : null)(Te), yn = fn ? ((t2, e3, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2) => (p2, d2, f2 = { credentials: "omit" }) => {
             const m2 = o2(p2);
             if (m2.audioWorklet !== void 0)
-              return Promise.all([i2(d2), Promise.resolve(t2(u2, u2))]).then(([[t3, e3], s3]) => {
-                const [n3, i3] = y(t3, e3), o3 = s3 ? i3 : i3.replace(/\s+extends\s+AudioWorkletProcessor\s*{/, " extends (class extends AudioWorkletProcessor {__b=new WeakSet();constructor(){super();(p=>p.postMessage=(q=>(m,t)=>q.call(p,m,t?t.filter(u=>!this.__b.has(u)):t))(p.postMessage))(this.port)}}){"), c3 = new Blob([`${n3};(registerProcessor=>{${o3}
+              return Promise.all([i2(d2), Promise.resolve(t2(u2, u2))]).then(([[t3, e4], s3]) => {
+                const [n3, i3] = y(t3, e4), o3 = s3 ? i3 : i3.replace(/\s+extends\s+AudioWorkletProcessor\s*{/, " extends (class extends AudioWorkletProcessor {__b=new WeakSet();constructor(){super();(p=>p.postMessage=(q=>(m,t)=>q.call(p,m,t?t.filter(u=>!this.__b.has(u)):t))(p.postMessage))(this.port)}}){"), c3 = new Blob([`${n3};(registerProcessor=>{${o3}
 })((n,p)=>registerProcessor(n,class extends p{${s3 ? "" : "__c = (a) => a.forEach(e=>this.__b.add(e.buffer));"}process(i,o,p){${s3 ? "" : "i.forEach(this.__c);o.forEach(this.__c);this.__c(Object.values(p));"}return super.process(i.map(j=>j.some(k=>k.length===0)?[]:j),o,p)}}))`], { type: "application/javascript; charset=utf-8" }), h3 = URL.createObjectURL(c3);
                 return m2.audioWorklet.addModule(h3, f2).then(() => {
                   if (a2(m2))
@@ -3078,8 +3094,8 @@
               if (t3 !== void 0)
                 return t3;
             }
-            const b2 = i2(d2).then(([t3, e3]) => {
-              const [n3, i3] = y(t3, e3);
+            const b2 = i2(d2).then(([t3, e4]) => {
+              const [n3, i3] = y(t3, e4);
               return s2(`${n3};((a,b)=>{(a[b]=a[b]||[]).push((AudioWorkletProcessor,global,registerProcessor,sampleRate,self,window)=>{${i3}
 })})(window,'_AWGS')`);
             }).then(() => {
@@ -3089,11 +3105,11 @@
               n2(m2.currentTime, m2.sampleRate, () => t3(class {
               }, void 0, (t4, s3) => {
                 if (t4.trim() === "")
-                  throw e2();
+                  throw e3();
                 const n3 = _.get(m2);
                 if (n3 !== void 0) {
                   if (n3.has(t4))
-                    throw e2();
+                    throw e3();
                   w(s3), x(s3.parameterDescriptors), n3.set(t4, s3);
                 } else
                   w(s3), x(s3.parameterDescriptors), _.set(m2, /* @__PURE__ */ new Map([[t4, s3]]));
@@ -3106,61 +3122,61 @@
               const t3 = c2.get(p2);
               t3 !== void 0 && t3.delete(d2);
             }), b2;
-          })(xe, Ht, ((t2) => (e2) => new Promise((s2, n2) => {
+          })(xe, Ht, ((t2) => (e3) => new Promise((s2, n2) => {
             if (t2 === null)
               return void n2(new SyntaxError());
             const i2 = t2.document.head;
             if (i2 === null)
               n2(new SyntaxError());
             else {
-              const o2 = t2.document.createElement("script"), r2 = new Blob([e2], { type: "application/javascript" }), a2 = URL.createObjectURL(r2), c2 = t2.onerror, h2 = () => {
+              const o2 = t2.document.createElement("script"), r2 = new Blob([e3], { type: "application/javascript" }), a2 = URL.createObjectURL(r2), c2 = t2.onerror, h2 = () => {
                 t2.onerror = c2, URL.revokeObjectURL(a2);
               };
-              t2.onerror = (e3, s3, i3, o3, r3) => s3 === a2 || s3 === t2.location.href && i3 === 1 && o3 === 1 ? (h2(), n2(r3), false) : c2 !== null ? c2(e3, s3, i3, o3, r3) : void 0, o2.onerror = () => {
+              t2.onerror = (e4, s3, i3, o3, r3) => s3 === a2 || s3 === t2.location.href && i3 === 1 && o3 === 1 ? (h2(), n2(r3), false) : c2 !== null ? c2(e4, s3, i3, o3, r3) : void 0, o2.onerror = () => {
                 h2(), n2(new SyntaxError());
               }, o2.onload = () => {
                 h2(), s2();
               }, o2.src = a2, o2.type = "module", i2.appendChild(o2);
             }
-          }))(Te), _n, ((t2) => async (e2) => {
+          }))(Te), _n, ((t2) => async (e3) => {
             try {
-              const t3 = await fetch(e2);
+              const t3 = await fetch(e3);
               if (t3.ok)
                 return [await t3.text(), t3.url];
             } catch {
             }
             throw t2();
-          })(() => new DOMException("", "AbortError")), Fe, gn, Ne, /* @__PURE__ */ new WeakMap(), /* @__PURE__ */ new WeakMap(), ((t2, e2) => async () => {
+          })(() => new DOMException("", "AbortError")), Fe, gn, Ne, /* @__PURE__ */ new WeakMap(), /* @__PURE__ */ new WeakMap(), ((t2, e3) => async () => {
             if (t2 === null)
               return true;
-            if (e2 === null)
+            if (e3 === null)
               return false;
-            const s2 = new Blob(['class A extends AudioWorkletProcessor{process(i){this.port.postMessage(i,[i[0][0].buffer])}}registerProcessor("a",A)'], { type: "application/javascript; charset=utf-8" }), n2 = new e2(1, 128, 8e3), i2 = URL.createObjectURL(s2);
+            const s2 = new Blob(['class A extends AudioWorkletProcessor{process(i){this.port.postMessage(i,[i[0][0].buffer])}}registerProcessor("a",A)'], { type: "application/javascript; charset=utf-8" }), n2 = new e3(1, 128, 8e3), i2 = URL.createObjectURL(s2);
             let o2 = false, r2 = false;
             try {
               await n2.audioWorklet.addModule(i2);
-              const e3 = new t2(n2, "a", { numberOfOutputs: 0 }), s3 = n2.createOscillator();
-              e3.port.onmessage = () => o2 = true, e3.onprocessorerror = () => r2 = true, s3.connect(e3), await n2.startRendering();
+              const e4 = new t2(n2, "a", { numberOfOutputs: 0 }), s3 = n2.createOscillator();
+              e4.port.onmessage = () => o2 = true, e4.onprocessorerror = () => r2 = true, s3.connect(e4), await n2.startRendering();
             } catch {
             } finally {
               URL.revokeObjectURL(i2);
             }
             return o2 && !r2;
-          })(vn, Ve), Te) : void 0, xn = ((t2, e2) => (s2) => t2(s2) || e2(s2))(We, Ne), wn = ((t2, e2, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2, d2, f2, _2, m2, g2, v2, y2) => class extends f2 {
-            constructor(e3, s3) {
-              super(e3, s3), this._nativeContext = e3, this._audioWorklet = t2 === void 0 ? void 0 : { addModule: (e4, s4) => t2(this, e4, s4) };
+          })(vn, Ve), Te) : void 0, xn = ((t2, e3) => (s2) => t2(s2) || e3(s2))(We, Ne), wn = ((t2, e3, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2, d2, f2, _2, m2, g2, v2, y2) => class extends f2 {
+            constructor(e4, s3) {
+              super(e4, s3), this._nativeContext = e4, this._audioWorklet = t2 === void 0 ? void 0 : { addModule: (e5, s4) => t2(this, e5, s4) };
             }
             get audioWorklet() {
               return this._audioWorklet;
             }
             createAnalyser() {
-              return new e2(this);
+              return new e3(this);
             }
             createBiquadFilter() {
               return new i2(this);
             }
-            createBuffer(t3, e3, n3) {
-              return new s2({ length: e3, numberOfChannels: t3, sampleRate: n3 });
+            createBuffer(t3, e4, n3) {
+              return new s2({ length: e4, numberOfChannels: t3, sampleRate: n3 });
             }
             createBufferSource() {
               return new n2(this);
@@ -3186,8 +3202,8 @@
             createGain() {
               return new p2(this);
             }
-            createIIRFilter(t3, e3) {
-              return new d2(this, { feedback: e3, feedforward: t3 });
+            createIIRFilter(t3, e4) {
+              return new d2(this, { feedback: e4, feedforward: t3 });
             }
             createOscillator() {
               return new _2(this);
@@ -3195,8 +3211,8 @@
             createPanner() {
               return new m2(this);
             }
-            createPeriodicWave(t3, e3, s3 = { disableNormalization: false }) {
-              return new g2(this, { ...s3, imag: e3, real: t3 });
+            createPeriodicWave(t3, e4, s3 = { disableNormalization: false }) {
+              return new g2(this, { ...s3, imag: e4, real: t3 });
             }
             createStereoPanner() {
               return new v2(this);
@@ -3204,12 +3220,12 @@
             createWaveShaper() {
               return new y2(this);
             }
-            decodeAudioData(t3, e3, s3) {
-              return h2(this._nativeContext, t3).then((t4) => (typeof e3 == "function" && e3(t4), t4)).catch((t4) => {
+            decodeAudioData(t3, e4, s3) {
+              return h2(this._nativeContext, t3).then((t4) => (typeof e4 == "function" && e4(t4), t4)).catch((t4) => {
                 throw typeof s3 == "function" && s3(t4), t4;
               });
             }
-          })(yn, Ye, ss, fs, vs, Rs, qs, Vs, Ps, ((t2, e2, s2, n2, i2, o2, r2, a2, c2, h2, u2) => (l2, p2) => {
+          })(yn, Ye, ss, fs, vs, Rs, qs, Vs, Ps, ((t2, e3, s2, n2, i2, o2, r2, a2, c2, h2, u2) => (l2, p2) => {
             const d2 = r2(l2) ? l2 : o2(l2);
             if (i2.has(p2)) {
               const t3 = s2();
@@ -3219,12 +3235,12 @@
               i2.add(p2);
             } catch {
             }
-            return e2(c2, () => c2(d2)) ? d2.decodeAudioData(p2).then((s3) => (e2(a2, () => a2(s3)) || u2(s3), t2.add(s3), s3)) : new Promise((e3, s3) => {
+            return e3(c2, () => c2(d2)) ? d2.decodeAudioData(p2).then((s3) => (e3(a2, () => a2(s3)) || u2(s3), t2.add(s3), s3)) : new Promise((e4, s3) => {
               const i3 = () => {
                 try {
                   ((t3) => {
-                    const { port1: e4 } = new MessageChannel();
-                    e4.postMessage(t3, [t3]);
+                    const { port1: e5 } = new MessageChannel();
+                    e5.postMessage(t3, [t3]);
                   })(p2);
                 } catch {
                 }
@@ -3233,7 +3249,7 @@
               };
               try {
                 d2.decodeAudioData(p2, (s4) => {
-                  typeof s4.copyFromChannel != "function" && (h2(s4), F(s4)), t2.add(s4), i3(), e3(s4);
+                  typeof s4.copyFromChannel != "function" && (h2(s4), F(s4)), t2.add(s4), i3(), e4(s4);
                 }, (t3) => {
                   o3(t3 === null ? n2() : t3);
                 });
@@ -3241,9 +3257,9 @@
                 o3(t3);
               }
             });
-          })(He, xe, () => new DOMException("", "DataCloneError"), () => new DOMException("", "EncodingError"), /* @__PURE__ */ new WeakSet(), Fe, xn, R, Rt, ts, es), js, Bs, Ws, Xs, $s, Ks, cn, hn, ln, dn), bn = ((t2, e2, s2, n2) => class extends t2 {
+          })(He, xe, () => new DOMException("", "DataCloneError"), () => new DOMException("", "EncodingError"), /* @__PURE__ */ new WeakSet(), Fe, xn, R, Rt, ts, es), js, Bs, Ws, Xs, $s, Ks, cn, hn, ln, dn), bn = ((t2, e3, s2, n2) => class extends t2 {
             constructor(t3, i2) {
-              const o2 = s2(t3), r2 = e2(o2, i2);
+              const o2 = s2(t3), r2 = e3(o2, i2);
               if (n2(o2))
                 throw TypeError();
               super(t3, true, r2, null), this._nativeMediaElementAudioSourceNode = r2;
@@ -3251,23 +3267,23 @@
             get mediaElement() {
               return this._nativeMediaElementAudioSourceNode.mediaElement;
             }
-          })(Ze, (t2, e2) => t2.createMediaElementSource(e2.mediaElement), Fe, Ne), Tn = ((t2, e2, s2, n2) => class extends t2 {
+          })(Ze, (t2, e3) => t2.createMediaElementSource(e3.mediaElement), Fe, Ne), Tn = ((t2, e3, s2, n2) => class extends t2 {
             constructor(t3, i2) {
               const o2 = s2(t3);
               if (n2(o2))
                 throw new TypeError();
-              const r2 = { ...Et, ...i2 }, a2 = e2(o2, r2);
+              const r2 = { ...Et, ...i2 }, a2 = e3(o2, r2);
               super(t3, false, a2, null), this._nativeMediaStreamAudioDestinationNode = a2;
             }
             get stream() {
               return this._nativeMediaStreamAudioDestinationNode.stream;
             }
-          })(Ze, (t2, e2) => {
+          })(Ze, (t2, e3) => {
             const s2 = t2.createMediaStreamDestination();
-            return It(s2, e2), s2.numberOfOutputs === 1 && Object.defineProperty(s2, "numberOfOutputs", { get: () => 0 }), s2;
-          }, Fe, Ne), Sn = ((t2, e2, s2, n2) => class extends t2 {
+            return It(s2, e3), s2.numberOfOutputs === 1 && Object.defineProperty(s2, "numberOfOutputs", { get: () => 0 }), s2;
+          }, Fe, Ne), Sn = ((t2, e3, s2, n2) => class extends t2 {
             constructor(t3, i2) {
-              const o2 = s2(t3), r2 = e2(o2, i2);
+              const o2 = s2(t3), r2 = e3(o2, i2);
               if (n2(o2))
                 throw new TypeError();
               super(t3, true, r2, null), this._nativeMediaStreamAudioSourceNode = r2;
@@ -3275,44 +3291,44 @@
             get mediaStream() {
               return this._nativeMediaStreamAudioSourceNode.mediaStream;
             }
-          })(Ze, (t2, { mediaStream: e2 }) => {
-            const s2 = e2.getAudioTracks();
-            s2.sort((t3, e3) => t3.id < e3.id ? -1 : t3.id > e3.id ? 1 : 0);
+          })(Ze, (t2, { mediaStream: e3 }) => {
+            const s2 = e3.getAudioTracks();
+            s2.sort((t3, e4) => t3.id < e4.id ? -1 : t3.id > e4.id ? 1 : 0);
             const n2 = s2.slice(0, 1), i2 = t2.createMediaStreamSource(new MediaStream(n2));
-            return Object.defineProperty(i2, "mediaStream", { value: e2 }), i2;
-          }, Fe, Ne), kn = ((t2, e2, s2) => class extends t2 {
+            return Object.defineProperty(i2, "mediaStream", { value: e3 }), i2;
+          }, Fe, Ne), kn = ((t2, e3, s2) => class extends t2 {
             constructor(t3, n2) {
               const i2 = s2(t3);
-              super(t3, true, e2(i2, n2), null);
+              super(t3, true, e3(i2, n2), null);
             }
-          })(Ze, ((t2, e2) => (s2, { mediaStreamTrack: n2 }) => {
+          })(Ze, ((t2, e3) => (s2, { mediaStreamTrack: n2 }) => {
             if (typeof s2.createMediaStreamTrackSource == "function")
               return s2.createMediaStreamTrackSource(n2);
             const i2 = new MediaStream([n2]), o2 = s2.createMediaStreamSource(i2);
             if (n2.kind !== "audio")
               throw t2();
-            if (e2(s2))
+            if (e3(s2))
               throw new TypeError();
             return o2;
-          })(At, Ne), Fe), Cn = ((t2, e2, s2, n2, i2, o2, r2, a2, c2) => class extends t2 {
+          })(At, Ne), Fe), Cn = ((t2, e3, s2, n2, i2, o2, r2, a2, c2) => class extends t2 {
             constructor(t3 = {}) {
               if (c2 === null)
                 throw new Error("Missing the native AudioContext constructor.");
-              const e3 = new c2(t3);
-              if (e3 === null)
+              const e4 = new c2(t3);
+              if (e4 === null)
                 throw n2();
               if (!G(t3.latencyHint))
                 throw new TypeError(`The provided value '${t3.latencyHint}' is not a valid enum value of type AudioContextLatencyCategory.`);
-              if (t3.sampleRate !== void 0 && e3.sampleRate !== t3.sampleRate)
+              if (t3.sampleRate !== void 0 && e4.sampleRate !== t3.sampleRate)
                 throw s2();
-              super(e3, 2);
-              const { latencyHint: i3 } = t3, { sampleRate: o3 } = e3;
-              if (this._baseLatency = typeof e3.baseLatency == "number" ? e3.baseLatency : i3 === "balanced" ? 512 / o3 : i3 === "interactive" || i3 === void 0 ? 256 / o3 : i3 === "playback" ? 1024 / o3 : 128 * Math.max(2, Math.min(128, Math.round(i3 * o3 / 128))) / o3, this._nativeAudioContext = e3, c2.name === "webkitAudioContext" ? (this._nativeGainNode = e3.createGain(), this._nativeOscillatorNode = e3.createOscillator(), this._nativeGainNode.gain.value = 1e-37, this._nativeOscillatorNode.connect(this._nativeGainNode).connect(e3.destination), this._nativeOscillatorNode.start()) : (this._nativeGainNode = null, this._nativeOscillatorNode = null), this._state = null, e3.state === "running") {
+              super(e4, 2);
+              const { latencyHint: i3 } = t3, { sampleRate: o3 } = e4;
+              if (this._baseLatency = typeof e4.baseLatency == "number" ? e4.baseLatency : i3 === "balanced" ? 512 / o3 : i3 === "interactive" || i3 === void 0 ? 256 / o3 : i3 === "playback" ? 1024 / o3 : 128 * Math.max(2, Math.min(128, Math.round(i3 * o3 / 128))) / o3, this._nativeAudioContext = e4, c2.name === "webkitAudioContext" ? (this._nativeGainNode = e4.createGain(), this._nativeOscillatorNode = e4.createOscillator(), this._nativeGainNode.gain.value = 1e-37, this._nativeOscillatorNode.connect(this._nativeGainNode).connect(e4.destination), this._nativeOscillatorNode.start()) : (this._nativeGainNode = null, this._nativeOscillatorNode = null), this._state = null, e4.state === "running") {
                 this._state = "suspended";
                 const t4 = () => {
-                  this._state === "suspended" && (this._state = null), e3.removeEventListener("statechange", t4);
+                  this._state === "suspended" && (this._state = null), e4.removeEventListener("statechange", t4);
                 };
-                e3.addEventListener("statechange", t4);
+                e4.addEventListener("statechange", t4);
               }
             }
             get baseLatency() {
@@ -3323,7 +3339,7 @@
             }
             close() {
               return this.state === "closed" ? this._nativeAudioContext.close().then(() => {
-                throw e2();
+                throw e3();
               }) : (this._state === "suspended" && (this._state = null), this._nativeAudioContext.close().then(() => {
                 this._nativeGainNode !== null && this._nativeOscillatorNode !== null && (this._nativeOscillatorNode.stop(), this._nativeGainNode.disconnect(), this._nativeOscillatorNode.disconnect()), W(this);
               }));
@@ -3341,53 +3357,53 @@
               return new a2(this, { mediaStreamTrack: t3 });
             }
             resume() {
-              return this._state === "suspended" ? new Promise((t3, e3) => {
+              return this._state === "suspended" ? new Promise((t3, e4) => {
                 const s3 = () => {
-                  this._nativeAudioContext.removeEventListener("statechange", s3), this._nativeAudioContext.state === "running" ? t3() : this.resume().then(t3, e3);
+                  this._nativeAudioContext.removeEventListener("statechange", s3), this._nativeAudioContext.state === "running" ? t3() : this.resume().then(t3, e4);
                 };
                 this._nativeAudioContext.addEventListener("statechange", s3);
               }) : this._nativeAudioContext.resume().catch((t3) => {
                 if (t3 === void 0 || t3.code === 15)
-                  throw e2();
+                  throw e3();
                 throw t3;
               });
             }
             suspend() {
               return this._nativeAudioContext.suspend().catch((t3) => {
                 if (t3 === void 0)
-                  throw e2();
+                  throw e3();
                 throw t3;
               });
             }
           })(wn, At, Ht, se, bn, Tn, Sn, kn, Be), An = (Dn = Hs, (t2) => {
-            const e2 = Dn.get(t2);
-            if (e2 === void 0)
+            const e3 = Dn.get(t2);
+            if (e3 === void 0)
               throw new Error("The context has no set of AudioWorkletNodes.");
-            return e2;
+            return e3;
           });
           var Dn;
-          const On = (Mn = An, (t2, e2) => {
-            Mn(t2).add(e2);
+          const On = (Mn = An, (t2, e3) => {
+            Mn(t2).add(e3);
           });
           var Mn;
-          const En = ((t2) => (e2, s2, n2 = 0, i2 = 0) => {
-            const o2 = e2[n2];
+          const En = ((t2) => (e3, s2, n2 = 0, i2 = 0) => {
+            const o2 = e3[n2];
             if (o2 === void 0)
               throw t2();
             return ct(s2) ? o2.connect(s2, 0, i2) : o2.connect(s2, 0);
-          })(q), Rn = ((t2) => (e2, s2) => {
-            t2(e2).delete(s2);
-          })(An), qn = ((t2) => (e2, s2, n2, i2 = 0) => s2 === void 0 ? e2.forEach((t3) => t3.disconnect()) : typeof s2 == "number" ? St(t2, e2, s2).disconnect() : ct(s2) ? n2 === void 0 ? e2.forEach((t3) => t3.disconnect(s2)) : i2 === void 0 ? St(t2, e2, n2).disconnect(s2, 0) : St(t2, e2, n2).disconnect(s2, 0, i2) : n2 === void 0 ? e2.forEach((t3) => t3.disconnect(s2)) : St(t2, e2, n2).disconnect(s2, 0))(q), Fn = /* @__PURE__ */ new WeakMap(), In = ((t2, e2) => (s2) => e2(t2, s2))(Fn, b), Vn = ((t2, e2, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2) => (d2, f2, _2, g2) => {
+          })(q), Rn = ((t2) => (e3, s2) => {
+            t2(e3).delete(s2);
+          })(An), qn = ((t2) => (e3, s2, n2, i2 = 0) => s2 === void 0 ? e3.forEach((t3) => t3.disconnect()) : typeof s2 == "number" ? St(t2, e3, s2).disconnect() : ct(s2) ? n2 === void 0 ? e3.forEach((t3) => t3.disconnect(s2)) : i2 === void 0 ? St(t2, e3, n2).disconnect(s2, 0) : St(t2, e3, n2).disconnect(s2, 0, i2) : n2 === void 0 ? e3.forEach((t3) => t3.disconnect(s2)) : St(t2, e3, n2).disconnect(s2, 0))(q), Fn = /* @__PURE__ */ new WeakMap(), In = ((t2, e3) => (s2) => e3(t2, s2))(Fn, b), Vn = ((t2, e3, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2) => (d2, f2, _2, g2) => {
             if (g2.numberOfInputs === 0 && g2.numberOfOutputs === 0)
               throw c2();
             const v2 = Array.isArray(g2.outputChannelCount) ? g2.outputChannelCount : Array.from(g2.outputChannelCount);
             if (v2.some((t3) => t3 < 1))
               throw c2();
             if (v2.length !== g2.numberOfOutputs)
-              throw e2();
+              throw e3();
             if (g2.channelCountMode !== "explicit")
               throw c2();
-            const y2 = g2.channelCount * g2.numberOfInputs, x2 = v2.reduce((t3, e3) => t3 + e3, 0), w2 = _2.parameterDescriptors === void 0 ? 0 : _2.parameterDescriptors.length;
+            const y2 = g2.channelCount * g2.numberOfInputs, x2 = v2.reduce((t3, e4) => t3 + e4, 0), w2 = _2.parameterDescriptors === void 0 ? 0 : _2.parameterDescriptors.length;
             if (y2 + w2 > 6 || x2 > 6)
               throw c2();
             const b2 = new MessageChannel(), T2 = [], S2 = [];
@@ -3395,21 +3411,21 @@
               T2.push(r2(d2, { channelCount: g2.channelCount, channelCountMode: g2.channelCountMode, channelInterpretation: g2.channelInterpretation, gain: 1 })), S2.push(i2(d2, { channelCount: g2.channelCount, channelCountMode: "explicit", channelInterpretation: "discrete", numberOfOutputs: g2.channelCount }));
             const k2 = [];
             if (_2.parameterDescriptors !== void 0)
-              for (const { defaultValue: t3, maxValue: e3, minValue: s3, name: n3 } of _2.parameterDescriptors) {
+              for (const { defaultValue: t3, maxValue: e4, minValue: s3, name: n3 } of _2.parameterDescriptors) {
                 const i3 = o2(d2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", offset: g2.parameterData[n3] !== void 0 ? g2.parameterData[n3] : t3 === void 0 ? 0 : t3 });
-                Object.defineProperties(i3.offset, { defaultValue: { get: () => t3 === void 0 ? 0 : t3 }, maxValue: { get: () => e3 === void 0 ? N : e3 }, minValue: { get: () => s3 === void 0 ? V : s3 } }), k2.push(i3);
+                Object.defineProperties(i3.offset, { defaultValue: { get: () => t3 === void 0 ? 0 : t3 }, maxValue: { get: () => e4 === void 0 ? N : e4 }, minValue: { get: () => s3 === void 0 ? V : s3 } }), k2.push(i3);
               }
             const C2 = n2(d2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: Math.max(1, y2 + w2) }), A2 = Lt(f2, d2.sampleRate), D2 = a2(d2, A2, y2 + w2, Math.max(1, x2)), O2 = i2(d2, { channelCount: Math.max(1, x2), channelCountMode: "explicit", channelInterpretation: "discrete", numberOfOutputs: Math.max(1, x2) }), M2 = [];
             for (let t3 = 0; t3 < g2.numberOfOutputs; t3 += 1)
               M2.push(n2(d2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: v2[t3] }));
             for (let t3 = 0; t3 < g2.numberOfInputs; t3 += 1) {
               T2[t3].connect(S2[t3]);
-              for (let e3 = 0; e3 < g2.channelCount; e3 += 1)
-                S2[t3].connect(C2, e3, t3 * g2.channelCount + e3);
+              for (let e4 = 0; e4 < g2.channelCount; e4 += 1)
+                S2[t3].connect(C2, e4, t3 * g2.channelCount + e4);
             }
-            const E2 = new pt(_2.parameterDescriptors === void 0 ? [] : _2.parameterDescriptors.map(({ name: t3 }, e3) => {
-              const s3 = k2[e3];
-              return s3.connect(C2, 0, y2 + e3), s3.start(0), [t3, s3.offset];
+            const E2 = new pt(_2.parameterDescriptors === void 0 ? [] : _2.parameterDescriptors.map(({ name: t3 }, e4) => {
+              const s3 = k2[e4];
+              return s3.connect(C2, 0, y2 + e4), s3.start(0), [t3, s3.offset];
             }));
             C2.connect(D2);
             let R2 = g2.channelInterpretation, q2 = null;
@@ -3426,8 +3442,8 @@
             }, get channelInterpretation() {
               return R2;
             }, set channelInterpretation(t3) {
-              for (const e3 of T2)
-                e3.channelInterpretation = t3;
+              for (const e4 of T2)
+                e4.channelInterpretation = t3;
               R2 = t3;
             }, get context() {
               return D2.context;
@@ -3449,19 +3465,19 @@
             var j2, L2;
             b2.port1.addEventListener = (j2 = b2.port1.addEventListener, (...t3) => {
               if (t3[0] === "message") {
-                const e3 = typeof t3[1] == "function" ? t3[1] : typeof t3[1] == "object" && t3[1] !== null && typeof t3[1].handleEvent == "function" ? t3[1].handleEvent : null;
-                if (e3 !== null) {
+                const e4 = typeof t3[1] == "function" ? t3[1] : typeof t3[1] == "object" && t3[1] !== null && typeof t3[1].handleEvent == "function" ? t3[1].handleEvent : null;
+                if (e4 !== null) {
                   const s3 = P2.get(t3[1]);
                   s3 !== void 0 ? t3[1] = s3 : (t3[1] = (t4) => {
-                    u2(d2.currentTime, d2.sampleRate, () => e3(t4));
-                  }, P2.set(e3, t3[1]));
+                    u2(d2.currentTime, d2.sampleRate, () => e4(t4));
+                  }, P2.set(e4, t3[1]));
                 }
               }
               return j2.call(b2.port1, t3[0], t3[1], t3[2]);
             }), b2.port1.removeEventListener = (L2 = b2.port1.removeEventListener, (...t3) => {
               if (t3[0] === "message") {
-                const e3 = P2.get(t3[1]);
-                e3 !== void 0 && (P2.delete(t3[1]), t3[1] = e3);
+                const e4 = P2.get(t3[1]);
+                e4 !== void 0 && (P2.delete(t3[1]), t3[1] = e4);
               }
               return L2.call(b2.port1, t3[0], t3[1], t3[2]);
             });
@@ -3470,47 +3486,47 @@
               typeof z2 == "function" && b2.port1.removeEventListener("message", z2), z2 = typeof t3 == "function" ? t3 : null, typeof z2 == "function" && (b2.port1.addEventListener("message", z2), b2.port1.start());
             } }), _2.prototype.port = b2.port1;
             let B2 = null;
-            ((t3, e3, s3, n3) => {
+            ((t3, e4, s3, n3) => {
               let i3 = m.get(t3);
               i3 === void 0 && (i3 = /* @__PURE__ */ new WeakMap(), m.set(t3, i3));
               const o3 = zt(s3, n3);
-              return i3.set(e3, o3), o3;
+              return i3.set(e4, o3), o3;
             })(d2, I2, _2, g2).then((t3) => B2 = t3);
-            const W2 = mt(g2.numberOfInputs, g2.channelCount), G2 = mt(g2.numberOfOutputs, v2), U2 = _2.parameterDescriptors === void 0 ? [] : _2.parameterDescriptors.reduce((t3, { name: e3 }) => ({ ...t3, [e3]: new Float32Array(128) }), {});
+            const W2 = mt(g2.numberOfInputs, g2.channelCount), G2 = mt(g2.numberOfOutputs, v2), U2 = _2.parameterDescriptors === void 0 ? [] : _2.parameterDescriptors.reduce((t3, { name: e4 }) => ({ ...t3, [e4]: new Float32Array(128) }), {});
             let Q2 = true;
             const Z2 = () => {
               g2.numberOfOutputs > 0 && D2.disconnect(O2);
-              for (let t3 = 0, e3 = 0; t3 < g2.numberOfOutputs; t3 += 1) {
+              for (let t3 = 0, e4 = 0; t3 < g2.numberOfOutputs; t3 += 1) {
                 const s3 = M2[t3];
                 for (let n3 = 0; n3 < v2[t3]; n3 += 1)
-                  O2.disconnect(s3, e3 + n3, n3);
-                e3 += v2[t3];
+                  O2.disconnect(s3, e4 + n3, n3);
+                e4 += v2[t3];
               }
             }, X2 = /* @__PURE__ */ new Map();
-            D2.onaudioprocess = ({ inputBuffer: t3, outputBuffer: e3 }) => {
+            D2.onaudioprocess = ({ inputBuffer: t3, outputBuffer: e4 }) => {
               if (B2 !== null) {
                 const s3 = l2(I2);
                 for (let n3 = 0; n3 < A2; n3 += 128) {
-                  for (let e4 = 0; e4 < g2.numberOfInputs; e4 += 1)
+                  for (let e5 = 0; e5 < g2.numberOfInputs; e5 += 1)
                     for (let s4 = 0; s4 < g2.channelCount; s4 += 1)
-                      ft(t3, W2[e4], s4, s4, n3);
-                  _2.parameterDescriptors !== void 0 && _2.parameterDescriptors.forEach(({ name: e4 }, s4) => {
-                    ft(t3, U2, e4, y2 + s4, n3);
+                      ft(t3, W2[e5], s4, s4, n3);
+                  _2.parameterDescriptors !== void 0 && _2.parameterDescriptors.forEach(({ name: e5 }, s4) => {
+                    ft(t3, U2, e5, y2 + s4, n3);
                   });
                   for (let t4 = 0; t4 < g2.numberOfInputs; t4 += 1)
-                    for (let e4 = 0; e4 < v2[t4]; e4 += 1)
-                      G2[t4][e4].byteLength === 0 && (G2[t4][e4] = new Float32Array(128));
+                    for (let e5 = 0; e5 < v2[t4]; e5 += 1)
+                      G2[t4][e5].byteLength === 0 && (G2[t4][e5] = new Float32Array(128));
                   try {
-                    const t4 = W2.map((t5, e4) => {
-                      if (s3[e4].size > 0)
-                        return X2.set(e4, A2 / 128), t5;
-                      const n4 = X2.get(e4);
-                      return n4 === void 0 ? [] : (t5.every((t6) => t6.every((t7) => t7 === 0)) && (n4 === 1 ? X2.delete(e4) : X2.set(e4, n4 - 1)), t5);
+                    const t4 = W2.map((t5, e5) => {
+                      if (s3[e5].size > 0)
+                        return X2.set(e5, A2 / 128), t5;
+                      const n4 = X2.get(e5);
+                      return n4 === void 0 ? [] : (t5.every((t6) => t6.every((t7) => t7 === 0)) && (n4 === 1 ? X2.delete(e5) : X2.set(e5, n4 - 1)), t5);
                     }), i3 = u2(d2.currentTime + n3 / d2.sampleRate, d2.sampleRate, () => B2.process(t4, G2, U2));
                     Q2 = i3;
                     for (let t5 = 0, s4 = 0; t5 < g2.numberOfOutputs; t5 += 1) {
                       for (let i4 = 0; i4 < v2[t5]; i4 += 1)
-                        _t(e3, G2[t5], i4, s4 + i4, n3);
+                        _t(e4, G2[t5], i4, s4 + i4, n3);
                       s4 += v2[t5];
                     }
                   } catch (t4) {
@@ -3519,14 +3535,14 @@
                   if (!Q2) {
                     for (let t4 = 0; t4 < g2.numberOfInputs; t4 += 1) {
                       T2[t4].disconnect(S2[t4]);
-                      for (let e4 = 0; e4 < g2.channelCount; e4 += 1)
-                        S2[n3].disconnect(C2, e4, t4 * g2.channelCount + e4);
+                      for (let e5 = 0; e5 < g2.channelCount; e5 += 1)
+                        S2[n3].disconnect(C2, e5, t4 * g2.channelCount + e5);
                     }
                     if (_2.parameterDescriptors !== void 0) {
                       const t4 = _2.parameterDescriptors.length;
-                      for (let e4 = 0; e4 < t4; e4 += 1) {
-                        const t5 = k2[e4];
-                        t5.disconnect(C2, 0, y2 + e4), t5.stop();
+                      for (let e5 = 0; e5 < t4; e5 += 1) {
+                        const t5 = k2[e5];
+                        t5.disconnect(C2, 0, y2 + e5), t5.stop();
                       }
                     }
                     C2.disconnect(D2), D2.onaudioprocess = null, Y2 ? Z2() : J2();
@@ -3542,51 +3558,51 @@
             return $2(), p2(I2, () => {
               if (Q2) {
                 J2(), g2.numberOfOutputs > 0 && D2.connect(O2);
-                for (let t3 = 0, e3 = 0; t3 < g2.numberOfOutputs; t3 += 1) {
+                for (let t3 = 0, e4 = 0; t3 < g2.numberOfOutputs; t3 += 1) {
                   const s3 = M2[t3];
                   for (let n3 = 0; n3 < v2[t3]; n3 += 1)
-                    O2.connect(s3, e3 + n3, n3);
-                  e3 += v2[t3];
+                    O2.connect(s3, e4 + n3, n3);
+                  e4 += v2[t3];
                 }
               }
               Y2 = true;
             }, () => {
               Q2 && ($2(), Z2()), Y2 = false;
             });
-          })(En, q, At, Es, Wt, Is, Qt, Yt, Ht, qn, _n, In, As), Nn = ((t2, e2, s2, n2, i2) => (o2, r2, a2, c2, h2, u2) => {
+          })(En, q, At, Es, Wt, Is, Qt, Yt, Ht, qn, _n, In, As), Nn = ((t2, e3, s2, n2, i2) => (o2, r2, a2, c2, h2, u2) => {
             if (a2 !== null)
               try {
-                const e3 = new a2(o2, c2, u2), n3 = /* @__PURE__ */ new Map();
+                const e4 = new a2(o2, c2, u2), n3 = /* @__PURE__ */ new Map();
                 let r3 = null;
-                if (Object.defineProperties(e3, { channelCount: { get: () => u2.channelCount, set: () => {
+                if (Object.defineProperties(e4, { channelCount: { get: () => u2.channelCount, set: () => {
                   throw t2();
                 } }, channelCountMode: { get: () => "explicit", set: () => {
                   throw t2();
                 } }, onprocessorerror: { get: () => r3, set: (t3) => {
-                  typeof r3 == "function" && e3.removeEventListener("processorerror", r3), r3 = typeof t3 == "function" ? t3 : null, typeof r3 == "function" && e3.addEventListener("processorerror", r3);
-                } } }), e3.addEventListener = (p2 = e3.addEventListener, (...t3) => {
+                  typeof r3 == "function" && e4.removeEventListener("processorerror", r3), r3 = typeof t3 == "function" ? t3 : null, typeof r3 == "function" && e4.addEventListener("processorerror", r3);
+                } } }), e4.addEventListener = (p2 = e4.addEventListener, (...t3) => {
                   if (t3[0] === "processorerror") {
-                    const e4 = typeof t3[1] == "function" ? t3[1] : typeof t3[1] == "object" && t3[1] !== null && typeof t3[1].handleEvent == "function" ? t3[1].handleEvent : null;
-                    if (e4 !== null) {
+                    const e5 = typeof t3[1] == "function" ? t3[1] : typeof t3[1] == "object" && t3[1] !== null && typeof t3[1].handleEvent == "function" ? t3[1].handleEvent : null;
+                    if (e5 !== null) {
                       const s3 = n3.get(t3[1]);
                       s3 !== void 0 ? t3[1] = s3 : (t3[1] = (s4) => {
-                        s4.type === "error" ? (Object.defineProperties(s4, { type: { value: "processorerror" } }), e4(s4)) : e4(new ErrorEvent(t3[0], { ...s4 }));
-                      }, n3.set(e4, t3[1]));
+                        s4.type === "error" ? (Object.defineProperties(s4, { type: { value: "processorerror" } }), e5(s4)) : e5(new ErrorEvent(t3[0], { ...s4 }));
+                      }, n3.set(e5, t3[1]));
                     }
                   }
-                  return p2.call(e3, "error", t3[1], t3[2]), p2.call(e3, ...t3);
-                }), e3.removeEventListener = (l2 = e3.removeEventListener, (...t3) => {
+                  return p2.call(e4, "error", t3[1], t3[2]), p2.call(e4, ...t3);
+                }), e4.removeEventListener = (l2 = e4.removeEventListener, (...t3) => {
                   if (t3[0] === "processorerror") {
-                    const e4 = n3.get(t3[1]);
-                    e4 !== void 0 && (n3.delete(t3[1]), t3[1] = e4);
+                    const e5 = n3.get(t3[1]);
+                    e5 !== void 0 && (n3.delete(t3[1]), t3[1] = e5);
                   }
-                  return l2.call(e3, "error", t3[1], t3[2]), l2.call(e3, t3[0], t3[1], t3[2]);
+                  return l2.call(e4, "error", t3[1], t3[2]), l2.call(e4, t3[0], t3[1], t3[2]);
                 }), u2.numberOfOutputs !== 0) {
                   const t3 = s2(o2, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", gain: 0 });
-                  e3.connect(t3).connect(o2.destination);
-                  return i2(e3, () => t3.disconnect(), () => t3.connect(o2.destination));
+                  e4.connect(t3).connect(o2.destination);
+                  return i2(e4, () => t3.disconnect(), () => t3.connect(o2.destination));
                 }
-                return e3;
+                return e4;
               } catch (t3) {
                 if (t3.code === 11)
                   throw n2();
@@ -3596,14 +3612,14 @@
             if (h2 === void 0)
               throw n2();
             return ((t3) => {
-              const { port1: e3 } = new MessageChannel();
+              const { port1: e4 } = new MessageChannel();
               try {
-                e3.postMessage(t3);
+                e4.postMessage(t3);
               } finally {
-                e3.close();
+                e4.close();
               }
-            })(u2), e2(o2, r2, h2, u2);
-          })(At, Vn, Qt, Ht, As), Pn = ((t2, e2, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2, d2, f2, _2) => (m2, g2, v2) => {
+            })(u2), e3(o2, r2, h2, u2);
+          })(At, Vn, Qt, Ht, As), Pn = ((t2, e3, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2, d2, f2, _2) => (m2, g2, v2) => {
             const y2 = /* @__PURE__ */ new WeakMap();
             let x2 = null;
             return { render(w2, b2, T2) {
@@ -3613,11 +3629,11 @@
                 let T3 = u2(a3), S3 = null;
                 const k2 = E(T3, w3), C2 = Array.isArray(g2.outputChannelCount) ? g2.outputChannelCount : Array.from(g2.outputChannelCount);
                 if (l2 === null) {
-                  const t3 = C2.reduce((t4, e3) => t4 + e3, 0), s3 = i2(w3, { channelCount: Math.max(1, t3), channelCountMode: "explicit", channelInterpretation: "discrete", numberOfOutputs: Math.max(1, t3) }), o3 = [];
+                  const t3 = C2.reduce((t4, e4) => t4 + e4, 0), s3 = i2(w3, { channelCount: Math.max(1, t3), channelCountMode: "explicit", channelInterpretation: "discrete", numberOfOutputs: Math.max(1, t3) }), o3 = [];
                   for (let t4 = 0; t4 < a3.numberOfOutputs; t4 += 1)
                     o3.push(n2(w3, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: C2[t4] }));
                   const h3 = r2(w3, { channelCount: g2.channelCount, channelCountMode: g2.channelCountMode, channelInterpretation: g2.channelInterpretation, gain: 1 });
-                  h3.connect = e2.bind(null, o3), h3.disconnect = c2.bind(null, o3), S3 = [s3, o3, h3];
+                  h3.connect = e3.bind(null, o3), h3.disconnect = c2.bind(null, o3), S3 = [s3, o3, h3];
                 } else
                   k2 || (T3 = new l2(w3, m2));
                 if (y2.set(w3, S3 === null ? T3 : S3[2]), S3 !== null) {
@@ -3626,55 +3642,55 @@
                       throw new Error("Missing the processor constructor.");
                     if (p2 === null)
                       throw new Error("Missing the native OfflineAudioContext constructor.");
-                    const t4 = a3.channelCount * a3.numberOfInputs, e4 = v2.parameterDescriptors === void 0 ? 0 : v2.parameterDescriptors.length, s3 = t4 + e4, c4 = async () => {
+                    const t4 = a3.channelCount * a3.numberOfInputs, e5 = v2.parameterDescriptors === void 0 ? 0 : v2.parameterDescriptors.length, s3 = t4 + e5, c4 = async () => {
                       const c5 = new p2(s3, 128 * Math.ceil(a3.context.length / 128), w3.sampleRate), h3 = [], u4 = [];
                       for (let t5 = 0; t5 < g2.numberOfInputs; t5 += 1)
                         h3.push(r2(c5, { channelCount: g2.channelCount, channelCountMode: g2.channelCountMode, channelInterpretation: g2.channelInterpretation, gain: 1 })), u4.push(i2(c5, { channelCount: g2.channelCount, channelCountMode: "explicit", channelInterpretation: "discrete", numberOfOutputs: g2.channelCount }));
                       const l4 = await Promise.all(Array.from(a3.parameters.values()).map(async (t5) => {
-                        const e5 = o2(c5, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", offset: t5.value });
-                        return await d2(c5, t5, e5.offset, b3), e5;
-                      })), m3 = n2(c5, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: Math.max(1, t4 + e4) });
+                        const e6 = o2(c5, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "discrete", offset: t5.value });
+                        return await d2(c5, t5, e6.offset, b3), e6;
+                      })), m3 = n2(c5, { channelCount: 1, channelCountMode: "explicit", channelInterpretation: "speakers", numberOfInputs: Math.max(1, t4 + e5) });
                       for (let t5 = 0; t5 < g2.numberOfInputs; t5 += 1) {
                         h3[t5].connect(u4[t5]);
-                        for (let e5 = 0; e5 < g2.channelCount; e5 += 1)
-                          u4[t5].connect(m3, e5, t5 * g2.channelCount + e5);
+                        for (let e6 = 0; e6 < g2.channelCount; e6 += 1)
+                          u4[t5].connect(m3, e6, t5 * g2.channelCount + e6);
                       }
-                      for (const [e5, s4] of l4.entries())
-                        s4.connect(m3, 0, t4 + e5), s4.start(0);
+                      for (const [e6, s4] of l4.entries())
+                        s4.connect(m3, 0, t4 + e6), s4.start(0);
                       return m3.connect(c5.destination), await Promise.all(h3.map((t5) => f2(a3, c5, t5, b3))), _2(c5);
                     };
                     x2 = gt(a3, s3 === 0 ? null : await c4(), w3, g2, C2, v2, h2);
                   }
-                  const t3 = await x2, e3 = s2(w3, { buffer: null, channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", loop: false, loopEnd: 0, loopStart: 0, playbackRate: 1 }), [c3, u3, l3] = S3;
-                  t3 !== null && (e3.buffer = t3, e3.start(0)), e3.connect(c3);
-                  for (let t4 = 0, e4 = 0; t4 < a3.numberOfOutputs; t4 += 1) {
+                  const t3 = await x2, e4 = s2(w3, { buffer: null, channelCount: 2, channelCountMode: "max", channelInterpretation: "speakers", loop: false, loopEnd: 0, loopStart: 0, playbackRate: 1 }), [c3, u3, l3] = S3;
+                  t3 !== null && (e4.buffer = t3, e4.start(0)), e4.connect(c3);
+                  for (let t4 = 0, e5 = 0; t4 < a3.numberOfOutputs; t4 += 1) {
                     const s3 = u3[t4];
                     for (let n3 = 0; n3 < C2[t4]; n3 += 1)
-                      c3.connect(s3, e4 + n3, n3);
-                    e4 += C2[t4];
+                      c3.connect(s3, e5 + n3, n3);
+                    e5 += C2[t4];
                   }
                   return l3;
                 }
                 if (k2)
-                  for (const [e3, s3] of a3.parameters.entries())
-                    await t2(w3, s3, T3.parameters.get(e3), b3);
+                  for (const [e4, s3] of a3.parameters.entries())
+                    await t2(w3, s3, T3.parameters.get(e4), b3);
                 else
-                  for (const [t3, e3] of a3.parameters.entries())
-                    await d2(w3, e3, T3.parameters.get(t3), b3);
+                  for (const [t3, e4] of a3.parameters.entries())
+                    await d2(w3, e4, T3.parameters.get(t3), b3);
                 return await f2(a3, w3, T3, b3), T3;
               })(w2, b2, T2);
             } };
-          })(as, En, cs, Es, Wt, Is, Qt, Rn, qn, _n, st, vn, Ve, us, Oe, Us), jn = ((t2) => (e2) => t2.get(e2))(mn), Ln = ((t2) => (e2, s2) => {
-            t2.set(e2, s2);
-          })(Fn), zn = fn ? ((t2, e2, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2) => class extends e2 {
-            constructor(e3, p3, d2) {
+          })(as, En, cs, Es, Wt, Is, Qt, Rn, qn, _n, st, vn, Ve, us, Oe, Us), jn = ((t2) => (e3) => t2.get(e3))(mn), Ln = ((t2) => (e3, s2) => {
+            t2.set(e3, s2);
+          })(Fn), zn = fn ? ((t2, e3, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2) => class extends e3 {
+            constructor(e4, p3, d2) {
               var f2;
-              const m2 = a2(e3), g2 = c2(m2), v2 = u2({ ...dt, ...d2 }), y2 = _.get(m2), x2 = y2 == null ? void 0 : y2.get(p3), w2 = g2 || m2.state !== "closed" ? m2 : (f2 = r2(m2)) !== null && f2 !== void 0 ? f2 : m2, b2 = i2(w2, g2 ? null : e3.baseLatency, h2, p3, x2, v2);
-              super(e3, true, b2, g2 ? n2(p3, v2, x2) : null);
+              const m2 = a2(e4), g2 = c2(m2), v2 = u2({ ...dt, ...d2 }), y2 = _.get(m2), x2 = y2 == null ? void 0 : y2.get(p3), w2 = g2 || m2.state !== "closed" ? m2 : (f2 = r2(m2)) !== null && f2 !== void 0 ? f2 : m2, b2 = i2(w2, g2 ? null : e4.baseLatency, h2, p3, x2, v2);
+              super(e4, true, b2, g2 ? n2(p3, v2, x2) : null);
               const T2 = [];
-              b2.parameters.forEach((t3, e4) => {
+              b2.parameters.forEach((t3, e5) => {
                 const n3 = s2(this, g2, t3);
-                T2.push([e4, n3]);
+                T2.push([e5, n3]);
               }), this._nativeAudioWorkletNode = b2, this._onprocessorerror = null, this._parameters = new pt(T2), g2 && t2(m2, this);
               const { activeInputs: S2 } = o2(this);
               l2(b2, S2);
@@ -3683,10 +3699,10 @@
               return this._onprocessorerror;
             }
             set onprocessorerror(t3) {
-              const e3 = typeof t3 == "function" ? p2(this, t3) : null;
-              this._nativeAudioWorkletNode.onprocessorerror = e3;
+              const e4 = typeof t3 == "function" ? p2(this, t3) : null;
+              this._nativeAudioWorkletNode.onprocessorerror = e4;
               const s3 = this._nativeAudioWorkletNode.onprocessorerror;
-              this._onprocessorerror = s3 !== null && s3 === e3 ? t3 : s3;
+              this._onprocessorerror = s3 !== null && s3 === e4 ? t3 : s3;
             }
             get parameters() {
               return this._parameters === null ? this._nativeAudioWorkletNode.parameters : this._parameters;
@@ -3694,22 +3710,22 @@
             get port() {
               return this._nativeAudioWorkletNode.port;
             }
-          })(On, Ze, ps, Pn, Nn, L, jn, Fe, Ne, vn, (t2) => ({ ...t2, outputChannelCount: t2.outputChannelCount !== void 0 ? t2.outputChannelCount : t2.numberOfInputs === 1 && t2.numberOfOutputs === 1 ? [t2.channelCount] : Array.from({ length: t2.numberOfOutputs }, () => 1) }), Ln, de) : void 0, Bn = (((t2, e2, s2, n2, i2) => {
-          })(At, Ht, se, $s, Be), ((t2, e2) => (s2, n2, i2) => {
-            if (e2 === null)
+          })(On, Ze, ps, Pn, Nn, L, jn, Fe, Ne, vn, (t2) => ({ ...t2, outputChannelCount: t2.outputChannelCount !== void 0 ? t2.outputChannelCount : t2.numberOfInputs === 1 && t2.numberOfOutputs === 1 ? [t2.channelCount] : Array.from({ length: t2.numberOfOutputs }, () => 1) }), Ln, de) : void 0, Bn = (((t2, e3, s2, n2, i2) => {
+          })(At, Ht, se, $s, Be), ((t2, e3) => (s2, n2, i2) => {
+            if (e3 === null)
               throw new Error("Missing the native OfflineAudioContext constructor.");
             try {
-              return new e2(s2, n2, i2);
-            } catch (e3) {
-              if (e3.name === "SyntaxError")
+              return new e3(s2, n2, i2);
+            } catch (e4) {
+              if (e4.name === "SyntaxError")
                 throw t2();
-              throw e3;
+              throw e4;
             }
-          })(Ht, Ve)), Wn = ((t2, e2, s2, n2, i2, o2, r2, a2) => {
+          })(Ht, Ve)), Wn = ((t2, e3, s2, n2, i2, o2, r2, a2) => {
             const c2 = [];
-            return (h2, u2) => s2(h2).render(h2, u2, c2).then(() => Promise.all(Array.from(n2(u2)).map((t3) => s2(t3).render(t3, u2, c2)))).then(() => i2(u2)).then((s3) => (typeof s3.copyFromChannel != "function" ? (r2(s3), F(s3)) : e2(o2, () => o2(s3)) || a2(s3), t2.add(s3), s3));
-          })(He, xe, Ae, An, Us, R, ts, es), Gn = (((t2, e2, s2, n2, i2) => {
-          })(xe, At, Bn, $s, Wn), ((t2, e2, s2, n2, i2) => class extends t2 {
+            return (h2, u2) => s2(h2).render(h2, u2, c2).then(() => Promise.all(Array.from(n2(u2)).map((t3) => s2(t3).render(t3, u2, c2)))).then(() => i2(u2)).then((s3) => (typeof s3.copyFromChannel != "function" ? (r2(s3), F(s3)) : e3(o2, () => o2(s3)) || a2(s3), t2.add(s3), s3));
+          })(He, xe, Ae, An, Us, R, ts, es), Gn = (((t2, e3, s2, n2, i2) => {
+          })(xe, At, Bn, $s, Wn), ((t2, e3, s2, n2, i2) => class extends t2 {
             constructor(t3, s3, i3) {
               let o2;
               if (typeof t3 == "number" && s3 !== void 0 && i3 !== void 0)
@@ -3720,12 +3736,12 @@
                 o2 = t3;
               }
               const { length: r2, numberOfChannels: a2, sampleRate: c2 } = { ...$t, ...o2 }, h2 = n2(a2, r2, c2);
-              e2(Rt, () => Rt(h2)) || h2.addEventListener("statechange", (() => {
+              e3(Rt, () => Rt(h2)) || h2.addEventListener("statechange", (() => {
                 let t4 = 0;
-                const e3 = (s4) => {
-                  this._state === "running" && (t4 > 0 ? (h2.removeEventListener("statechange", e3), s4.stopImmediatePropagation(), this._waitForThePromiseToSettle(s4)) : t4 += 1);
+                const e4 = (s4) => {
+                  this._state === "running" && (t4 > 0 ? (h2.removeEventListener("statechange", e4), s4.stopImmediatePropagation(), this._waitForThePromiseToSettle(s4)) : t4 += 1);
                 };
-                return e3;
+                return e4;
               })()), super(h2, a2), this._length = r2, this._nativeOfflineAudioContext = h2, this._state = null;
             }
             get length() {
@@ -3742,30 +3758,30 @@
             _waitForThePromiseToSettle(t3) {
               this._state === null ? this._nativeOfflineAudioContext.dispatchEvent(t3) : setTimeout(() => this._waitForThePromiseToSettle(t3));
             }
-          })(wn, xe, At, Bn, Wn)), Un = ((t2, e2) => (s2) => {
+          })(wn, xe, At, Bn, Wn)), Un = ((t2, e3) => (s2) => {
             const n2 = t2.get(s2);
-            return e2(n2) || e2(s2);
+            return e3(n2) || e3(s2);
           })(p, We), Qn = (Zn = h, Xn = Ue, (t2) => Zn.has(t2) || Xn(t2));
           var Zn, Xn;
           const Yn = (Hn = l, $n = Qe, (t2) => Hn.has(t2) || $n(t2));
           var Hn, $n;
-          const Jn = ((t2, e2) => (s2) => {
+          const Jn = ((t2, e3) => (s2) => {
             const n2 = t2.get(s2);
-            return e2(n2) || e2(s2);
-          })(p, Ne), Kn = () => (async (t2, e2, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2, d2, f2, _2) => {
-            if (t2(e2, e2) && t2(s2, s2) && t2(i2, i2) && t2(o2, o2) && t2(a2, a2) && t2(c2, c2) && t2(h2, h2) && t2(u2, u2) && t2(l2, l2) && t2(p2, p2) && t2(d2, d2)) {
+            return e3(n2) || e3(s2);
+          })(p, Ne), Kn = () => (async (t2, e3, s2, n2, i2, o2, r2, a2, c2, h2, u2, l2, p2, d2, f2, _2) => {
+            if (t2(e3, e3) && t2(s2, s2) && t2(i2, i2) && t2(o2, o2) && t2(a2, a2) && t2(c2, c2) && t2(h2, h2) && t2(u2, u2) && t2(l2, l2) && t2(p2, p2) && t2(d2, d2)) {
               return (await Promise.all([t2(n2, n2), t2(r2, r2), t2(f2, f2), t2(_2, _2)])).every((t3) => t3);
             }
             return false;
           })(xe, ((t2) => () => {
             if (t2 === null)
               return false;
-            const e2 = new t2(1, 1, 44100).createBuffer(1, 1, 44100);
-            if (e2.copyToChannel === void 0)
+            const e3 = new t2(1, 1, 44100).createBuffer(1, 1, 44100);
+            if (e3.copyToChannel === void 0)
               return true;
             const s2 = new Float32Array(2);
             try {
-              e2.copyFromChannel(s2, 0, 0);
+              e3.copyFromChannel(s2, 0, 0);
             } catch {
               return false;
             }
@@ -3775,24 +3791,24 @@
               return false;
             if (t2.prototype !== void 0 && t2.prototype.close !== void 0)
               return true;
-            const e2 = new t2(), s2 = e2.close !== void 0;
+            const e3 = new t2(), s2 = e3.close !== void 0;
             try {
-              e2.close();
+              e3.close();
             } catch {
             }
             return s2;
           })(Be), ((t2) => () => {
             if (t2 === null)
               return Promise.resolve(false);
-            const e2 = new t2(1, 1, 44100);
+            const e3 = new t2(1, 1, 44100);
             return new Promise((t3) => {
               let s2 = true;
               const n2 = (n3) => {
-                s2 && (s2 = false, e2.startRendering(), t3(n3 instanceof TypeError));
+                s2 && (s2 = false, e3.startRendering(), t3(n3 instanceof TypeError));
               };
               let i2;
               try {
-                i2 = e2.decodeAudioData(null, () => {
+                i2 = e3.decodeAudioData(null, () => {
                 }, n2);
               } catch (t4) {
                 n2(t4);
@@ -3802,29 +3818,29 @@
           })(Ve), ((t2) => () => {
             if (t2 === null)
               return false;
-            let e2;
+            let e3;
             try {
-              e2 = new t2({ latencyHint: "balanced" });
+              e3 = new t2({ latencyHint: "balanced" });
             } catch {
               return false;
             }
-            return e2.close(), true;
+            return e3.close(), true;
           })(Be), ((t2) => () => {
             if (t2 === null)
               return false;
-            const e2 = new t2(1, 1, 44100).createGain(), s2 = e2.connect(e2) === e2;
-            return e2.disconnect(e2), s2;
-          })(Ve), ((t2, e2) => async () => {
+            const e3 = new t2(1, 1, 44100).createGain(), s2 = e3.connect(e3) === e3;
+            return e3.disconnect(e3), s2;
+          })(Ve), ((t2, e3) => async () => {
             if (t2 === null)
               return true;
-            if (e2 === null)
+            if (e3 === null)
               return false;
-            const s2 = new Blob(['class A extends AudioWorkletProcessor{process(){this.port.postMessage(0)}}registerProcessor("a",A)'], { type: "application/javascript; charset=utf-8" }), n2 = new e2(1, 128, 8e3), i2 = URL.createObjectURL(s2);
+            const s2 = new Blob(['class A extends AudioWorkletProcessor{process(){this.port.postMessage(0)}}registerProcessor("a",A)'], { type: "application/javascript; charset=utf-8" }), n2 = new e3(1, 128, 8e3), i2 = URL.createObjectURL(s2);
             let o2 = false;
             try {
               await n2.audioWorklet.addModule(i2);
-              const e3 = new t2(n2, "a", { numberOfOutputs: 0 }), s3 = n2.createOscillator();
-              e3.port.onmessage = () => o2 = true, s3.connect(e3), s3.start(0), await n2.startRendering(), o2 || await new Promise((t3) => setTimeout(t3, 5));
+              const e4 = new t2(n2, "a", { numberOfOutputs: 0 }), s3 = n2.createOscillator();
+              e4.port.onmessage = () => o2 = true, s3.connect(e4), s3.start(0), await n2.startRendering(), o2 || await new Promise((t3) => setTimeout(t3, 5));
             } catch {
             } finally {
               URL.revokeObjectURL(i2);
@@ -3833,11 +3849,11 @@
           })(vn, Ve), ((t2) => () => {
             if (t2 === null)
               return false;
-            const e2 = new t2(1, 1, 44100).createChannelMerger();
-            if (e2.channelCountMode === "max")
+            const e3 = new t2(1, 1, 44100).createChannelMerger();
+            if (e3.channelCountMode === "max")
               return true;
             try {
-              e2.channelCount = 2;
+              e3.channelCount = 2;
             } catch {
               return true;
             }
@@ -3845,17 +3861,17 @@
           })(Ve), ((t2) => () => {
             if (t2 === null)
               return false;
-            const e2 = new t2(1, 1, 44100);
-            if (e2.createConstantSource === void 0)
+            const e3 = new t2(1, 1, 44100);
+            if (e3.createConstantSource === void 0)
               return true;
-            return e2.createConstantSource().offset.maxValue !== Number.POSITIVE_INFINITY;
+            return e3.createConstantSource().offset.maxValue !== Number.POSITIVE_INFINITY;
           })(Ve), ((t2) => () => {
             if (t2 === null)
               return false;
-            const e2 = new t2(1, 1, 44100), s2 = e2.createConvolver();
-            s2.buffer = e2.createBuffer(1, 1, e2.sampleRate);
+            const e3 = new t2(1, 1, 44100), s2 = e3.createConvolver();
+            s2.buffer = e3.createBuffer(1, 1, e3.sampleRate);
             try {
-              s2.buffer = e2.createBuffer(1, 1, e2.sampleRate);
+              s2.buffer = e3.createBuffer(1, 1, e3.sampleRate);
             } catch {
               return false;
             }
@@ -3863,9 +3879,9 @@
           })(Ve), ((t2) => () => {
             if (t2 === null)
               return false;
-            const e2 = new t2(1, 1, 44100).createConvolver();
+            const e3 = new t2(1, 1, 44100).createConvolver();
             try {
-              e2.channelCount = 1;
+              e3.channelCount = 1;
             } catch {
               return false;
             }
@@ -3873,30 +3889,30 @@
           })(Ve), ue, ((t2) => () => t2 !== null && t2.hasOwnProperty("isSecureContext"))(Te), ((t2) => () => {
             if (t2 === null)
               return false;
-            const e2 = new t2();
+            const e3 = new t2();
             try {
-              return e2.createMediaStreamSource(new MediaStream()), false;
+              return e3.createMediaStreamSource(new MediaStream()), false;
             } catch (t3) {
               return true;
             }
           })(Be), ((t2) => () => {
             if (t2 === null)
               return Promise.resolve(false);
-            const e2 = new t2(1, 1, 44100);
-            if (e2.createStereoPanner === void 0)
+            const e3 = new t2(1, 1, 44100);
+            if (e3.createStereoPanner === void 0)
               return Promise.resolve(true);
-            if (e2.createConstantSource === void 0)
+            if (e3.createConstantSource === void 0)
               return Promise.resolve(true);
-            const s2 = e2.createConstantSource(), n2 = e2.createStereoPanner();
-            return s2.channelCount = 1, s2.offset.value = 1, n2.channelCount = 1, s2.start(), s2.connect(n2).connect(e2.destination), e2.startRendering().then((t3) => t3.getChannelData(0)[0] !== 1);
+            const s2 = e3.createConstantSource(), n2 = e3.createStereoPanner();
+            return s2.channelCount = 1, s2.offset.value = 1, n2.channelCount = 1, s2.start(), s2.connect(n2).connect(e3.destination), e3.startRendering().then((t3) => t3.getChannelData(0)[0] !== 1);
           })(Ve), le);
-          function ti(t2, e2) {
+          function ti(t2, e3) {
             if (!t2)
-              throw new Error(e2);
+              throw new Error(e3);
           }
-          function ei(t2, e2, s2 = 1 / 0) {
-            if (!(e2 <= t2 && t2 <= s2))
-              throw new RangeError(`Value must be within [${e2}, ${s2}], got: ${t2}`);
+          function ei(t2, e3, s2 = 1 / 0) {
+            if (!(e3 <= t2 && t2 <= s2))
+              throw new RangeError(`Value must be within [${e3}, ${s2}], got: ${t2}`);
           }
           function si(t2) {
             t2.isOffline || t2.state === "running" || ri('The AudioContext is "suspended". Invoke Tone.start() from a user action to start the audio.');
@@ -3939,16 +3955,16 @@
             return fi(t2) && /^([a-g]{1}(?:b|#|x|bb)?)(-?[0-9]+)/i.test(t2);
           }
           const mi = typeof self == "object" ? self : null, gi = mi && (mi.hasOwnProperty("AudioContext") || mi.hasOwnProperty("webkitAudioContext"));
-          function vi(t2, e2, s2, n2) {
-            var i2, o2 = arguments.length, r2 = o2 < 3 ? e2 : n2 === null ? n2 = Object.getOwnPropertyDescriptor(e2, s2) : n2;
+          function vi(t2, e3, s2, n2) {
+            var i2, o2 = arguments.length, r2 = o2 < 3 ? e3 : n2 === null ? n2 = Object.getOwnPropertyDescriptor(e3, s2) : n2;
             if (typeof Reflect == "object" && typeof Reflect.decorate == "function")
-              r2 = Reflect.decorate(t2, e2, s2, n2);
+              r2 = Reflect.decorate(t2, e3, s2, n2);
             else
               for (var a2 = t2.length - 1; a2 >= 0; a2--)
-                (i2 = t2[a2]) && (r2 = (o2 < 3 ? i2(r2) : o2 > 3 ? i2(e2, s2, r2) : i2(e2, s2)) || r2);
-            return o2 > 3 && r2 && Object.defineProperty(e2, s2, r2), r2;
+                (i2 = t2[a2]) && (r2 = (o2 < 3 ? i2(r2) : o2 > 3 ? i2(e3, s2, r2) : i2(e3, s2)) || r2);
+            return o2 > 3 && r2 && Object.defineProperty(e3, s2, r2), r2;
           }
-          function yi(t2, e2, s2, n2) {
+          function yi(t2, e3, s2, n2) {
             return new (s2 || (s2 = Promise))(function(i2, o2) {
               function r2(t3) {
                 try {
@@ -3965,19 +3981,19 @@
                 }
               }
               function c2(t3) {
-                var e3;
-                t3.done ? i2(t3.value) : (e3 = t3.value, e3 instanceof s2 ? e3 : new s2(function(t4) {
-                  t4(e3);
+                var e4;
+                t3.done ? i2(t3.value) : (e4 = t3.value, e4 instanceof s2 ? e4 : new s2(function(t4) {
+                  t4(e4);
                 })).then(r2, a2);
               }
-              c2((n2 = n2.apply(t2, e2 || [])).next());
+              c2((n2 = n2.apply(t2, e3 || [])).next());
             });
           }
           Object.create;
           Object.create;
           class xi {
-            constructor(t2, e2, s2) {
-              this._callback = t2, this._type = e2, this._updateInterval = s2, this._createClock();
+            constructor(t2, e3, s2) {
+              this._callback = t2, this._type = e3, this._updateInterval = s2, this._createClock();
             }
             _createWorker() {
               const t2 = new Blob([`
@@ -3995,7 +4011,7 @@
 			}
 			// call tick initially
 			tick();
-			`], { type: "text/javascript" }), e2 = URL.createObjectURL(t2), s2 = new Worker(e2);
+			`], { type: "text/javascript" }), e3 = URL.createObjectURL(t2), s2 = new Worker(e3);
               s2.onmessage = this._callback.bind(this), this._worker = s2;
             }
             _createTimeout() {
@@ -4047,22 +4063,22 @@
           function ki(t2) {
             return t2 instanceof AudioBuffer;
           }
-          function Ci(t2, e2) {
-            return t2 === "value" || wi(e2) || bi(e2) || ki(e2);
+          function Ci(t2, e3) {
+            return t2 === "value" || wi(e3) || bi(e3) || ki(e3);
           }
-          function Ai(t2, ...e2) {
-            if (!e2.length)
+          function Ai(t2, ...e3) {
+            if (!e3.length)
               return t2;
-            const s2 = e2.shift();
+            const s2 = e3.shift();
             if (li(t2) && li(s2))
-              for (const e3 in s2)
-                Ci(e3, s2[e3]) ? t2[e3] = s2[e3] : li(s2[e3]) ? (t2[e3] || Object.assign(t2, { [e3]: {} }), Ai(t2[e3], s2[e3])) : Object.assign(t2, { [e3]: s2[e3] });
-            return Ai(t2, ...e2);
+              for (const e4 in s2)
+                Ci(e4, s2[e4]) ? t2[e4] = s2[e4] : li(s2[e4]) ? (t2[e4] || Object.assign(t2, { [e4]: {} }), Ai(t2[e4], s2[e4])) : Object.assign(t2, { [e4]: s2[e4] });
+            return Ai(t2, ...e3);
           }
-          function Di(t2, e2, s2 = [], n2) {
-            const i2 = {}, o2 = Array.from(e2);
+          function Di(t2, e3, s2 = [], n2) {
+            const i2 = {}, o2 = Array.from(e3);
             if (li(o2[0]) && n2 && !Reflect.has(o2[0], n2)) {
-              Object.keys(o2[0]).some((e3) => Reflect.has(t2, e3)) || (Ai(i2, { [n2]: o2[0] }), s2.splice(s2.indexOf(n2), 1), o2.shift());
+              Object.keys(o2[0]).some((e4) => Reflect.has(t2, e4)) || (Ai(i2, { [n2]: o2[0] }), s2.splice(s2.indexOf(n2), 1), o2.shift());
             }
             if (o2.length === 1 && li(o2[0]))
               Ai(i2, o2[0]);
@@ -4071,12 +4087,12 @@
                 ci(o2[t3]) && (i2[s2[t3]] = o2[t3]);
             return Ai(t2, i2);
           }
-          function Oi(t2, e2) {
-            return ai(t2) ? e2 : t2;
+          function Oi(t2, e3) {
+            return ai(t2) ? e3 : t2;
           }
-          function Mi(t2, e2) {
-            return e2.forEach((e3) => {
-              Reflect.has(t2, e3) && delete t2[e3];
+          function Mi(t2, e3) {
+            return e3.forEach((e4) => {
+              Reflect.has(t2, e4) && delete t2[e4];
             }), t2;
           }
           class Ei {
@@ -4100,20 +4116,20 @@
             }
           }
           Ei.version = o;
-          function Ri(t2, e2) {
-            return t2 > e2 + 1e-6;
+          function Ri(t2, e3) {
+            return t2 > e3 + 1e-6;
           }
-          function qi(t2, e2) {
-            return Ri(t2, e2) || Ii(t2, e2);
+          function qi(t2, e3) {
+            return Ri(t2, e3) || Ii(t2, e3);
           }
-          function Fi(t2, e2) {
-            return t2 + 1e-6 < e2;
+          function Fi(t2, e3) {
+            return t2 + 1e-6 < e3;
           }
-          function Ii(t2, e2) {
-            return Math.abs(t2 - e2) < 1e-6;
+          function Ii(t2, e3) {
+            return Math.abs(t2 - e3) < 1e-6;
           }
-          function Vi(t2, e2, s2) {
-            return Math.max(Math.min(t2, s2), e2);
+          function Vi(t2, e3, s2) {
+            return Math.max(Math.min(t2, s2), e3);
           }
           class Ni extends Ei {
             constructor() {
@@ -4129,11 +4145,11 @@
             }
             add(t2) {
               if (ti(Reflect.has(t2, "time"), "Timeline: events must have a time attribute"), t2.time = t2.time.valueOf(), this.increasing && this.length) {
-                const e2 = this._timeline[this.length - 1];
-                ti(qi(t2.time, e2.time), "The time must be greater than or equal to the last scheduled time"), this._timeline.push(t2);
+                const e3 = this._timeline[this.length - 1];
+                ti(qi(t2.time, e3.time), "The time must be greater than or equal to the last scheduled time"), this._timeline.push(t2);
               } else {
-                const e2 = this._search(t2.time);
-                this._timeline.splice(e2 + 1, 0, t2);
+                const e3 = this._search(t2.time);
+                this._timeline.splice(e3 + 1, 0, t2);
               }
               if (this.length > this.memory) {
                 const t3 = this.length - this.memory;
@@ -4142,11 +4158,11 @@
               return this;
             }
             remove(t2) {
-              const e2 = this._timeline.indexOf(t2);
-              return e2 !== -1 && this._timeline.splice(e2, 1), this;
+              const e3 = this._timeline.indexOf(t2);
+              return e3 !== -1 && this._timeline.splice(e3, 1), this;
             }
-            get(t2, e2 = "time") {
-              const s2 = this._search(t2, e2);
+            get(t2, e3 = "time") {
+              const s2 = this._search(t2, e3);
               return s2 !== -1 ? this._timeline[s2] : null;
             }
             peek() {
@@ -4155,27 +4171,27 @@
             shift() {
               return this._timeline.shift();
             }
-            getAfter(t2, e2 = "time") {
-              const s2 = this._search(t2, e2);
+            getAfter(t2, e3 = "time") {
+              const s2 = this._search(t2, e3);
               return s2 + 1 < this._timeline.length ? this._timeline[s2 + 1] : null;
             }
             getBefore(t2) {
-              const e2 = this._timeline.length;
-              if (e2 > 0 && this._timeline[e2 - 1].time < t2)
-                return this._timeline[e2 - 1];
+              const e3 = this._timeline.length;
+              if (e3 > 0 && this._timeline[e3 - 1].time < t2)
+                return this._timeline[e3 - 1];
               const s2 = this._search(t2);
               return s2 - 1 >= 0 ? this._timeline[s2 - 1] : null;
             }
             cancel(t2) {
               if (this._timeline.length > 1) {
-                let e2 = this._search(t2);
-                if (e2 >= 0)
-                  if (Ii(this._timeline[e2].time, t2)) {
-                    for (let s2 = e2; s2 >= 0 && Ii(this._timeline[s2].time, t2); s2--)
-                      e2 = s2;
-                    this._timeline = this._timeline.slice(0, e2);
+                let e3 = this._search(t2);
+                if (e3 >= 0)
+                  if (Ii(this._timeline[e3].time, t2)) {
+                    for (let s2 = e3; s2 >= 0 && Ii(this._timeline[s2].time, t2); s2--)
+                      e3 = s2;
+                    this._timeline = this._timeline.slice(0, e3);
                   } else
-                    this._timeline = this._timeline.slice(0, e2 + 1);
+                    this._timeline = this._timeline.slice(0, e3 + 1);
                 else
                   this._timeline = [];
               } else
@@ -4183,70 +4199,70 @@
               return this;
             }
             cancelBefore(t2) {
-              const e2 = this._search(t2);
-              return e2 >= 0 && (this._timeline = this._timeline.slice(e2 + 1)), this;
+              const e3 = this._search(t2);
+              return e3 >= 0 && (this._timeline = this._timeline.slice(e3 + 1)), this;
             }
             previousEvent(t2) {
-              const e2 = this._timeline.indexOf(t2);
-              return e2 > 0 ? this._timeline[e2 - 1] : null;
+              const e3 = this._timeline.indexOf(t2);
+              return e3 > 0 ? this._timeline[e3 - 1] : null;
             }
-            _search(t2, e2 = "time") {
+            _search(t2, e3 = "time") {
               if (this._timeline.length === 0)
                 return -1;
               let s2 = 0;
               const n2 = this._timeline.length;
               let i2 = n2;
-              if (n2 > 0 && this._timeline[n2 - 1][e2] <= t2)
+              if (n2 > 0 && this._timeline[n2 - 1][e3] <= t2)
                 return n2 - 1;
               for (; s2 < i2; ) {
                 let n3 = Math.floor(s2 + (i2 - s2) / 2);
                 const o2 = this._timeline[n3], r2 = this._timeline[n3 + 1];
-                if (Ii(o2[e2], t2)) {
+                if (Ii(o2[e3], t2)) {
                   for (let s3 = n3; s3 < this._timeline.length; s3++) {
-                    if (!Ii(this._timeline[s3][e2], t2))
+                    if (!Ii(this._timeline[s3][e3], t2))
                       break;
                     n3 = s3;
                   }
                   return n3;
                 }
-                if (Fi(o2[e2], t2) && Ri(r2[e2], t2))
+                if (Fi(o2[e3], t2) && Ri(r2[e3], t2))
                   return n3;
-                Ri(o2[e2], t2) ? i2 = n3 : s2 = n3 + 1;
+                Ri(o2[e3], t2) ? i2 = n3 : s2 = n3 + 1;
               }
               return -1;
             }
-            _iterate(t2, e2 = 0, s2 = this._timeline.length - 1) {
-              this._timeline.slice(e2, s2 + 1).forEach(t2);
+            _iterate(t2, e3 = 0, s2 = this._timeline.length - 1) {
+              this._timeline.slice(e3, s2 + 1).forEach(t2);
             }
             forEach(t2) {
               return this._iterate(t2), this;
             }
-            forEachBefore(t2, e2) {
+            forEachBefore(t2, e3) {
               const s2 = this._search(t2);
-              return s2 !== -1 && this._iterate(e2, 0, s2), this;
+              return s2 !== -1 && this._iterate(e3, 0, s2), this;
             }
-            forEachAfter(t2, e2) {
+            forEachAfter(t2, e3) {
               const s2 = this._search(t2);
-              return this._iterate(e2, s2 + 1), this;
+              return this._iterate(e3, s2 + 1), this;
             }
-            forEachBetween(t2, e2, s2) {
-              let n2 = this._search(t2), i2 = this._search(e2);
-              return n2 !== -1 && i2 !== -1 ? (this._timeline[n2].time !== t2 && (n2 += 1), this._timeline[i2].time === e2 && (i2 -= 1), this._iterate(s2, n2, i2)) : n2 === -1 && this._iterate(s2, 0, i2), this;
+            forEachBetween(t2, e3, s2) {
+              let n2 = this._search(t2), i2 = this._search(e3);
+              return n2 !== -1 && i2 !== -1 ? (this._timeline[n2].time !== t2 && (n2 += 1), this._timeline[i2].time === e3 && (i2 -= 1), this._iterate(s2, n2, i2)) : n2 === -1 && this._iterate(s2, 0, i2), this;
             }
-            forEachFrom(t2, e2) {
+            forEachFrom(t2, e3) {
               let s2 = this._search(t2);
               for (; s2 >= 0 && this._timeline[s2].time >= t2; )
                 s2--;
-              return this._iterate(e2, s2 + 1), this;
+              return this._iterate(e3, s2 + 1), this;
             }
-            forEachAtTime(t2, e2) {
+            forEachAtTime(t2, e3) {
               const s2 = this._search(t2);
               if (s2 !== -1 && Ii(this._timeline[s2].time, t2)) {
                 let n2 = s2;
-                for (let e3 = s2; e3 >= 0 && Ii(this._timeline[e3].time, t2); e3--)
-                  n2 = e3;
+                for (let e4 = s2; e4 >= 0 && Ii(this._timeline[e4].time, t2); e4--)
+                  n2 = e4;
                 this._iterate((t3) => {
-                  e2(t3);
+                  e3(t3);
                 }, n2, s2);
               }
               return this;
@@ -4267,41 +4283,41 @@
             constructor() {
               super(...arguments), this.name = "Emitter";
             }
-            on(t2, e2) {
+            on(t2, e3) {
               return t2.split(/\W+/).forEach((t3) => {
-                ai(this._events) && (this._events = {}), this._events.hasOwnProperty(t3) || (this._events[t3] = []), this._events[t3].push(e2);
+                ai(this._events) && (this._events = {}), this._events.hasOwnProperty(t3) || (this._events[t3] = []), this._events[t3].push(e3);
               }), this;
             }
-            once(t2, e2) {
+            once(t2, e3) {
               const s2 = (...n2) => {
-                e2(...n2), this.off(t2, s2);
+                e3(...n2), this.off(t2, s2);
               };
               return this.on(t2, s2), this;
             }
-            off(t2, e2) {
+            off(t2, e3) {
               return t2.split(/\W+/).forEach((s2) => {
                 if (ai(this._events) && (this._events = {}), this._events.hasOwnProperty(t2))
-                  if (ai(e2))
+                  if (ai(e3))
                     this._events[t2] = [];
                   else {
                     const s3 = this._events[t2];
                     for (let t3 = s3.length - 1; t3 >= 0; t3--)
-                      s3[t3] === e2 && s3.splice(t3, 1);
+                      s3[t3] === e3 && s3.splice(t3, 1);
                   }
               }), this;
             }
-            emit(t2, ...e2) {
+            emit(t2, ...e3) {
               if (this._events && this._events.hasOwnProperty(t2)) {
                 const s2 = this._events[t2].slice(0);
                 for (let t3 = 0, n2 = s2.length; t3 < n2; t3++)
-                  s2[t3].apply(this, e2);
+                  s2[t3].apply(this, e3);
               }
               return this;
             }
             static mixin(t2) {
-              ["on", "once", "off", "emit"].forEach((e2) => {
-                const s2 = Object.getOwnPropertyDescriptor(Bi.prototype, e2);
-                Object.defineProperty(t2.prototype, e2, s2);
+              ["on", "once", "off", "emit"].forEach((e3) => {
+                const s2 = Object.getOwnPropertyDescriptor(Bi.prototype, e3);
+                Object.defineProperty(t2.prototype, e3, s2);
               });
             }
             dispose() {
@@ -4331,7 +4347,7 @@
             }
             initialize() {
               var t2;
-              return this._initialized || (t2 = this, Pi.forEach((e2) => e2(t2)), this._initialized = true), this;
+              return this._initialized || (t2 = this, Pi.forEach((e3) => e3(t2)), this._initialized = true), this;
             }
             createAnalyser() {
               return this._context.createAnalyser();
@@ -4345,8 +4361,8 @@
             createBiquadFilter() {
               return this._context.createBiquadFilter();
             }
-            createBuffer(t2, e2, s2) {
-              return this._context.createBuffer(t2, e2, s2);
+            createBuffer(t2, e3, s2) {
+              return this._context.createBuffer(t2, e3, s2);
             }
             createChannelMerger(t2) {
               return this._context.createChannelMerger(t2);
@@ -4369,14 +4385,14 @@
             createGain() {
               return this._context.createGain();
             }
-            createIIRFilter(t2, e2) {
-              return this._context.createIIRFilter(t2, e2);
+            createIIRFilter(t2, e3) {
+              return this._context.createIIRFilter(t2, e3);
             }
             createPanner() {
               return this._context.createPanner();
             }
-            createPeriodicWave(t2, e2, s2) {
-              return this._context.createPeriodicWave(t2, e2, s2);
+            createPeriodicWave(t2, e3, s2) {
+              return this._context.createPeriodicWave(t2, e3, s2);
             }
             createStereoPanner() {
               return this._context.createStereoPanner();
@@ -4432,20 +4448,20 @@
             set destination(t2) {
               ti(!this._initialized, "The destination cannot be set after initialization."), this._destination = t2;
             }
-            createAudioWorkletNode(t2, e2) {
-              return function(t3, e3, s2) {
-                return ti(ci(zn), "This node only works in a secure context (https or localhost)"), new zn(t3, e3, s2);
-              }(this.rawContext, t2, e2);
+            createAudioWorkletNode(t2, e3) {
+              return function(t3, e4, s2) {
+                return ti(ci(zn), "This node only works in a secure context (https or localhost)"), new zn(t3, e4, s2);
+              }(this.rawContext, t2, e3);
             }
-            addAudioWorkletModule(t2, e2) {
+            addAudioWorkletModule(t2, e3) {
               return yi(this, void 0, void 0, function* () {
-                ti(ci(this.rawContext.audioWorklet), "AudioWorkletNode is only available in a secure context (https or localhost)"), this._workletModules.has(e2) || this._workletModules.set(e2, this.rawContext.audioWorklet.addModule(t2)), yield this._workletModules.get(e2);
+                ti(ci(this.rawContext.audioWorklet), "AudioWorkletNode is only available in a secure context (https or localhost)"), this._workletModules.has(e3) || this._workletModules.set(e3, this.rawContext.audioWorklet.addModule(t2)), yield this._workletModules.get(e3);
               });
             }
             workletsAreReady() {
               return yi(this, void 0, void 0, function* () {
                 const t2 = [];
-                this._workletModules.forEach((e2) => t2.push(e2)), yield Promise.all(t2);
+                this._workletModules.forEach((e3) => t2.push(e3)), yield Promise.all(t2);
               });
             }
             get updateInterval() {
@@ -4464,19 +4480,19 @@
               return this._latencyHint;
             }
             _setLatencyHint(t2) {
-              let e2 = 0;
+              let e3 = 0;
               if (this._latencyHint = t2, fi(t2))
                 switch (t2) {
                   case "interactive":
-                    e2 = 0.1;
+                    e3 = 0.1;
                     break;
                   case "playback":
-                    e2 = 0.5;
+                    e3 = 0.5;
                     break;
                   case "balanced":
-                    e2 = 0.25;
+                    e3 = 0.25;
                 }
-              this.lookAhead = e2, this.updateInterval = e2 / 2;
+              this.lookAhead = e3, this.updateInterval = e3 / 2;
             }
             get rawContext() {
               return this._context;
@@ -4493,18 +4509,18 @@
             close() {
               return yi(this, void 0, void 0, function* () {
                 var t2;
-                Si(this._context) && (yield this._context.close()), this._initialized && (t2 = this, Li.forEach((e2) => e2(t2)));
+                Si(this._context) && (yield this._context.close()), this._initialized && (t2 = this, Li.forEach((e3) => e3(t2)));
               });
             }
             getConstant(t2) {
               if (this._constants.has(t2))
                 return this._constants.get(t2);
               {
-                const e2 = this._context.createBuffer(1, 128, this._context.sampleRate), s2 = e2.getChannelData(0);
-                for (let e3 = 0; e3 < s2.length; e3++)
-                  s2[e3] = t2;
+                const e3 = this._context.createBuffer(1, 128, this._context.sampleRate), s2 = e3.getChannelData(0);
+                for (let e4 = 0; e4 < s2.length; e4++)
+                  s2[e4] = t2;
                 const n2 = this._context.createBufferSource();
-                return n2.channelCount = 1, n2.channelCountMode = "explicit", n2.buffer = e2, n2.loop = true, n2.start(0), this._constants.set(t2, n2), n2;
+                return n2.channelCount = 1, n2.channelCountMode = "explicit", n2.buffer = e3, n2.loop = true, n2.start(0), this._constants.set(t2, n2), n2;
               }
             }
             dispose() {
@@ -4512,38 +4528,38 @@
             }
             _timeoutLoop() {
               const t2 = this.now();
-              let e2 = this._timeouts.peek();
-              for (; this._timeouts.length && e2 && e2.time <= t2; )
-                e2.callback(), this._timeouts.shift(), e2 = this._timeouts.peek();
+              let e3 = this._timeouts.peek();
+              for (; this._timeouts.length && e3 && e3.time <= t2; )
+                e3.callback(), this._timeouts.shift(), e3 = this._timeouts.peek();
             }
-            setTimeout(t2, e2) {
+            setTimeout(t2, e3) {
               this._timeoutIds++;
               const s2 = this.now();
-              return this._timeouts.add({ callback: t2, id: this._timeoutIds, time: s2 + e2 }), this._timeoutIds;
+              return this._timeouts.add({ callback: t2, id: this._timeoutIds, time: s2 + e3 }), this._timeoutIds;
             }
             clearTimeout(t2) {
-              return this._timeouts.forEach((e2) => {
-                e2.id === t2 && this._timeouts.remove(e2);
+              return this._timeouts.forEach((e3) => {
+                e3.id === t2 && this._timeouts.remove(e3);
               }), this;
             }
             clearInterval(t2) {
               return this.clearTimeout(t2);
             }
-            setInterval(t2, e2) {
+            setInterval(t2, e3) {
               const s2 = ++this._timeoutIds, n2 = () => {
                 const i2 = this.now();
                 this._timeouts.add({ callback: () => {
                   t2(), n2();
-                }, id: s2, time: i2 + e2 });
+                }, id: s2, time: i2 + e3 });
               };
               return n2(), s2;
             }
           }
-          function Ui(t2, e2) {
-            di(e2) ? e2.forEach((e3) => Ui(t2, e3)) : Object.defineProperty(t2, e2, { enumerable: true, writable: false });
+          function Ui(t2, e3) {
+            di(e3) ? e3.forEach((e4) => Ui(t2, e4)) : Object.defineProperty(t2, e3, { enumerable: true, writable: false });
           }
-          function Qi(t2, e2) {
-            di(e2) ? e2.forEach((e3) => Qi(t2, e3)) : Object.defineProperty(t2, e2, { writable: true });
+          function Qi(t2, e3) {
+            di(e3) ? e3.forEach((e4) => Qi(t2, e4)) : Object.defineProperty(t2, e3, { writable: true });
           }
           const Zi = () => {
           };
@@ -4569,14 +4585,14 @@
             }
             load(t2) {
               return yi(this, void 0, void 0, function* () {
-                const e2 = Xi.load(t2).then((t3) => {
+                const e3 = Xi.load(t2).then((t3) => {
                   this.set(t3), this.onload(this);
                 });
-                Xi.downloads.push(e2);
+                Xi.downloads.push(e3);
                 try {
-                  yield e2;
+                  yield e3;
                 } finally {
-                  const t3 = Xi.downloads.indexOf(e2);
+                  const t3 = Xi.downloads.indexOf(e3);
                   Xi.downloads.splice(t3, 1);
                 }
                 return this;
@@ -4586,7 +4602,7 @@
               return super.dispose(), this._buffer = void 0, this;
             }
             fromArray(t2) {
-              const e2 = di(t2) && t2[0].length > 0, s2 = e2 ? t2.length : 1, n2 = e2 ? t2[0].length : t2.length, i2 = Ji(), o2 = i2.createBuffer(s2, n2, i2.sampleRate), r2 = e2 || s2 !== 1 ? t2 : [t2];
+              const e3 = di(t2) && t2[0].length > 0, s2 = e3 ? t2.length : 1, n2 = e3 ? t2[0].length : t2.length, i2 = Ji(), o2 = i2.createBuffer(s2, n2, i2.sampleRate), r2 = e3 || s2 !== 1 ? t2 : [t2];
               for (let t3 = 0; t3 < s2; t3++)
                 o2.copyToChannel(r2[t3], t3);
               return this._buffer = o2, this;
@@ -4596,13 +4612,13 @@
                 this.fromArray(this.toArray(t2));
               else {
                 let t3 = new Float32Array(this.length);
-                const e2 = this.numberOfChannels;
-                for (let s2 = 0; s2 < e2; s2++) {
-                  const e3 = this.toArray(s2);
-                  for (let s3 = 0; s3 < e3.length; s3++)
-                    t3[s3] += e3[s3];
+                const e3 = this.numberOfChannels;
+                for (let s2 = 0; s2 < e3; s2++) {
+                  const e4 = this.toArray(s2);
+                  for (let s3 = 0; s3 < e4.length; s3++)
+                    t3[s3] += e4[s3];
                 }
-                t3 = t3.map((t4) => t4 / e2), this.fromArray(t3);
+                t3 = t3.map((t4) => t4 / e3), this.fromArray(t3);
               }
               return this;
             }
@@ -4613,16 +4629,16 @@
                 return this.toArray(0);
               {
                 const t3 = [];
-                for (let e2 = 0; e2 < this.numberOfChannels; e2++)
-                  t3[e2] = this.getChannelData(e2);
+                for (let e3 = 0; e3 < this.numberOfChannels; e3++)
+                  t3[e3] = this.getChannelData(e3);
                 return t3;
               }
             }
             getChannelData(t2) {
               return this._buffer ? this._buffer.getChannelData(t2) : new Float32Array(0);
             }
-            slice(t2, e2 = this.duration) {
-              const s2 = Math.floor(t2 * this.sampleRate), n2 = Math.floor(e2 * this.sampleRate);
+            slice(t2, e3 = this.duration) {
+              const s2 = Math.floor(t2 * this.sampleRate), n2 = Math.floor(e3 * this.sampleRate);
               ti(s2 < n2, "The start time must be less than the end time");
               const i2 = n2 - s2, o2 = Ji().createBuffer(this.numberOfChannels, i2, this.sampleRate);
               for (let t3 = 0; t3 < this.numberOfChannels; t3++)
@@ -4658,22 +4674,22 @@
             }
             static fromUrl(t2) {
               return yi(this, void 0, void 0, function* () {
-                const e2 = new Xi();
-                return yield e2.load(t2);
+                const e3 = new Xi();
+                return yield e3.load(t2);
               });
             }
             static load(t2) {
               return yi(this, void 0, void 0, function* () {
-                const e2 = t2.match(/\[([^\]\[]+\|.+)\]$/);
-                if (e2) {
-                  const s3 = e2[1].split("|");
+                const e3 = t2.match(/\[([^\]\[]+\|.+)\]$/);
+                if (e3) {
+                  const s3 = e3[1].split("|");
                   let n3 = s3[0];
                   for (const t3 of s3)
                     if (Xi.supportsType(t3)) {
                       n3 = t3;
                       break;
                     }
-                  t2 = t2.replace(e2[0], n3);
+                  t2 = t2.replace(e3[0], n3);
                 }
                 const s2 = Xi.baseUrl === "" || Xi.baseUrl.endsWith("/") ? Xi.baseUrl : Xi.baseUrl + "/", n2 = yield fetch(s2 + t2);
                 if (!n2.ok)
@@ -4683,7 +4699,7 @@
               });
             }
             static supportsType(t2) {
-              const e2 = t2.split("."), s2 = e2[e2.length - 1];
+              const e3 = t2.split("."), s2 = e3[e3.length - 1];
               return document.createElement("audio").canPlayType("audio/" + s2) !== "";
             }
             static loaded() {
@@ -4696,8 +4712,8 @@
           Xi.baseUrl = "", Xi.downloads = [];
           class Yi extends Gi {
             constructor() {
-              var t2, e2, s2;
-              super({ clockSource: "offline", context: Ti(arguments[0]) ? arguments[0] : (t2 = arguments[0], e2 = arguments[1] * arguments[2], s2 = arguments[2], new Gn(t2, e2, s2)), lookAhead: 0, updateInterval: Ti(arguments[0]) ? 128 / arguments[0].sampleRate : 128 / arguments[2] }), this.name = "OfflineContext", this._currentTime = 0, this.isOffline = true, this._duration = Ti(arguments[0]) ? arguments[0].length / arguments[0].sampleRate : arguments[1];
+              var t2, e3, s2;
+              super({ clockSource: "offline", context: Ti(arguments[0]) ? arguments[0] : (t2 = arguments[0], e3 = arguments[1] * arguments[2], s2 = arguments[2], new Gn(t2, e3, s2)), lookAhead: 0, updateInterval: Ti(arguments[0]) ? 128 / arguments[0].sampleRate : 128 / arguments[2] }), this.name = "OfflineContext", this._currentTime = 0, this.isOffline = true, this._duration = Ti(arguments[0]) ? arguments[0].length / arguments[0].sampleRate : arguments[1];
             }
             now() {
               return this._currentTime;
@@ -4707,19 +4723,19 @@
             }
             _renderClock(t2) {
               return yi(this, void 0, void 0, function* () {
-                let e2 = 0;
+                let e3 = 0;
                 for (; this._duration - this._currentTime >= 0; ) {
-                  this.emit("tick"), this._currentTime += 128 / this.sampleRate, e2++;
+                  this.emit("tick"), this._currentTime += 128 / this.sampleRate, e3++;
                   const s2 = Math.floor(this.sampleRate / 128);
-                  t2 && e2 % s2 == 0 && (yield new Promise((t3) => setTimeout(t3, 1)));
+                  t2 && e3 % s2 == 0 && (yield new Promise((t3) => setTimeout(t3, 1)));
                 }
               });
             }
             render(t2 = true) {
               return yi(this, void 0, void 0, function* () {
                 yield this.workletsAreReady(), yield this._renderClock(t2);
-                const e2 = yield this._context.startRendering();
-                return new Xi(e2);
+                const e3 = yield this._context.startRendering();
+                return new Xi(e3);
               });
             }
             close() {
@@ -4742,7 +4758,7 @@
             createBiquadFilter() {
               return {};
             }
-            createBuffer(t2, e2, s2) {
+            createBuffer(t2, e3, s2) {
               return {};
             }
             createChannelMerger(t2) {
@@ -4766,13 +4782,13 @@
             createGain() {
               return {};
             }
-            createIIRFilter(t2, e2) {
+            createIIRFilter(t2, e3) {
               return {};
             }
             createPanner() {
               return {};
             }
-            createPeriodicWave(t2, e2, s2) {
+            createPeriodicWave(t2, e3, s2) {
               return {};
             }
             createStereoPanner() {
@@ -4793,13 +4809,13 @@
             decodeAudioData(t2) {
               return Promise.resolve({});
             }
-            createAudioWorkletNode(t2, e2) {
+            createAudioWorkletNode(t2, e3) {
               return {};
             }
             get rawContext() {
               return {};
             }
-            addAudioWorkletModule(t2, e2) {
+            addAudioWorkletModule(t2, e3) {
               return yi(this, void 0, void 0, function* () {
                 return Promise.resolve();
               });
@@ -4807,13 +4823,13 @@
             resume() {
               return Promise.resolve();
             }
-            setTimeout(t2, e2) {
+            setTimeout(t2, e3) {
               return 0;
             }
             clearTimeout(t2) {
               return this;
             }
-            setInterval(t2, e2) {
+            setInterval(t2, e3) {
               return 0;
             }
             clearInterval(t2) {
@@ -4867,8 +4883,8 @@
           if (mi && !mi.TONE_SILENCE_LOGGING) {
             let t2 = "v";
             o === "dev" && (t2 = "");
-            const e2 = ` * Tone.js ${t2}${o} * `;
-            console.log("%c" + e2, "background: #000; color: #fff");
+            const e3 = ` * Tone.js ${t2}${o} * `;
+            console.log("%c" + e3, "background: #000; color: #fff");
           }
           function eo(t2) {
             return Math.pow(10, t2 / 20);
@@ -4890,19 +4906,19 @@
             return io * Math.pow(2, (t2 - 69) / 12);
           }
           class co extends Ei {
-            constructor(t2, e2, s2) {
-              super(), this.defaultUnits = "s", this._val = e2, this._units = s2, this.context = t2, this._expressions = this._getExpressions();
+            constructor(t2, e3, s2) {
+              super(), this.defaultUnits = "s", this._val = e3, this._units = s2, this.context = t2, this._expressions = this._getExpressions();
             }
             _getExpressions() {
-              return { hz: { method: (t2) => this._frequencyToUnits(parseFloat(t2)), regexp: /^(\d+(?:\.\d+)?)hz$/i }, i: { method: (t2) => this._ticksToUnits(parseInt(t2, 10)), regexp: /^(\d+)i$/i }, m: { method: (t2) => this._beatsToUnits(parseInt(t2, 10) * this._getTimeSignature()), regexp: /^(\d+)m$/i }, n: { method: (t2, e2) => {
-                const s2 = parseInt(t2, 10), n2 = e2 === "." ? 1.5 : 1;
+              return { hz: { method: (t2) => this._frequencyToUnits(parseFloat(t2)), regexp: /^(\d+(?:\.\d+)?)hz$/i }, i: { method: (t2) => this._ticksToUnits(parseInt(t2, 10)), regexp: /^(\d+)i$/i }, m: { method: (t2) => this._beatsToUnits(parseInt(t2, 10) * this._getTimeSignature()), regexp: /^(\d+)m$/i }, n: { method: (t2, e3) => {
+                const s2 = parseInt(t2, 10), n2 = e3 === "." ? 1.5 : 1;
                 return s2 === 1 ? this._beatsToUnits(this._getTimeSignature()) * n2 : this._beatsToUnits(4 / s2) * n2;
               }, regexp: /^(\d+)n(\.?)$/i }, number: { method: (t2) => this._expressions[this.defaultUnits].method.call(this, t2), regexp: /^(\d+(?:\.\d+)?)$/ }, s: { method: (t2) => this._secondsToUnits(parseFloat(t2)), regexp: /^(\d+(?:\.\d+)?)s$/ }, samples: { method: (t2) => parseInt(t2, 10) / this.context.sampleRate, regexp: /^(\d+)samples$/ }, t: { method: (t2) => {
-                const e2 = parseInt(t2, 10);
-                return this._beatsToUnits(8 / (3 * Math.floor(e2)));
-              }, regexp: /^(\d+)t$/i }, tr: { method: (t2, e2, s2) => {
+                const e3 = parseInt(t2, 10);
+                return this._beatsToUnits(8 / (3 * Math.floor(e3)));
+              }, regexp: /^(\d+)t$/i }, tr: { method: (t2, e3, s2) => {
                 let n2 = 0;
-                return t2 && t2 !== "0" && (n2 += this._beatsToUnits(this._getTimeSignature() * parseFloat(t2))), e2 && e2 !== "0" && (n2 += this._beatsToUnits(parseFloat(e2))), s2 && s2 !== "0" && (n2 += this._beatsToUnits(parseFloat(s2) / 4)), n2;
+                return t2 && t2 !== "0" && (n2 += this._beatsToUnits(this._getTimeSignature() * parseFloat(t2))), e3 && e3 !== "0" && (n2 += this._beatsToUnits(parseFloat(e3))), s2 && s2 !== "0" && (n2 += this._beatsToUnits(parseFloat(s2) / 4)), n2;
               }, regexp: /^(\d+(?:\.\d+)?):(\d+(?:\.\d+)?):?(\d+(?:\.\d+)?)?$/ } };
             }
             valueOf() {
@@ -4916,16 +4932,16 @@
                   }
               } else if (li(this._val)) {
                 let t2 = 0;
-                for (const e2 in this._val)
-                  if (ci(this._val[e2])) {
-                    const s2 = this._val[e2];
-                    t2 += new this.constructor(this.context, e2).valueOf() * s2;
+                for (const e3 in this._val)
+                  if (ci(this._val[e3])) {
+                    const s2 = this._val[e3];
+                    t2 += new this.constructor(this.context, e3).valueOf() * s2;
                   }
                 return t2;
               }
               if (ci(this._units)) {
-                const t2 = this._expressions[this._units], e2 = this._val.toString().trim().match(t2.regexp);
-                return e2 ? t2.method.apply(this, e2.slice(1)) : t2.method.call(this, this._val);
+                const t2 = this._expressions[this._units], e3 = this._val.toString().trim().match(t2.regexp);
+                return e3 ? t2.method.apply(this, e3.slice(1)) : t2.method.call(this, this._val);
               }
               return fi(this._val) ? parseFloat(this._val) : this._val;
             }
@@ -4985,41 +5001,41 @@
             }
             _getExpressions() {
               return Object.assign(super._getExpressions(), { now: { method: (t2) => this._now() + new this.constructor(this.context, t2).valueOf(), regexp: /^\+(.+)/ }, quantize: { method: (t2) => {
-                const e2 = new ho(this.context, t2).valueOf();
-                return this._secondsToUnits(this.context.transport.nextSubdivision(e2));
+                const e3 = new ho(this.context, t2).valueOf();
+                return this._secondsToUnits(this.context.transport.nextSubdivision(e3));
               }, regexp: /^@(.+)/ } });
             }
-            quantize(t2, e2 = 1) {
+            quantize(t2, e3 = 1) {
               const s2 = new this.constructor(this.context, t2).valueOf(), n2 = this.valueOf();
-              return n2 + (Math.round(n2 / s2) * s2 - n2) * e2;
+              return n2 + (Math.round(n2 / s2) * s2 - n2) * e3;
             }
             toNotation() {
-              const t2 = this.toSeconds(), e2 = ["1m"];
+              const t2 = this.toSeconds(), e3 = ["1m"];
               for (let t3 = 1; t3 < 9; t3++) {
                 const s3 = Math.pow(2, t3);
-                e2.push(s3 + "n."), e2.push(s3 + "n"), e2.push(s3 + "t");
+                e3.push(s3 + "n."), e3.push(s3 + "n"), e3.push(s3 + "t");
               }
-              e2.push("0");
-              let s2 = e2[0], n2 = new ho(this.context, e2[0]).toSeconds();
-              return e2.forEach((e3) => {
-                const i2 = new ho(this.context, e3).toSeconds();
-                Math.abs(i2 - t2) < Math.abs(n2 - t2) && (s2 = e3, n2 = i2);
+              e3.push("0");
+              let s2 = e3[0], n2 = new ho(this.context, e3[0]).toSeconds();
+              return e3.forEach((e4) => {
+                const i2 = new ho(this.context, e4).toSeconds();
+                Math.abs(i2 - t2) < Math.abs(n2 - t2) && (s2 = e4, n2 = i2);
               }), s2;
             }
             toBarsBeatsSixteenths() {
               const t2 = this._beatsToUnits(1);
-              let e2 = this.valueOf() / t2;
-              e2 = parseFloat(e2.toFixed(4));
-              const s2 = Math.floor(e2 / this._getTimeSignature());
-              let n2 = e2 % 1 * 4;
-              e2 = Math.floor(e2) % this._getTimeSignature();
+              let e3 = this.valueOf() / t2;
+              e3 = parseFloat(e3.toFixed(4));
+              const s2 = Math.floor(e3 / this._getTimeSignature());
+              let n2 = e3 % 1 * 4;
+              e3 = Math.floor(e3) % this._getTimeSignature();
               const i2 = n2.toString();
               i2.length > 3 && (n2 = parseFloat(parseFloat(i2).toFixed(3)));
-              return [s2, e2, n2].join(":");
+              return [s2, e3, n2].join(":");
             }
             toTicks() {
-              const t2 = this._beatsToUnits(1), e2 = this.valueOf() / t2;
-              return Math.round(e2 * this._getPPQ());
+              const t2 = this._beatsToUnits(1), e3 = this.valueOf() / t2;
+              return Math.round(e3 * this._getPPQ());
             }
             toSeconds() {
               return this.valueOf();
@@ -5031,8 +5047,8 @@
               return this.context.now();
             }
           }
-          function uo(t2, e2) {
-            return new ho(Ji(), t2, e2);
+          function uo(t2, e3) {
+            return new ho(Ji(), t2, e3);
           }
           class lo extends ho {
             constructor() {
@@ -5049,12 +5065,12 @@
             _getExpressions() {
               return Object.assign({}, super._getExpressions(), { midi: { regexp: /^(\d+(?:\.\d+)?midi)/, method(t2) {
                 return this.defaultUnits === "midi" ? t2 : lo.mtof(t2);
-              } }, note: { regexp: /^([a-g]{1}(?:b|#|x|bb)?)(-?[0-9]+)/i, method(t2, e2) {
-                const s2 = po[t2.toLowerCase()] + 12 * (parseInt(e2, 10) + 1);
+              } }, note: { regexp: /^([a-g]{1}(?:b|#|x|bb)?)(-?[0-9]+)/i, method(t2, e3) {
+                const s2 = po[t2.toLowerCase()] + 12 * (parseInt(e3, 10) + 1);
                 return this.defaultUnits === "midi" ? s2 : lo.mtof(s2);
-              } }, tr: { regexp: /^(\d+(?:\.\d+)?):(\d+(?:\.\d+)?):?(\d+(?:\.\d+)?)?/, method(t2, e2, s2) {
+              } }, tr: { regexp: /^(\d+(?:\.\d+)?):(\d+(?:\.\d+)?):?(\d+(?:\.\d+)?)?/, method(t2, e3, s2) {
                 let n2 = 1;
-                return t2 && t2 !== "0" && (n2 *= this._beatsToUnits(this._getTimeSignature() * parseFloat(t2))), e2 && e2 !== "0" && (n2 *= this._beatsToUnits(parseFloat(e2))), s2 && s2 !== "0" && (n2 *= this._beatsToUnits(parseFloat(s2) / 4)), n2;
+                return t2 && t2 !== "0" && (n2 *= this._beatsToUnits(this._getTimeSignature() * parseFloat(t2))), e3 && e3 !== "0" && (n2 *= this._beatsToUnits(parseFloat(e3))), s2 && s2 !== "0" && (n2 *= this._beatsToUnits(parseFloat(s2) / 4)), n2;
               } } });
             }
             transpose(t2) {
@@ -5067,8 +5083,8 @@
               return oo(this.valueOf());
             }
             toNote() {
-              const t2 = this.toFrequency(), e2 = Math.log2(t2 / lo.A4);
-              let s2 = Math.round(12 * e2) + 57;
+              const t2 = this.toFrequency(), e3 = Math.log2(t2 / lo.A4);
+              let s2 = Math.round(12 * e3) + 57;
               const n2 = Math.floor(s2 / 12);
               n2 < 0 && (s2 += -12 * n2);
               return fo[s2 % 12] + n2.toString();
@@ -5077,8 +5093,8 @@
               return 1 / super.toSeconds();
             }
             toTicks() {
-              const t2 = this._beatsToUnits(1), e2 = this.valueOf() / t2;
-              return Math.floor(e2 * this._getPPQ());
+              const t2 = this._beatsToUnits(1), e3 = this.valueOf() / t2;
+              return Math.floor(e3 * this._getPPQ());
             }
             _noArg() {
               return 0;
@@ -5103,8 +5119,8 @@
             }
           }
           const po = { cbb: -2, cb: -1, c: 0, "c#": 1, cx: 2, dbb: 0, db: 1, d: 2, "d#": 3, dx: 4, ebb: 2, eb: 3, e: 4, "e#": 5, ex: 6, fbb: 3, fb: 4, f: 5, "f#": 6, fx: 7, gbb: 5, gb: 6, g: 7, "g#": 8, gx: 9, abb: 7, ab: 8, a: 9, "a#": 10, ax: 11, bbb: 9, bb: 10, b: 11, "b#": 12, bx: 13 }, fo = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-          function _o(t2, e2) {
-            return new lo(Ji(), t2, e2);
+          function _o(t2, e3) {
+            return new lo(Ji(), t2, e3);
           }
           class mo extends ho {
             constructor() {
@@ -5114,8 +5130,8 @@
               return this.context.transport.seconds;
             }
           }
-          function go(t2, e2) {
-            return new mo(Ji(), t2, e2);
+          function go(t2, e3) {
+            return new mo(Ji(), t2, e3);
           }
           class vo extends Ei {
             constructor() {
@@ -5148,23 +5164,23 @@
               return new mo(this.context, t2).toTicks();
             }
             _getPartialProperties(t2) {
-              const e2 = this.get();
-              return Object.keys(e2).forEach((s2) => {
-                ai(t2[s2]) && delete e2[s2];
-              }), e2;
+              const e3 = this.get();
+              return Object.keys(e3).forEach((s2) => {
+                ai(t2[s2]) && delete e3[s2];
+              }), e3;
             }
             get() {
               const t2 = this.constructor.getDefaults();
-              return Object.keys(t2).forEach((e2) => {
-                if (Reflect.has(this, e2)) {
-                  const s2 = this[e2];
-                  ci(s2) && ci(s2.value) && ci(s2.setValueAtTime) ? t2[e2] = s2.value : s2 instanceof vo ? t2[e2] = s2._getPartialProperties(t2[e2]) : di(s2) || ui(s2) || fi(s2) || pi(s2) ? t2[e2] = s2 : delete t2[e2];
+              return Object.keys(t2).forEach((e3) => {
+                if (Reflect.has(this, e3)) {
+                  const s2 = this[e3];
+                  ci(s2) && ci(s2.value) && ci(s2.setValueAtTime) ? t2[e3] = s2.value : s2 instanceof vo ? t2[e3] = s2._getPartialProperties(t2[e3]) : di(s2) || ui(s2) || fi(s2) || pi(s2) ? t2[e3] = s2 : delete t2[e3];
                 }
               }), t2;
             }
             set(t2) {
-              return Object.keys(t2).forEach((e2) => {
-                Reflect.has(this, e2) && ci(this[e2]) && (this[e2] && ci(this[e2].value) && ci(this[e2].setValueAtTime) ? this[e2].value !== t2[e2] && (this[e2].value = t2[e2]) : this[e2] instanceof vo ? this[e2].set(t2[e2]) : this[e2] = t2[e2]);
+              return Object.keys(t2).forEach((e3) => {
+                Reflect.has(this, e3) && ci(this[e3]) && (this[e3] && ci(this[e3].value) && ci(this[e3].setValueAtTime) ? this[e3].value !== t2[e3] && (this[e3].value = t2[e3]) : this[e3] instanceof vo ? this[e3].set(t2[e3]) : this[e3] = t2[e3]);
               }), this;
             }
           }
@@ -5173,24 +5189,24 @@
               super(), this.name = "StateTimeline", this._initial = t2, this.setStateAtTime(this._initial, 0);
             }
             getValueAtTime(t2) {
-              const e2 = this.get(t2);
-              return e2 !== null ? e2.state : this._initial;
+              const e3 = this.get(t2);
+              return e3 !== null ? e3.state : this._initial;
             }
-            setStateAtTime(t2, e2, s2) {
-              return ei(e2, 0), this.add(Object.assign({}, s2, { state: t2, time: e2 })), this;
+            setStateAtTime(t2, e3, s2) {
+              return ei(e3, 0), this.add(Object.assign({}, s2, { state: t2, time: e3 })), this;
             }
-            getLastState(t2, e2) {
-              for (let s2 = this._search(e2); s2 >= 0; s2--) {
-                const e3 = this._timeline[s2];
-                if (e3.state === t2)
-                  return e3;
+            getLastState(t2, e3) {
+              for (let s2 = this._search(e3); s2 >= 0; s2--) {
+                const e4 = this._timeline[s2];
+                if (e4.state === t2)
+                  return e4;
               }
             }
-            getNextState(t2, e2) {
-              const s2 = this._search(e2);
+            getNextState(t2, e3) {
+              const s2 = this._search(e3);
               if (s2 !== -1)
-                for (let e3 = s2; e3 < this._timeline.length; e3++) {
-                  const s3 = this._timeline[e3];
+                for (let e4 = s2; e4 < this._timeline.length; e4++) {
+                  const s3 = this._timeline[e4];
                   if (s3.state === t2)
                     return s3;
                 }
@@ -5220,8 +5236,8 @@
             get maxValue() {
               return ci(this._maxValue) ? this._maxValue : this.units === "normalRange" || this.units === "audioRange" ? 1 : this._param.maxValue;
             }
-            _is(t2, e2) {
-              return this.units === e2;
+            _is(t2, e3) {
+              return this.units === e3;
             }
             _assertRange(t2) {
               return ci(this.maxValue) && ci(this.minValue) && ei(t2, this._fromType(this.minValue), this._fromType(this.maxValue)), t2;
@@ -5232,12 +5248,12 @@
             _toType(t2) {
               return this.convert && this.units === "decibels" ? so(t2) : t2;
             }
-            setValueAtTime(t2, e2) {
-              const s2 = this.toSeconds(e2), n2 = this._fromType(t2);
-              return ti(isFinite(n2) && isFinite(s2), `Invalid argument(s) to setValueAtTime: ${JSON.stringify(t2)}, ${JSON.stringify(e2)}`), this._assertRange(n2), this.log(this.units, "setValueAtTime", t2, s2), this._events.add({ time: s2, type: "setValueAtTime", value: n2 }), this._param.setValueAtTime(n2, s2), this;
+            setValueAtTime(t2, e3) {
+              const s2 = this.toSeconds(e3), n2 = this._fromType(t2);
+              return ti(isFinite(n2) && isFinite(s2), `Invalid argument(s) to setValueAtTime: ${JSON.stringify(t2)}, ${JSON.stringify(e3)}`), this._assertRange(n2), this.log(this.units, "setValueAtTime", t2, s2), this._events.add({ time: s2, type: "setValueAtTime", value: n2 }), this._param.setValueAtTime(n2, s2), this;
             }
             getValueAtTime(t2) {
-              const e2 = Math.max(this.toSeconds(t2), 0), s2 = this._events.getAfter(e2), n2 = this._events.get(e2);
+              const e3 = Math.max(this.toSeconds(t2), 0), s2 = this._events.getAfter(e3), n2 = this._events.get(e3);
               let i2 = this._initialValue;
               if (n2 === null)
                 i2 = this._initialValue;
@@ -5247,95 +5263,95 @@
                 else if (s2.type === "linearRampToValueAtTime" || s2.type === "exponentialRampToValueAtTime") {
                   let t3 = n2.value;
                   if (n2.type === "setTargetAtTime") {
-                    const e3 = this._events.getBefore(n2.time);
-                    t3 = e3 === null ? this._initialValue : e3.value;
+                    const e4 = this._events.getBefore(n2.time);
+                    t3 = e4 === null ? this._initialValue : e4.value;
                   }
-                  i2 = s2.type === "linearRampToValueAtTime" ? this._linearInterpolate(n2.time, t3, s2.time, s2.value, e2) : this._exponentialInterpolate(n2.time, t3, s2.time, s2.value, e2);
+                  i2 = s2.type === "linearRampToValueAtTime" ? this._linearInterpolate(n2.time, t3, s2.time, s2.value, e3) : this._exponentialInterpolate(n2.time, t3, s2.time, s2.value, e3);
                 } else
                   i2 = n2.value;
               else {
                 const t3 = this._events.getBefore(n2.time);
                 let s3;
-                s3 = t3 === null ? this._initialValue : t3.value, n2.type === "setTargetAtTime" && (i2 = this._exponentialApproach(n2.time, s3, n2.value, n2.constant, e2));
+                s3 = t3 === null ? this._initialValue : t3.value, n2.type === "setTargetAtTime" && (i2 = this._exponentialApproach(n2.time, s3, n2.value, n2.constant, e3));
               }
               return this._toType(i2);
             }
             setRampPoint(t2) {
               t2 = this.toSeconds(t2);
-              let e2 = this.getValueAtTime(t2);
-              return this.cancelAndHoldAtTime(t2), this._fromType(e2) === 0 && (e2 = this._toType(this._minOutput)), this.setValueAtTime(e2, t2), this;
+              let e3 = this.getValueAtTime(t2);
+              return this.cancelAndHoldAtTime(t2), this._fromType(e3) === 0 && (e3 = this._toType(this._minOutput)), this.setValueAtTime(e3, t2), this;
             }
-            linearRampToValueAtTime(t2, e2) {
-              const s2 = this._fromType(t2), n2 = this.toSeconds(e2);
-              return ti(isFinite(s2) && isFinite(n2), `Invalid argument(s) to linearRampToValueAtTime: ${JSON.stringify(t2)}, ${JSON.stringify(e2)}`), this._assertRange(s2), this._events.add({ time: n2, type: "linearRampToValueAtTime", value: s2 }), this.log(this.units, "linearRampToValueAtTime", t2, n2), this._param.linearRampToValueAtTime(s2, n2), this;
+            linearRampToValueAtTime(t2, e3) {
+              const s2 = this._fromType(t2), n2 = this.toSeconds(e3);
+              return ti(isFinite(s2) && isFinite(n2), `Invalid argument(s) to linearRampToValueAtTime: ${JSON.stringify(t2)}, ${JSON.stringify(e3)}`), this._assertRange(s2), this._events.add({ time: n2, type: "linearRampToValueAtTime", value: s2 }), this.log(this.units, "linearRampToValueAtTime", t2, n2), this._param.linearRampToValueAtTime(s2, n2), this;
             }
-            exponentialRampToValueAtTime(t2, e2) {
+            exponentialRampToValueAtTime(t2, e3) {
               let s2 = this._fromType(t2);
               s2 = Ii(s2, 0) ? this._minOutput : s2, this._assertRange(s2);
-              const n2 = this.toSeconds(e2);
-              return ti(isFinite(s2) && isFinite(n2), `Invalid argument(s) to exponentialRampToValueAtTime: ${JSON.stringify(t2)}, ${JSON.stringify(e2)}`), this._events.add({ time: n2, type: "exponentialRampToValueAtTime", value: s2 }), this.log(this.units, "exponentialRampToValueAtTime", t2, n2), this._param.exponentialRampToValueAtTime(s2, n2), this;
+              const n2 = this.toSeconds(e3);
+              return ti(isFinite(s2) && isFinite(n2), `Invalid argument(s) to exponentialRampToValueAtTime: ${JSON.stringify(t2)}, ${JSON.stringify(e3)}`), this._events.add({ time: n2, type: "exponentialRampToValueAtTime", value: s2 }), this.log(this.units, "exponentialRampToValueAtTime", t2, n2), this._param.exponentialRampToValueAtTime(s2, n2), this;
             }
-            exponentialRampTo(t2, e2, s2) {
-              return s2 = this.toSeconds(s2), this.setRampPoint(s2), this.exponentialRampToValueAtTime(t2, s2 + this.toSeconds(e2)), this;
+            exponentialRampTo(t2, e3, s2) {
+              return s2 = this.toSeconds(s2), this.setRampPoint(s2), this.exponentialRampToValueAtTime(t2, s2 + this.toSeconds(e3)), this;
             }
-            linearRampTo(t2, e2, s2) {
-              return s2 = this.toSeconds(s2), this.setRampPoint(s2), this.linearRampToValueAtTime(t2, s2 + this.toSeconds(e2)), this;
+            linearRampTo(t2, e3, s2) {
+              return s2 = this.toSeconds(s2), this.setRampPoint(s2), this.linearRampToValueAtTime(t2, s2 + this.toSeconds(e3)), this;
             }
-            targetRampTo(t2, e2, s2) {
-              return s2 = this.toSeconds(s2), this.setRampPoint(s2), this.exponentialApproachValueAtTime(t2, s2, e2), this;
+            targetRampTo(t2, e3, s2) {
+              return s2 = this.toSeconds(s2), this.setRampPoint(s2), this.exponentialApproachValueAtTime(t2, s2, e3), this;
             }
-            exponentialApproachValueAtTime(t2, e2, s2) {
-              e2 = this.toSeconds(e2), s2 = this.toSeconds(s2);
+            exponentialApproachValueAtTime(t2, e3, s2) {
+              e3 = this.toSeconds(e3), s2 = this.toSeconds(s2);
               const n2 = Math.log(s2 + 1) / Math.log(200);
-              return this.setTargetAtTime(t2, e2, n2), this.cancelAndHoldAtTime(e2 + 0.9 * s2), this.linearRampToValueAtTime(t2, e2 + s2), this;
+              return this.setTargetAtTime(t2, e3, n2), this.cancelAndHoldAtTime(e3 + 0.9 * s2), this.linearRampToValueAtTime(t2, e3 + s2), this;
             }
-            setTargetAtTime(t2, e2, s2) {
+            setTargetAtTime(t2, e3, s2) {
               const n2 = this._fromType(t2);
               ti(isFinite(s2) && s2 > 0, "timeConstant must be a number greater than 0");
-              const i2 = this.toSeconds(e2);
-              return this._assertRange(n2), ti(isFinite(n2) && isFinite(i2), `Invalid argument(s) to setTargetAtTime: ${JSON.stringify(t2)}, ${JSON.stringify(e2)}`), this._events.add({ constant: s2, time: i2, type: "setTargetAtTime", value: n2 }), this.log(this.units, "setTargetAtTime", t2, i2, s2), this._param.setTargetAtTime(n2, i2, s2), this;
+              const i2 = this.toSeconds(e3);
+              return this._assertRange(n2), ti(isFinite(n2) && isFinite(i2), `Invalid argument(s) to setTargetAtTime: ${JSON.stringify(t2)}, ${JSON.stringify(e3)}`), this._events.add({ constant: s2, time: i2, type: "setTargetAtTime", value: n2 }), this.log(this.units, "setTargetAtTime", t2, i2, s2), this._param.setTargetAtTime(n2, i2, s2), this;
             }
-            setValueCurveAtTime(t2, e2, s2, n2 = 1) {
-              s2 = this.toSeconds(s2), e2 = this.toSeconds(e2);
+            setValueCurveAtTime(t2, e3, s2, n2 = 1) {
+              s2 = this.toSeconds(s2), e3 = this.toSeconds(e3);
               const i2 = this._fromType(t2[0]) * n2;
-              this.setValueAtTime(this._toType(i2), e2);
+              this.setValueAtTime(this._toType(i2), e3);
               const o2 = s2 / (t2.length - 1);
               for (let s3 = 1; s3 < t2.length; s3++) {
                 const i3 = this._fromType(t2[s3]) * n2;
-                this.linearRampToValueAtTime(this._toType(i3), e2 + s3 * o2);
+                this.linearRampToValueAtTime(this._toType(i3), e3 + s3 * o2);
               }
               return this;
             }
             cancelScheduledValues(t2) {
-              const e2 = this.toSeconds(t2);
-              return ti(isFinite(e2), "Invalid argument to cancelScheduledValues: " + JSON.stringify(t2)), this._events.cancel(e2), this._param.cancelScheduledValues(e2), this.log(this.units, "cancelScheduledValues", e2), this;
+              const e3 = this.toSeconds(t2);
+              return ti(isFinite(e3), "Invalid argument to cancelScheduledValues: " + JSON.stringify(t2)), this._events.cancel(e3), this._param.cancelScheduledValues(e3), this.log(this.units, "cancelScheduledValues", e3), this;
             }
             cancelAndHoldAtTime(t2) {
-              const e2 = this.toSeconds(t2), s2 = this._fromType(this.getValueAtTime(e2));
-              ti(isFinite(e2), "Invalid argument to cancelAndHoldAtTime: " + JSON.stringify(t2)), this.log(this.units, "cancelAndHoldAtTime", e2, "value=" + s2);
-              const n2 = this._events.get(e2), i2 = this._events.getAfter(e2);
-              return n2 && Ii(n2.time, e2) ? i2 ? (this._param.cancelScheduledValues(i2.time), this._events.cancel(i2.time)) : (this._param.cancelAndHoldAtTime(e2), this._events.cancel(e2 + this.sampleTime)) : i2 && (this._param.cancelScheduledValues(i2.time), this._events.cancel(i2.time), i2.type === "linearRampToValueAtTime" ? this.linearRampToValueAtTime(this._toType(s2), e2) : i2.type === "exponentialRampToValueAtTime" && this.exponentialRampToValueAtTime(this._toType(s2), e2)), this._events.add({ time: e2, type: "setValueAtTime", value: s2 }), this._param.setValueAtTime(s2, e2), this;
+              const e3 = this.toSeconds(t2), s2 = this._fromType(this.getValueAtTime(e3));
+              ti(isFinite(e3), "Invalid argument to cancelAndHoldAtTime: " + JSON.stringify(t2)), this.log(this.units, "cancelAndHoldAtTime", e3, "value=" + s2);
+              const n2 = this._events.get(e3), i2 = this._events.getAfter(e3);
+              return n2 && Ii(n2.time, e3) ? i2 ? (this._param.cancelScheduledValues(i2.time), this._events.cancel(i2.time)) : (this._param.cancelAndHoldAtTime(e3), this._events.cancel(e3 + this.sampleTime)) : i2 && (this._param.cancelScheduledValues(i2.time), this._events.cancel(i2.time), i2.type === "linearRampToValueAtTime" ? this.linearRampToValueAtTime(this._toType(s2), e3) : i2.type === "exponentialRampToValueAtTime" && this.exponentialRampToValueAtTime(this._toType(s2), e3)), this._events.add({ time: e3, type: "setValueAtTime", value: s2 }), this._param.setValueAtTime(s2, e3), this;
             }
-            rampTo(t2, e2 = 0.1, s2) {
-              return this.units === "frequency" || this.units === "bpm" || this.units === "decibels" ? this.exponentialRampTo(t2, e2, s2) : this.linearRampTo(t2, e2, s2), this;
+            rampTo(t2, e3 = 0.1, s2) {
+              return this.units === "frequency" || this.units === "bpm" || this.units === "decibels" ? this.exponentialRampTo(t2, e3, s2) : this.linearRampTo(t2, e3, s2), this;
             }
             apply(t2) {
-              const e2 = this.context.currentTime;
-              t2.setValueAtTime(this.getValueAtTime(e2), e2);
-              const s2 = this._events.get(e2);
+              const e3 = this.context.currentTime;
+              t2.setValueAtTime(this.getValueAtTime(e3), e3);
+              const s2 = this._events.get(e3);
               if (s2 && s2.type === "setTargetAtTime") {
-                const n2 = this._events.getAfter(s2.time), i2 = n2 ? n2.time : e2 + 2, o2 = (i2 - e2) / 10;
-                for (let s3 = e2; s3 < i2; s3 += o2)
+                const n2 = this._events.getAfter(s2.time), i2 = n2 ? n2.time : e3 + 2, o2 = (i2 - e3) / 10;
+                for (let s3 = e3; s3 < i2; s3 += o2)
                   t2.linearRampToValueAtTime(this.getValueAtTime(s3), s3);
               }
-              return this._events.forEachAfter(this.context.currentTime, (e3) => {
-                e3.type === "cancelScheduledValues" ? t2.cancelScheduledValues(e3.time) : e3.type === "setTargetAtTime" ? t2.setTargetAtTime(e3.value, e3.time, e3.constant) : t2[e3.type](e3.value, e3.time);
+              return this._events.forEachAfter(this.context.currentTime, (e4) => {
+                e4.type === "cancelScheduledValues" ? t2.cancelScheduledValues(e4.time) : e4.type === "setTargetAtTime" ? t2.setTargetAtTime(e4.value, e4.time, e4.constant) : t2[e4.type](e4.value, e4.time);
               }), this;
             }
             setParam(t2) {
               ti(this._swappable, "The Param must be assigned as 'swappable' in the constructor");
-              const e2 = this.input;
-              return e2.disconnect(this._param), this.apply(t2), this._param = t2, e2.connect(this._param), this;
+              const e3 = this.input;
+              return e3.disconnect(this._param), this.apply(t2), this._param = t2, e3.connect(this._param), this;
             }
             dispose() {
               return super.dispose(), this._events.dispose(), this;
@@ -5343,14 +5359,14 @@
             get defaultValue() {
               return this._toType(this._param.defaultValue);
             }
-            _exponentialApproach(t2, e2, s2, n2, i2) {
-              return s2 + (e2 - s2) * Math.exp(-(i2 - t2) / n2);
+            _exponentialApproach(t2, e3, s2, n2, i2) {
+              return s2 + (e3 - s2) * Math.exp(-(i2 - t2) / n2);
             }
-            _linearInterpolate(t2, e2, s2, n2, i2) {
-              return e2 + (i2 - t2) / (s2 - t2) * (n2 - e2);
+            _linearInterpolate(t2, e3, s2, n2, i2) {
+              return e3 + (i2 - t2) / (s2 - t2) * (n2 - e3);
             }
-            _exponentialInterpolate(t2, e2, s2, n2, i2) {
-              return e2 * Math.pow(n2 / e2, (i2 - t2) / (s2 - t2));
+            _exponentialInterpolate(t2, e3, s2, n2, i2) {
+              return e3 * Math.pow(n2 / e3, (i2 - t2) / (s2 - t2));
             }
           }
           class wo extends vo {
@@ -5371,39 +5387,39 @@
               return this._isAudioNode(this.input) && t2.push(this.input), this._isAudioNode(this.output) && this.input !== this.output && t2.push(this.output), t2;
             }
             _setChannelProperties(t2) {
-              this._getInternalNodes().forEach((e2) => {
-                e2.channelCount = t2.channelCount, e2.channelCountMode = t2.channelCountMode, e2.channelInterpretation = t2.channelInterpretation;
+              this._getInternalNodes().forEach((e3) => {
+                e3.channelCount = t2.channelCount, e3.channelCountMode = t2.channelCountMode, e3.channelInterpretation = t2.channelInterpretation;
               });
             }
             _getChannelProperties() {
               const t2 = this._getInternalNodes();
               ti(t2.length > 0, "ToneAudioNode does not have any internal nodes");
-              const e2 = t2[0];
-              return { channelCount: e2.channelCount, channelCountMode: e2.channelCountMode, channelInterpretation: e2.channelInterpretation };
+              const e3 = t2[0];
+              return { channelCount: e3.channelCount, channelCountMode: e3.channelCountMode, channelInterpretation: e3.channelInterpretation };
             }
             get channelCount() {
               return this._getChannelProperties().channelCount;
             }
             set channelCount(t2) {
-              const e2 = this._getChannelProperties();
-              this._setChannelProperties(Object.assign(e2, { channelCount: t2 }));
+              const e3 = this._getChannelProperties();
+              this._setChannelProperties(Object.assign(e3, { channelCount: t2 }));
             }
             get channelCountMode() {
               return this._getChannelProperties().channelCountMode;
             }
             set channelCountMode(t2) {
-              const e2 = this._getChannelProperties();
-              this._setChannelProperties(Object.assign(e2, { channelCountMode: t2 }));
+              const e3 = this._getChannelProperties();
+              this._setChannelProperties(Object.assign(e3, { channelCountMode: t2 }));
             }
             get channelInterpretation() {
               return this._getChannelProperties().channelInterpretation;
             }
             set channelInterpretation(t2) {
-              const e2 = this._getChannelProperties();
-              this._setChannelProperties(Object.assign(e2, { channelInterpretation: t2 }));
+              const e3 = this._getChannelProperties();
+              this._setChannelProperties(Object.assign(e3, { channelInterpretation: t2 }));
             }
-            connect(t2, e2 = 0, s2 = 0) {
-              return To(this, t2, e2, s2), this;
+            connect(t2, e3 = 0, s2 = 0) {
+              return To(this, t2, e3, s2), this;
             }
             toDestination() {
               return this.connect(this.context.destination), this;
@@ -5411,8 +5427,8 @@
             toMaster() {
               return ri("toMaster() has been renamed toDestination()"), this.toDestination();
             }
-            disconnect(t2, e2 = 0, s2 = 0) {
-              return So(this, t2, e2, s2), this;
+            disconnect(t2, e3 = 0, s2 = 0) {
+              return So(this, t2, e3, s2), this;
             }
             chain(...t2) {
               return bo(this, ...t2), this;
@@ -5425,23 +5441,23 @@
             }
           }
           function bo(...t2) {
-            const e2 = t2.shift();
-            t2.reduce((t3, e3) => (t3 instanceof wo ? t3.connect(e3) : bi(t3) && To(t3, e3), e3), e2);
+            const e3 = t2.shift();
+            t2.reduce((t3, e4) => (t3 instanceof wo ? t3.connect(e4) : bi(t3) && To(t3, e4), e4), e3);
           }
-          function To(t2, e2, s2 = 0, n2 = 0) {
-            for (ti(ci(t2), "Cannot connect from undefined node"), ti(ci(e2), "Cannot connect to undefined node"), (e2 instanceof wo || bi(e2)) && ti(e2.numberOfInputs > 0, "Cannot connect to node with no inputs"), ti(t2.numberOfOutputs > 0, "Cannot connect from node with no outputs"); e2 instanceof wo || e2 instanceof xo; )
-              ci(e2.input) && (e2 = e2.input);
+          function To(t2, e3, s2 = 0, n2 = 0) {
+            for (ti(ci(t2), "Cannot connect from undefined node"), ti(ci(e3), "Cannot connect to undefined node"), (e3 instanceof wo || bi(e3)) && ti(e3.numberOfInputs > 0, "Cannot connect to node with no inputs"), ti(t2.numberOfOutputs > 0, "Cannot connect from node with no outputs"); e3 instanceof wo || e3 instanceof xo; )
+              ci(e3.input) && (e3 = e3.input);
             for (; t2 instanceof wo; )
               ci(t2.output) && (t2 = t2.output);
-            wi(e2) ? t2.connect(e2, s2) : t2.connect(e2, s2, n2);
+            wi(e3) ? t2.connect(e3, s2) : t2.connect(e3, s2, n2);
           }
-          function So(t2, e2, s2 = 0, n2 = 0) {
-            if (ci(e2))
-              for (; e2 instanceof wo; )
-                e2 = e2.input;
+          function So(t2, e3, s2 = 0, n2 = 0) {
+            if (ci(e3))
+              for (; e3 instanceof wo; )
+                e3 = e3.input;
             for (; !bi(t2); )
               ci(t2.output) && (t2 = t2.output);
-            wi(e2) ? t2.disconnect(e2, s2) : bi(e2) ? t2.disconnect(e2, s2, n2) : t2.disconnect();
+            wi(e3) ? t2.disconnect(e3, s2) : bi(e3) ? t2.disconnect(e3, s2, n2) : t2.disconnect();
           }
           class ko extends wo {
             constructor() {
@@ -5459,26 +5475,26 @@
           class Co extends wo {
             constructor(t2) {
               super(t2), this.onended = Zi, this._startTime = -1, this._stopTime = -1, this._timeout = -1, this.output = new ko({ context: this.context, gain: 0 }), this._gainNode = this.output, this.getStateAtTime = function(t3) {
-                const e2 = this.toSeconds(t3);
-                return this._startTime !== -1 && e2 >= this._startTime && (this._stopTime === -1 || e2 <= this._stopTime) ? "started" : "stopped";
+                const e3 = this.toSeconds(t3);
+                return this._startTime !== -1 && e3 >= this._startTime && (this._stopTime === -1 || e3 <= this._stopTime) ? "started" : "stopped";
               }, this._fadeIn = t2.fadeIn, this._fadeOut = t2.fadeOut, this._curve = t2.curve, this.onended = t2.onended;
             }
             static getDefaults() {
               return Object.assign(wo.getDefaults(), { curve: "linear", fadeIn: 0, fadeOut: 0, onended: Zi });
             }
-            _startGain(t2, e2 = 1) {
+            _startGain(t2, e3 = 1) {
               ti(this._startTime === -1, "Source cannot be started more than once");
               const s2 = this.toSeconds(this._fadeIn);
-              return this._startTime = t2 + s2, this._startTime = Math.max(this._startTime, this.context.currentTime), s2 > 0 ? (this._gainNode.gain.setValueAtTime(0, t2), this._curve === "linear" ? this._gainNode.gain.linearRampToValueAtTime(e2, t2 + s2) : this._gainNode.gain.exponentialApproachValueAtTime(e2, t2, s2)) : this._gainNode.gain.setValueAtTime(e2, t2), this;
+              return this._startTime = t2 + s2, this._startTime = Math.max(this._startTime, this.context.currentTime), s2 > 0 ? (this._gainNode.gain.setValueAtTime(0, t2), this._curve === "linear" ? this._gainNode.gain.linearRampToValueAtTime(e3, t2 + s2) : this._gainNode.gain.exponentialApproachValueAtTime(e3, t2, s2)) : this._gainNode.gain.setValueAtTime(e3, t2), this;
             }
             stop(t2) {
               return this.log("stop", t2), this._stopGain(this.toSeconds(t2)), this;
             }
             _stopGain(t2) {
               ti(this._startTime !== -1, "'start' must be called before 'stop'"), this.cancelStop();
-              const e2 = this.toSeconds(this._fadeOut);
-              return this._stopTime = this.toSeconds(t2) + e2, this._stopTime = Math.max(this._stopTime, this.context.currentTime), e2 > 0 ? this._curve === "linear" ? this._gainNode.gain.linearRampTo(0, e2, t2) : this._gainNode.gain.targetRampTo(0, e2, t2) : (this._gainNode.gain.cancelAndHoldAtTime(t2), this._gainNode.gain.setValueAtTime(0, t2)), this.context.clearTimeout(this._timeout), this._timeout = this.context.setTimeout(() => {
-                const t3 = this._curve === "exponential" ? 2 * e2 : 0;
+              const e3 = this.toSeconds(this._fadeOut);
+              return this._stopTime = this.toSeconds(t2) + e3, this._stopTime = Math.max(this._stopTime, this.context.currentTime), e3 > 0 ? this._curve === "linear" ? this._gainNode.gain.linearRampTo(0, e3, t2) : this._gainNode.gain.targetRampTo(0, e3, t2) : (this._gainNode.gain.cancelAndHoldAtTime(t2), this._gainNode.gain.setValueAtTime(0, t2)), this.context.clearTimeout(this._timeout), this._timeout = this.context.setTimeout(() => {
+                const t3 = this._curve === "exponential" ? 2 * e3 : 0;
                 this._stopSource(this.now() + t3), this._onended();
               }, this._stopTime - this.context.currentTime), this;
             }
@@ -5508,8 +5524,8 @@
               return Object.assign(Co.getDefaults(), { convert: true, offset: 1, units: "number" });
             }
             start(t2) {
-              const e2 = this.toSeconds(t2);
-              return this.log("start", e2), this._startGain(e2), this._source.start(e2), this;
+              const e3 = this.toSeconds(t2);
+              return this.log("start", e3), this._startGain(e3), this._source.start(e3), this;
             }
             _stopSource(t2) {
               this._source.stop(t2);
@@ -5527,14 +5543,14 @@
             static getDefaults() {
               return Object.assign(wo.getDefaults(), { convert: true, units: "number", value: 0 });
             }
-            connect(t2, e2 = 0, s2 = 0) {
-              return Oo(this, t2, e2, s2), this;
+            connect(t2, e3 = 0, s2 = 0) {
+              return Oo(this, t2, e3, s2), this;
             }
             dispose() {
               return super.dispose(), this._param.dispose(), this._constantSource.dispose(), this;
             }
-            setValueAtTime(t2, e2) {
-              return this._param.setValueAtTime(t2, e2), this;
+            setValueAtTime(t2, e3) {
+              return this._param.setValueAtTime(t2, e3), this;
             }
             getValueAtTime(t2) {
               return this._param.getValueAtTime(t2);
@@ -5542,29 +5558,29 @@
             setRampPoint(t2) {
               return this._param.setRampPoint(t2), this;
             }
-            linearRampToValueAtTime(t2, e2) {
-              return this._param.linearRampToValueAtTime(t2, e2), this;
+            linearRampToValueAtTime(t2, e3) {
+              return this._param.linearRampToValueAtTime(t2, e3), this;
             }
-            exponentialRampToValueAtTime(t2, e2) {
-              return this._param.exponentialRampToValueAtTime(t2, e2), this;
+            exponentialRampToValueAtTime(t2, e3) {
+              return this._param.exponentialRampToValueAtTime(t2, e3), this;
             }
-            exponentialRampTo(t2, e2, s2) {
-              return this._param.exponentialRampTo(t2, e2, s2), this;
+            exponentialRampTo(t2, e3, s2) {
+              return this._param.exponentialRampTo(t2, e3, s2), this;
             }
-            linearRampTo(t2, e2, s2) {
-              return this._param.linearRampTo(t2, e2, s2), this;
+            linearRampTo(t2, e3, s2) {
+              return this._param.linearRampTo(t2, e3, s2), this;
             }
-            targetRampTo(t2, e2, s2) {
-              return this._param.targetRampTo(t2, e2, s2), this;
+            targetRampTo(t2, e3, s2) {
+              return this._param.targetRampTo(t2, e3, s2), this;
             }
-            exponentialApproachValueAtTime(t2, e2, s2) {
-              return this._param.exponentialApproachValueAtTime(t2, e2, s2), this;
+            exponentialApproachValueAtTime(t2, e3, s2) {
+              return this._param.exponentialApproachValueAtTime(t2, e3, s2), this;
             }
-            setTargetAtTime(t2, e2, s2) {
-              return this._param.setTargetAtTime(t2, e2, s2), this;
+            setTargetAtTime(t2, e3, s2) {
+              return this._param.setTargetAtTime(t2, e3, s2), this;
             }
-            setValueCurveAtTime(t2, e2, s2, n2) {
-              return this._param.setValueCurveAtTime(t2, e2, s2, n2), this;
+            setValueCurveAtTime(t2, e3, s2, n2) {
+              return this._param.setValueCurveAtTime(t2, e3, s2, n2), this;
             }
             cancelScheduledValues(t2) {
               return this._param.cancelScheduledValues(t2), this;
@@ -5572,8 +5588,8 @@
             cancelAndHoldAtTime(t2) {
               return this._param.cancelAndHoldAtTime(t2), this;
             }
-            rampTo(t2, e2, s2) {
-              return this._param.rampTo(t2, e2, s2), this;
+            rampTo(t2, e3, s2) {
+              return this._param.rampTo(t2, e3, s2), this;
             }
             get value() {
               return this._param.value;
@@ -5606,8 +5622,8 @@
               return this._param.apply(t2), this;
             }
           }
-          function Oo(t2, e2, s2, n2) {
-            (e2 instanceof xo || wi(e2) || e2 instanceof Do && e2.override) && (e2.cancelScheduledValues(0), e2.setValueAtTime(0, 0), e2 instanceof Do && (e2.overridden = true)), To(t2, e2, s2, n2);
+          function Oo(t2, e3, s2, n2) {
+            (e3 instanceof xo || wi(e3) || e3 instanceof Do && e3.override) && (e3.cancelScheduledValues(0), e3.setValueAtTime(0, 0), e3 instanceof Do && (e3.overridden = true)), To(t2, e3, s2, n2);
           }
           class Mo extends xo {
             constructor() {
@@ -5618,71 +5634,71 @@
             static getDefaults() {
               return Object.assign(xo.getDefaults(), { multiplier: 1, units: "hertz", value: 1 });
             }
-            setTargetAtTime(t2, e2, s2) {
-              e2 = this.toSeconds(e2), this.setRampPoint(e2);
-              const n2 = this._fromType(t2), i2 = this._events.get(e2), o2 = Math.round(Math.max(1 / s2, 1));
+            setTargetAtTime(t2, e3, s2) {
+              e3 = this.toSeconds(e3), this.setRampPoint(e3);
+              const n2 = this._fromType(t2), i2 = this._events.get(e3), o2 = Math.round(Math.max(1 / s2, 1));
               for (let t3 = 0; t3 <= o2; t3++) {
-                const o3 = s2 * t3 + e2, r2 = this._exponentialApproach(i2.time, i2.value, n2, s2, o3);
+                const o3 = s2 * t3 + e3, r2 = this._exponentialApproach(i2.time, i2.value, n2, s2, o3);
                 this.linearRampToValueAtTime(this._toType(r2), o3);
               }
               return this;
             }
-            setValueAtTime(t2, e2) {
-              const s2 = this.toSeconds(e2);
-              super.setValueAtTime(t2, e2);
+            setValueAtTime(t2, e3) {
+              const s2 = this.toSeconds(e3);
+              super.setValueAtTime(t2, e3);
               const n2 = this._events.get(s2), i2 = this._events.previousEvent(n2), o2 = this._getTicksUntilEvent(i2, s2);
               return n2.ticks = Math.max(o2, 0), this;
             }
-            linearRampToValueAtTime(t2, e2) {
-              const s2 = this.toSeconds(e2);
-              super.linearRampToValueAtTime(t2, e2);
+            linearRampToValueAtTime(t2, e3) {
+              const s2 = this.toSeconds(e3);
+              super.linearRampToValueAtTime(t2, e3);
               const n2 = this._events.get(s2), i2 = this._events.previousEvent(n2), o2 = this._getTicksUntilEvent(i2, s2);
               return n2.ticks = Math.max(o2, 0), this;
             }
-            exponentialRampToValueAtTime(t2, e2) {
-              e2 = this.toSeconds(e2);
-              const s2 = this._fromType(t2), n2 = this._events.get(e2), i2 = Math.round(Math.max(10 * (e2 - n2.time), 1)), o2 = (e2 - n2.time) / i2;
+            exponentialRampToValueAtTime(t2, e3) {
+              e3 = this.toSeconds(e3);
+              const s2 = this._fromType(t2), n2 = this._events.get(e3), i2 = Math.round(Math.max(10 * (e3 - n2.time), 1)), o2 = (e3 - n2.time) / i2;
               for (let t3 = 0; t3 <= i2; t3++) {
-                const i3 = o2 * t3 + n2.time, r2 = this._exponentialInterpolate(n2.time, n2.value, e2, s2, i3);
+                const i3 = o2 * t3 + n2.time, r2 = this._exponentialInterpolate(n2.time, n2.value, e3, s2, i3);
                 this.linearRampToValueAtTime(this._toType(r2), i3);
               }
               return this;
             }
-            _getTicksUntilEvent(t2, e2) {
+            _getTicksUntilEvent(t2, e3) {
               if (t2 === null)
                 t2 = { ticks: 0, time: 0, type: "setValueAtTime", value: 0 };
               else if (ai(t2.ticks)) {
-                const e3 = this._events.previousEvent(t2);
-                t2.ticks = this._getTicksUntilEvent(e3, t2.time);
+                const e4 = this._events.previousEvent(t2);
+                t2.ticks = this._getTicksUntilEvent(e4, t2.time);
               }
               const s2 = this._fromType(this.getValueAtTime(t2.time));
-              let n2 = this._fromType(this.getValueAtTime(e2));
-              const i2 = this._events.get(e2);
-              return i2 && i2.time === e2 && i2.type === "setValueAtTime" && (n2 = this._fromType(this.getValueAtTime(e2 - this.sampleTime))), 0.5 * (e2 - t2.time) * (s2 + n2) + t2.ticks;
+              let n2 = this._fromType(this.getValueAtTime(e3));
+              const i2 = this._events.get(e3);
+              return i2 && i2.time === e3 && i2.type === "setValueAtTime" && (n2 = this._fromType(this.getValueAtTime(e3 - this.sampleTime))), 0.5 * (e3 - t2.time) * (s2 + n2) + t2.ticks;
             }
             getTicksAtTime(t2) {
-              const e2 = this.toSeconds(t2), s2 = this._events.get(e2);
-              return Math.max(this._getTicksUntilEvent(s2, e2), 0);
+              const e3 = this.toSeconds(t2), s2 = this._events.get(e3);
+              return Math.max(this._getTicksUntilEvent(s2, e3), 0);
             }
-            getDurationOfTicks(t2, e2) {
-              const s2 = this.toSeconds(e2), n2 = this.getTicksAtTime(e2);
+            getDurationOfTicks(t2, e3) {
+              const s2 = this.toSeconds(e3), n2 = this.getTicksAtTime(e3);
               return this.getTimeOfTick(n2 + t2) - s2;
             }
             getTimeOfTick(t2) {
-              const e2 = this._events.get(t2, "ticks"), s2 = this._events.getAfter(t2, "ticks");
-              if (e2 && e2.ticks === t2)
-                return e2.time;
-              if (e2 && s2 && s2.type === "linearRampToValueAtTime" && e2.value !== s2.value) {
-                const n2 = this._fromType(this.getValueAtTime(e2.time)), i2 = (this._fromType(this.getValueAtTime(s2.time)) - n2) / (s2.time - e2.time), o2 = Math.sqrt(Math.pow(n2, 2) - 2 * i2 * (e2.ticks - t2)), r2 = (-n2 + o2) / i2, a2 = (-n2 - o2) / i2;
-                return (r2 > 0 ? r2 : a2) + e2.time;
+              const e3 = this._events.get(t2, "ticks"), s2 = this._events.getAfter(t2, "ticks");
+              if (e3 && e3.ticks === t2)
+                return e3.time;
+              if (e3 && s2 && s2.type === "linearRampToValueAtTime" && e3.value !== s2.value) {
+                const n2 = this._fromType(this.getValueAtTime(e3.time)), i2 = (this._fromType(this.getValueAtTime(s2.time)) - n2) / (s2.time - e3.time), o2 = Math.sqrt(Math.pow(n2, 2) - 2 * i2 * (e3.ticks - t2)), r2 = (-n2 + o2) / i2, a2 = (-n2 - o2) / i2;
+                return (r2 > 0 ? r2 : a2) + e3.time;
               }
-              return e2 ? e2.value === 0 ? 1 / 0 : e2.time + (t2 - e2.ticks) / e2.value : t2 / this._initialValue;
+              return e3 ? e3.value === 0 ? 1 / 0 : e3.time + (t2 - e3.ticks) / e3.value : t2 / this._initialValue;
             }
-            ticksToTime(t2, e2) {
-              return this.getDurationOfTicks(t2, e2);
+            ticksToTime(t2, e3) {
+              return this.getDurationOfTicks(t2, e3);
             }
-            timeToTicks(t2, e2) {
-              const s2 = this.toSeconds(e2), n2 = this.toSeconds(t2), i2 = this.getTicksAtTime(s2);
+            timeToTicks(t2, e3) {
+              const s2 = this.toSeconds(e3), n2 = this.toSeconds(t2), i2 = this.getTicksAtTime(s2);
               return this.getTicksAtTime(s2 + n2) - i2;
             }
             _fromType(t2) {
@@ -5695,8 +5711,8 @@
               return this._multiplier;
             }
             set multiplier(t2) {
-              const e2 = this.value;
-              this._multiplier = t2, this.cancelScheduledValues(0), this.setValueAtTime(e2, 0);
+              const e3 = this.value;
+              this._multiplier = t2, this.cancelScheduledValues(0), this.setValueAtTime(e3, 0);
             }
           }
           class Eo extends Do {
@@ -5708,17 +5724,17 @@
             static getDefaults() {
               return Object.assign(Do.getDefaults(), { multiplier: 1, units: "hertz", value: 1 });
             }
-            ticksToTime(t2, e2) {
-              return this._param.ticksToTime(t2, e2);
+            ticksToTime(t2, e3) {
+              return this._param.ticksToTime(t2, e3);
             }
-            timeToTicks(t2, e2) {
-              return this._param.timeToTicks(t2, e2);
+            timeToTicks(t2, e3) {
+              return this._param.timeToTicks(t2, e3);
             }
             getTimeOfTick(t2) {
               return this._param.getTimeOfTick(t2);
             }
-            getDurationOfTicks(t2, e2) {
-              return this._param.getDurationOfTicks(t2, e2);
+            getDurationOfTicks(t2, e3) {
+              return this._param.getDurationOfTicks(t2, e3);
             }
             getTicksAtTime(t2) {
               return this._param.getTicksAtTime(t2);
@@ -5745,33 +5761,33 @@
             get state() {
               return this.getStateAtTime(this.now());
             }
-            start(t2, e2) {
+            start(t2, e3) {
               const s2 = this.toSeconds(t2);
-              return this._state.getValueAtTime(s2) !== "started" && (this._state.setStateAtTime("started", s2), ci(e2) && this.setTicksAtTime(e2, s2)), this;
+              return this._state.getValueAtTime(s2) !== "started" && (this._state.setStateAtTime("started", s2), ci(e3) && this.setTicksAtTime(e3, s2)), this;
             }
             stop(t2) {
-              const e2 = this.toSeconds(t2);
-              if (this._state.getValueAtTime(e2) === "stopped") {
-                const t3 = this._state.get(e2);
+              const e3 = this.toSeconds(t2);
+              if (this._state.getValueAtTime(e3) === "stopped") {
+                const t3 = this._state.get(e3);
                 t3 && t3.time > 0 && (this._tickOffset.cancel(t3.time), this._state.cancel(t3.time));
               }
-              return this._state.cancel(e2), this._state.setStateAtTime("stopped", e2), this.setTicksAtTime(0, e2), this;
+              return this._state.cancel(e3), this._state.setStateAtTime("stopped", e3), this.setTicksAtTime(0, e3), this;
             }
             pause(t2) {
-              const e2 = this.toSeconds(t2);
-              return this._state.getValueAtTime(e2) === "started" && this._state.setStateAtTime("paused", e2), this;
+              const e3 = this.toSeconds(t2);
+              return this._state.getValueAtTime(e3) === "started" && this._state.setStateAtTime("paused", e3), this;
             }
             cancel(t2) {
               return t2 = this.toSeconds(t2), this._state.cancel(t2), this._tickOffset.cancel(t2), this;
             }
             getTicksAtTime(t2) {
-              const e2 = this.toSeconds(t2), s2 = this._state.getLastState("stopped", e2), n2 = { state: "paused", time: e2 };
+              const e3 = this.toSeconds(t2), s2 = this._state.getLastState("stopped", e3), n2 = { state: "paused", time: e3 };
               this._state.add(n2);
               let i2 = s2, o2 = 0;
-              return this._state.forEachBetween(s2.time, e2 + this.sampleTime, (t3) => {
-                let e3 = i2.time;
+              return this._state.forEachBetween(s2.time, e3 + this.sampleTime, (t3) => {
+                let e4 = i2.time;
                 const s3 = this._tickOffset.get(t3.time);
-                s3 && s3.time >= i2.time && (o2 = s3.ticks, e3 = s3.time), i2.state === "started" && t3.state !== "started" && (o2 += this.frequency.getTicksAtTime(t3.time) - this.frequency.getTicksAtTime(e3)), i2 = t3;
+                s3 && s3.time >= i2.time && (o2 = s3.ticks, e4 = s3.time), i2.state === "started" && t3.state !== "started" && (o2 += this.frequency.getTicksAtTime(t3.time) - this.frequency.getTicksAtTime(e4)), i2 = t3;
               }), this._state.remove(n2), o2;
             }
             get ticks() {
@@ -5784,34 +5800,34 @@
               return this.getSecondsAtTime(this.now());
             }
             set seconds(t2) {
-              const e2 = this.now(), s2 = this.frequency.timeToTicks(t2, e2);
-              this.setTicksAtTime(s2, e2);
+              const e3 = this.now(), s2 = this.frequency.timeToTicks(t2, e3);
+              this.setTicksAtTime(s2, e3);
             }
             getSecondsAtTime(t2) {
               t2 = this.toSeconds(t2);
-              const e2 = this._state.getLastState("stopped", t2), s2 = { state: "paused", time: t2 };
+              const e3 = this._state.getLastState("stopped", t2), s2 = { state: "paused", time: t2 };
               this._state.add(s2);
-              let n2 = e2, i2 = 0;
-              return this._state.forEachBetween(e2.time, t2 + this.sampleTime, (t3) => {
-                let e3 = n2.time;
+              let n2 = e3, i2 = 0;
+              return this._state.forEachBetween(e3.time, t2 + this.sampleTime, (t3) => {
+                let e4 = n2.time;
                 const s3 = this._tickOffset.get(t3.time);
-                s3 && s3.time >= n2.time && (i2 = s3.seconds, e3 = s3.time), n2.state === "started" && t3.state !== "started" && (i2 += t3.time - e3), n2 = t3;
+                s3 && s3.time >= n2.time && (i2 = s3.seconds, e4 = s3.time), n2.state === "started" && t3.state !== "started" && (i2 += t3.time - e4), n2 = t3;
               }), this._state.remove(s2), i2;
             }
-            setTicksAtTime(t2, e2) {
-              return e2 = this.toSeconds(e2), this._tickOffset.cancel(e2), this._tickOffset.add({ seconds: this.frequency.getDurationOfTicks(t2, e2), ticks: t2, time: e2 }), this;
+            setTicksAtTime(t2, e3) {
+              return e3 = this.toSeconds(e3), this._tickOffset.cancel(e3), this._tickOffset.add({ seconds: this.frequency.getDurationOfTicks(t2, e3), ticks: t2, time: e3 }), this;
             }
             getStateAtTime(t2) {
               return t2 = this.toSeconds(t2), this._state.getValueAtTime(t2);
             }
-            getTimeOfTick(t2, e2 = this.now()) {
-              const s2 = this._tickOffset.get(e2), n2 = this._state.get(e2), i2 = Math.max(s2.time, n2.time), o2 = this.frequency.getTicksAtTime(i2) + t2 - s2.ticks;
+            getTimeOfTick(t2, e3 = this.now()) {
+              const s2 = this._tickOffset.get(e3), n2 = this._state.get(e3), i2 = Math.max(s2.time, n2.time), o2 = this.frequency.getTicksAtTime(i2) + t2 - s2.ticks;
               return this.frequency.getTimeOfTick(o2);
             }
-            forEachTickBetween(t2, e2, s2) {
+            forEachTickBetween(t2, e3, s2) {
               let n2 = this._state.get(t2);
-              this._state.forEachBetween(t2, e2, (e3) => {
-                n2 && n2.state === "started" && e3.state !== "started" && this.forEachTickBetween(Math.max(n2.time, t2), e3.time - this.sampleTime, s2), n2 = e3;
+              this._state.forEachBetween(t2, e3, (e4) => {
+                n2 && n2.state === "started" && e4.state !== "started" && this.forEachTickBetween(Math.max(n2.time, t2), e4.time - this.sampleTime, s2), n2 = e4;
               });
               let i2 = null;
               if (n2 && n2.state === "started") {
@@ -5819,7 +5835,7 @@
                 let c2 = Math.ceil(a2) - a2;
                 c2 = Ii(c2, 1) ? 0 : c2;
                 let h2 = this.frequency.getTimeOfTick(r2 + c2);
-                for (; h2 < e2; ) {
+                for (; h2 < e3; ) {
                   try {
                     s2(h2, Math.round(this.getTicksAtTime(h2)));
                   } catch (t3) {
@@ -5849,18 +5865,18 @@
             get state() {
               return this._state.getValueAtTime(this.now());
             }
-            start(t2, e2) {
+            start(t2, e3) {
               si(this.context);
               const s2 = this.toSeconds(t2);
-              return this.log("start", s2), this._state.getValueAtTime(s2) !== "started" && (this._state.setStateAtTime("started", s2), this._tickSource.start(s2, e2), s2 < this._lastUpdate && this.emit("start", s2, e2)), this;
+              return this.log("start", s2), this._state.getValueAtTime(s2) !== "started" && (this._state.setStateAtTime("started", s2), this._tickSource.start(s2, e3), s2 < this._lastUpdate && this.emit("start", s2, e3)), this;
             }
             stop(t2) {
-              const e2 = this.toSeconds(t2);
-              return this.log("stop", e2), this._state.cancel(e2), this._state.setStateAtTime("stopped", e2), this._tickSource.stop(e2), e2 < this._lastUpdate && this.emit("stop", e2), this;
+              const e3 = this.toSeconds(t2);
+              return this.log("stop", e3), this._state.cancel(e3), this._state.setStateAtTime("stopped", e3), this._tickSource.stop(e3), e3 < this._lastUpdate && this.emit("stop", e3), this;
             }
             pause(t2) {
-              const e2 = this.toSeconds(t2);
-              return this._state.getValueAtTime(e2) === "started" && (this._state.setStateAtTime("paused", e2), this._tickSource.pause(e2), e2 < this._lastUpdate && this.emit("pause", e2)), this;
+              const e3 = this.toSeconds(t2);
+              return this._state.getValueAtTime(e3) === "started" && (this._state.setStateAtTime("paused", e3), this._tickSource.pause(e3), e3 < this._lastUpdate && this.emit("pause", e3)), this;
             }
             get ticks() {
               return Math.ceil(this.getTicksAtTime(this.now()));
@@ -5877,26 +5893,26 @@
             getSecondsAtTime(t2) {
               return this._tickSource.getSecondsAtTime(t2);
             }
-            setTicksAtTime(t2, e2) {
-              return this._tickSource.setTicksAtTime(t2, e2), this;
+            setTicksAtTime(t2, e3) {
+              return this._tickSource.setTicksAtTime(t2, e3), this;
             }
-            getTimeOfTick(t2, e2 = this.now()) {
-              return this._tickSource.getTimeOfTick(t2, e2);
+            getTimeOfTick(t2, e3 = this.now()) {
+              return this._tickSource.getTimeOfTick(t2, e3);
             }
             getTicksAtTime(t2) {
               return this._tickSource.getTicksAtTime(t2);
             }
-            nextTickTime(t2, e2) {
-              const s2 = this.toSeconds(e2), n2 = this.getTicksAtTime(s2);
+            nextTickTime(t2, e3) {
+              const s2 = this.toSeconds(e3), n2 = this.getTicksAtTime(s2);
               return this._tickSource.getTimeOfTick(n2 + t2, s2);
             }
             _loop() {
-              const t2 = this._lastUpdate, e2 = this.now();
-              this._lastUpdate = e2, this.log("loop", t2, e2), t2 !== e2 && (this._state.forEachBetween(t2, e2, (t3) => {
+              const t2 = this._lastUpdate, e3 = this.now();
+              this._lastUpdate = e3, this.log("loop", t2, e3), t2 !== e3 && (this._state.forEachBetween(t2, e3, (t3) => {
                 switch (t3.state) {
                   case "started":
-                    const e3 = this._tickSource.getTicksAtTime(t3.time);
-                    this.emit("start", t3.time, e3);
+                    const e4 = this._tickSource.getTicksAtTime(t3.time);
+                    this.emit("start", t3.time, e4);
                     break;
                   case "stopped":
                     t3.time !== 0 && this.emit("stop", t3.time);
@@ -5904,13 +5920,13 @@
                   case "paused":
                     this.emit("pause", t3.time);
                 }
-              }), this._tickSource.forEachTickBetween(t2, e2, (t3, e3) => {
-                this.callback(t3, e3);
+              }), this._tickSource.forEachTickBetween(t2, e3, (t3, e4) => {
+                this.callback(t3, e4);
               }));
             }
             getStateAtTime(t2) {
-              const e2 = this.toSeconds(t2);
-              return this._state.getValueAtTime(e2);
+              const e3 = this.toSeconds(t2);
+              return this._state.getValueAtTime(e3);
             }
             dispose() {
               return super.dispose(), this.context.off("tick", this._boundLoop), this._tickSource.dispose(), this._state.dispose(), this;
@@ -5920,8 +5936,8 @@
           class Fo extends wo {
             constructor() {
               super(Di(Fo.getDefaults(), arguments, ["delayTime", "maxDelay"])), this.name = "Delay";
-              const t2 = Di(Fo.getDefaults(), arguments, ["delayTime", "maxDelay"]), e2 = this.toSeconds(t2.maxDelay);
-              this._maxDelay = Math.max(e2, this.toSeconds(t2.delayTime)), this._delayNode = this.input = this.output = this.context.createDelay(e2), this.delayTime = new xo({ context: this.context, param: this._delayNode.delayTime, units: "time", value: t2.delayTime, minValue: 0, maxValue: this.maxDelay }), Ui(this, "delayTime");
+              const t2 = Di(Fo.getDefaults(), arguments, ["delayTime", "maxDelay"]), e3 = this.toSeconds(t2.maxDelay);
+              this._maxDelay = Math.max(e3, this.toSeconds(t2.delayTime)), this._delayNode = this.input = this.output = this.context.createDelay(e3), this.delayTime = new xo({ context: this.context, param: this._delayNode.delayTime, units: "time", value: t2.delayTime, minValue: 0, maxValue: this.maxDelay }), Ui(this, "delayTime");
             }
             static getDefaults() {
               return Object.assign(wo.getDefaults(), { delayTime: 0, maxDelay: 1 });
@@ -5933,9 +5949,9 @@
               return super.dispose(), this._delayNode.disconnect(), this.delayTime.dispose(), this;
             }
           }
-          function Io(t2, e2, s2 = 2, n2 = Ji().sampleRate) {
+          function Io(t2, e3, s2 = 2, n2 = Ji().sampleRate) {
             return yi(this, void 0, void 0, function* () {
-              const i2 = Ji(), o2 = new Yi(s2, e2, n2);
+              const i2 = Ji(), o2 = new Yi(s2, e3, n2);
               Ki(o2), yield t2(o2);
               const r2 = o2.render();
               Ki(i2);
@@ -5947,10 +5963,10 @@
             constructor() {
               super(), this.name = "ToneAudioBuffers", this._buffers = /* @__PURE__ */ new Map(), this._loadingCount = 0;
               const t2 = Di(Vo.getDefaults(), arguments, ["urls", "onload", "baseUrl"], "urls");
-              this.baseUrl = t2.baseUrl, Object.keys(t2.urls).forEach((e2) => {
+              this.baseUrl = t2.baseUrl, Object.keys(t2.urls).forEach((e3) => {
                 this._loadingCount++;
-                const s2 = t2.urls[e2];
-                this.add(e2, s2, this._bufferLoaded.bind(this, t2.onload), t2.onerror);
+                const s2 = t2.urls[e3];
+                this.add(e3, s2, this._bufferLoaded.bind(this, t2.onload), t2.onerror);
               });
             }
             static getDefaults() {
@@ -5966,10 +5982,10 @@
               this._loadingCount--, this._loadingCount === 0 && t2 && t2();
             }
             get loaded() {
-              return Array.from(this._buffers).every(([t2, e2]) => e2.loaded);
+              return Array.from(this._buffers).every(([t2, e3]) => e3.loaded);
             }
-            add(t2, e2, s2 = Zi, n2 = Zi) {
-              return fi(e2) ? this._buffers.set(t2.toString(), new Xi(this.baseUrl + e2, s2, n2)) : this._buffers.set(t2.toString(), new Xi(e2, s2, n2)), this;
+            add(t2, e3, s2 = Zi, n2 = Zi) {
+              return fi(e3) ? this._buffers.set(t2.toString(), new Xi(this.baseUrl + e3, s2, n2)) : this._buffers.set(t2.toString(), new Xi(e3, s2, n2)), this;
             }
             dispose() {
               return super.dispose(), this._buffers.forEach((t2) => t2.dispose()), this._buffers.clear(), this;
@@ -6001,8 +6017,8 @@
               return new No(this.context, this.toMidi() + t2);
             }
           }
-          function Po(t2, e2) {
-            return new No(Ji(), t2, e2);
+          function Po(t2, e3) {
+            return new No(Ji(), t2, e3);
           }
           class jo extends mo {
             constructor() {
@@ -6027,15 +6043,15 @@
               return this.valueOf() / this._getPPQ() * (60 / this._getBpm());
             }
           }
-          function Lo(t2, e2) {
-            return new jo(Ji(), t2, e2);
+          function Lo(t2, e3) {
+            return new jo(Ji(), t2, e3);
           }
           class zo extends vo {
             constructor() {
               super(...arguments), this.name = "Draw", this.expiration = 0.25, this.anticipation = 8e-3, this._events = new Ni(), this._boundDrawLoop = this._drawLoop.bind(this), this._animationFrame = -1;
             }
-            schedule(t2, e2) {
-              return this._events.add({ callback: t2, time: this.toSeconds(e2) }), this._events.length === 1 && (this._animationFrame = requestAnimationFrame(this._boundDrawLoop)), this;
+            schedule(t2, e3) {
+              return this._events.add({ callback: t2, time: this.toSeconds(e3) }), this._events.length === 1 && (this._animationFrame = requestAnimationFrame(this._boundDrawLoop)), this;
             }
             cancel(t2) {
               return this._events.cancel(this.toSeconds(t2)), this;
@@ -6043,8 +6059,8 @@
             _drawLoop() {
               const t2 = this.context.currentTime;
               for (; this._events.length && this._events.peek().time - this.anticipation <= t2; ) {
-                const e2 = this._events.shift();
-                e2 && t2 - e2.time <= this.expiration && e2.callback();
+                const e3 = this._events.shift();
+                e3 && t2 - e3.time <= this.expiration && e3.callback();
               }
               this._events.length > 0 && (this._animationFrame = requestAnimationFrame(this._boundDrawLoop));
             }
@@ -6063,16 +6079,16 @@
             }
             add(t2) {
               ti(ci(t2.time), "Events must have a time property"), ti(ci(t2.duration), "Events must have a duration parameter"), t2.time = t2.time.valueOf();
-              let e2 = new Wo(t2.time, t2.time + t2.duration, t2);
-              for (this._root === null ? this._root = e2 : this._root.insert(e2), this._length++; e2 !== null; )
-                e2.updateHeight(), e2.updateMax(), this._rebalance(e2), e2 = e2.parent;
+              let e3 = new Wo(t2.time, t2.time + t2.duration, t2);
+              for (this._root === null ? this._root = e3 : this._root.insert(e3), this._length++; e3 !== null; )
+                e3.updateHeight(), e3.updateMax(), this._rebalance(e3), e3 = e3.parent;
               return this;
             }
             remove(t2) {
               if (this._root !== null) {
-                const e2 = [];
-                this._root.search(t2.time, e2);
-                for (const s2 of e2)
+                const e3 = [];
+                this._root.search(t2.time, e3);
+                for (const s2 of e3)
                   if (s2.event === t2) {
                     this._removeNode(s2), this._length--;
                     break;
@@ -6089,8 +6105,8 @@
             _setRoot(t2) {
               this._root = t2, this._root !== null && (this._root.parent = null);
             }
-            _replaceNodeInParent(t2, e2) {
-              t2.parent !== null ? (t2.isLeftChild() ? t2.parent.left = e2 : t2.parent.right = e2, this._rebalance(t2.parent)) : this._setRoot(e2);
+            _replaceNodeInParent(t2, e3) {
+              t2.parent !== null ? (t2.isLeftChild() ? t2.parent.left = e3 : t2.parent.right = e3, this._rebalance(t2.parent)) : this._setRoot(e3);
             }
             _removeNode(t2) {
               if (t2.left === null && t2.right === null)
@@ -6100,45 +6116,45 @@
               else if (t2.left === null)
                 this._replaceNodeInParent(t2, t2.right);
               else {
-                let e2, s2 = null;
+                let e3, s2 = null;
                 if (t2.getBalance() > 0)
                   if (t2.left.right === null)
-                    e2 = t2.left, e2.right = t2.right, s2 = e2;
+                    e3 = t2.left, e3.right = t2.right, s2 = e3;
                   else {
-                    for (e2 = t2.left.right; e2.right !== null; )
-                      e2 = e2.right;
-                    e2.parent && (e2.parent.right = e2.left, s2 = e2.parent, e2.left = t2.left, e2.right = t2.right);
+                    for (e3 = t2.left.right; e3.right !== null; )
+                      e3 = e3.right;
+                    e3.parent && (e3.parent.right = e3.left, s2 = e3.parent, e3.left = t2.left, e3.right = t2.right);
                   }
                 else if (t2.right.left === null)
-                  e2 = t2.right, e2.left = t2.left, s2 = e2;
+                  e3 = t2.right, e3.left = t2.left, s2 = e3;
                 else {
-                  for (e2 = t2.right.left; e2.left !== null; )
-                    e2 = e2.left;
-                  e2.parent && (e2.parent.left = e2.right, s2 = e2.parent, e2.left = t2.left, e2.right = t2.right);
+                  for (e3 = t2.right.left; e3.left !== null; )
+                    e3 = e3.left;
+                  e3.parent && (e3.parent.left = e3.right, s2 = e3.parent, e3.left = t2.left, e3.right = t2.right);
                 }
-                t2.parent !== null ? t2.isLeftChild() ? t2.parent.left = e2 : t2.parent.right = e2 : this._setRoot(e2), s2 && this._rebalance(s2);
+                t2.parent !== null ? t2.isLeftChild() ? t2.parent.left = e3 : t2.parent.right = e3 : this._setRoot(e3), s2 && this._rebalance(s2);
               }
               t2.dispose();
             }
             _rotateLeft(t2) {
-              const e2 = t2.parent, s2 = t2.isLeftChild(), n2 = t2.right;
-              n2 && (t2.right = n2.left, n2.left = t2), e2 !== null ? s2 ? e2.left = n2 : e2.right = n2 : this._setRoot(n2);
+              const e3 = t2.parent, s2 = t2.isLeftChild(), n2 = t2.right;
+              n2 && (t2.right = n2.left, n2.left = t2), e3 !== null ? s2 ? e3.left = n2 : e3.right = n2 : this._setRoot(n2);
             }
             _rotateRight(t2) {
-              const e2 = t2.parent, s2 = t2.isLeftChild(), n2 = t2.left;
-              n2 && (t2.left = n2.right, n2.right = t2), e2 !== null ? s2 ? e2.left = n2 : e2.right = n2 : this._setRoot(n2);
+              const e3 = t2.parent, s2 = t2.isLeftChild(), n2 = t2.left;
+              n2 && (t2.left = n2.right, n2.right = t2), e3 !== null ? s2 ? e3.left = n2 : e3.right = n2 : this._setRoot(n2);
             }
             _rebalance(t2) {
-              const e2 = t2.getBalance();
-              e2 > 1 && t2.left ? t2.left.getBalance() < 0 ? this._rotateLeft(t2.left) : this._rotateRight(t2) : e2 < -1 && t2.right && (t2.right.getBalance() > 0 ? this._rotateRight(t2.right) : this._rotateLeft(t2));
+              const e3 = t2.getBalance();
+              e3 > 1 && t2.left ? t2.left.getBalance() < 0 ? this._rotateLeft(t2.left) : this._rotateRight(t2) : e3 < -1 && t2.right && (t2.right.getBalance() > 0 ? this._rotateRight(t2.right) : this._rotateLeft(t2));
             }
             get(t2) {
               if (this._root !== null) {
-                const e2 = [];
-                if (this._root.search(t2, e2), e2.length > 0) {
-                  let t3 = e2[0];
-                  for (let s2 = 1; s2 < e2.length; s2++)
-                    e2[s2].low > t3.low && (t3 = e2[s2]);
+                const e3 = [];
+                if (this._root.search(t2, e3), e3.length > 0) {
+                  let t3 = e3[0];
+                  for (let s2 = 1; s2 < e3.length; s2++)
+                    e3[s2].low > t3.low && (t3 = e3[s2]);
                   return t3.event;
                 }
               }
@@ -6146,27 +6162,27 @@
             }
             forEach(t2) {
               if (this._root !== null) {
-                const e2 = [];
-                this._root.traverse((t3) => e2.push(t3)), e2.forEach((e3) => {
-                  e3.event && t2(e3.event);
+                const e3 = [];
+                this._root.traverse((t3) => e3.push(t3)), e3.forEach((e4) => {
+                  e4.event && t2(e4.event);
                 });
               }
               return this;
             }
-            forEachAtTime(t2, e2) {
+            forEachAtTime(t2, e3) {
               if (this._root !== null) {
                 const s2 = [];
                 this._root.search(t2, s2), s2.forEach((t3) => {
-                  t3.event && e2(t3.event);
+                  t3.event && e3(t3.event);
                 });
               }
               return this;
             }
-            forEachFrom(t2, e2) {
+            forEachFrom(t2, e3) {
               if (this._root !== null) {
                 const s2 = [];
                 this._root.searchAfter(t2, s2), s2.forEach((t3) => {
-                  t3.event && e2(t3.event);
+                  t3.event && e3(t3.event);
                 });
               }
               return this;
@@ -6176,17 +6192,17 @@
             }
           }
           class Wo {
-            constructor(t2, e2, s2) {
-              this._left = null, this._right = null, this.parent = null, this.height = 0, this.event = s2, this.low = t2, this.high = e2, this.max = this.high;
+            constructor(t2, e3, s2) {
+              this._left = null, this._right = null, this.parent = null, this.height = 0, this.event = s2, this.low = t2, this.high = e3, this.max = this.high;
             }
             insert(t2) {
               t2.low <= this.low ? this.left === null ? this.left = t2 : this.left.insert(t2) : this.right === null ? this.right = t2 : this.right.insert(t2);
             }
-            search(t2, e2) {
-              t2 > this.max || (this.left !== null && this.left.search(t2, e2), this.low <= t2 && this.high > t2 && e2.push(this), this.low > t2 || this.right !== null && this.right.search(t2, e2));
+            search(t2, e3) {
+              t2 > this.max || (this.left !== null && this.left.search(t2, e3), this.low <= t2 && this.high > t2 && e3.push(this), this.low > t2 || this.right !== null && this.right.search(t2, e3));
             }
-            searchAfter(t2, e2) {
-              this.low >= t2 && (e2.push(this), this.left !== null && this.left.searchAfter(t2, e2)), this.right !== null && this.right.searchAfter(t2, e2);
+            searchAfter(t2, e3) {
+              this.low >= t2 && (e3.push(this), this.left !== null && this.left.searchAfter(t2, e3)), this.right !== null && this.right.searchAfter(t2, e3);
             }
             traverse(t2) {
               t2(this), this.left !== null && this.left.traverse(t2), this.right !== null && this.right.traverse(t2);
@@ -6273,18 +6289,18 @@
             constructor(t2) {
               super(), this.name = "TimelineValue", this._timeline = new Ni({ memory: 10 }), this._initialValue = t2;
             }
-            set(t2, e2) {
-              return this._timeline.add({ value: t2, time: e2 }), this;
+            set(t2, e3) {
+              return this._timeline.add({ value: t2, time: e3 }), this;
             }
             get(t2) {
-              const e2 = this._timeline.get(t2);
-              return e2 ? e2.value : this._initialValue;
+              const e3 = this._timeline.get(t2);
+              return e3 ? e3.value : this._initialValue;
             }
           }
           class Zo {
-            constructor(t2, e2) {
+            constructor(t2, e3) {
               this.id = Zo._eventId++;
-              const s2 = Object.assign(Zo.getDefaults(), e2);
+              const s2 = Object.assign(Zo.getDefaults(), e3);
               this.transport = t2, this.callback = s2.callback, this._once = s2.once, this.time = s2.time;
             }
             static getDefaults() {
@@ -6299,9 +6315,9 @@
           }
           Zo._eventId = 0;
           class Xo extends Zo {
-            constructor(t2, e2) {
-              super(t2, e2), this._currentId = -1, this._nextId = -1, this._nextTick = this.time, this._boundRestart = this._restart.bind(this);
-              const s2 = Object.assign(Xo.getDefaults(), e2);
+            constructor(t2, e3) {
+              super(t2, e3), this._currentId = -1, this._nextId = -1, this._nextTick = this.time, this._boundRestart = this._restart.bind(this);
+              const s2 = Object.assign(Xo.getDefaults(), e3);
               this.duration = new jo(t2.context, s2.duration).valueOf(), this._interval = new jo(t2.context, s2.interval).valueOf(), this._nextTick = s2.time, this.transport.on("start", this._boundRestart), this.transport.on("loopStart", this._boundRestart), this.context = this.transport.context, this._restart();
             }
             static getDefaults() {
@@ -6311,13 +6327,13 @@
               this._createEvents(t2), super.invoke(t2);
             }
             _createEvents(t2) {
-              const e2 = this.transport.getTicksAtTime(t2);
-              e2 >= this.time && e2 >= this._nextTick && this._nextTick + this._interval < this.time + this.duration && (this._nextTick += this._interval, this._currentId = this._nextId, this._nextId = this.transport.scheduleOnce(this.invoke.bind(this), new jo(this.context, this._nextTick).toSeconds()));
+              const e3 = this.transport.getTicksAtTime(t2);
+              e3 >= this.time && e3 >= this._nextTick && this._nextTick + this._interval < this.time + this.duration && (this._nextTick += this._interval, this._currentId = this._nextId, this._nextId = this.transport.scheduleOnce(this.invoke.bind(this), new jo(this.context, this._nextTick).toSeconds()));
             }
             _restart(t2) {
               this.transport.clear(this._currentId), this.transport.clear(this._nextId), this._nextTick = this.time;
-              const e2 = this.transport.getTicksAtTime(t2);
-              e2 > this.time && (this._nextTick = this.time + Math.ceil((e2 - this.time) / this._interval) * this._interval), this._currentId = this.transport.scheduleOnce(this.invoke.bind(this), new jo(this.context, this._nextTick).toSeconds()), this._nextTick += this._interval, this._nextId = this.transport.scheduleOnce(this.invoke.bind(this), new jo(this.context, this._nextTick).toSeconds());
+              const e3 = this.transport.getTicksAtTime(t2);
+              e3 > this.time && (this._nextTick = this.time + Math.ceil((e3 - this.time) / this._interval) * this._interval), this._currentId = this.transport.scheduleOnce(this.invoke.bind(this), new jo(this.context, this._nextTick).toSeconds()), this._nextTick += this._interval, this._nextId = this.transport.scheduleOnce(this.invoke.bind(this), new jo(this.context, this._nextTick).toSeconds());
             }
             dispose() {
               return super.dispose(), this.transport.clear(this._currentId), this.transport.clear(this._nextId), this.transport.off("start", this._boundRestart), this.transport.off("loopStart", this._boundRestart), this;
@@ -6332,42 +6348,42 @@
             static getDefaults() {
               return Object.assign(vo.getDefaults(), { bpm: 120, loopEnd: "4m", loopStart: 0, ppq: 192, swing: 0, swingSubdivision: "8n", timeSignature: 4 });
             }
-            _processTick(t2, e2) {
-              if (this._loop.get(t2) && e2 >= this._loopEnd && (this.emit("loopEnd", t2), this._clock.setTicksAtTime(this._loopStart, t2), e2 = this._loopStart, this.emit("loopStart", t2, this._clock.getSecondsAtTime(t2)), this.emit("loop", t2)), this._swingAmount > 0 && e2 % this._ppq != 0 && e2 % (2 * this._swingTicks) != 0) {
-                const s2 = e2 % (2 * this._swingTicks) / (2 * this._swingTicks), n2 = Math.sin(s2 * Math.PI) * this._swingAmount;
+            _processTick(t2, e3) {
+              if (this._loop.get(t2) && e3 >= this._loopEnd && (this.emit("loopEnd", t2), this._clock.setTicksAtTime(this._loopStart, t2), e3 = this._loopStart, this.emit("loopStart", t2, this._clock.getSecondsAtTime(t2)), this.emit("loop", t2)), this._swingAmount > 0 && e3 % this._ppq != 0 && e3 % (2 * this._swingTicks) != 0) {
+                const s2 = e3 % (2 * this._swingTicks) / (2 * this._swingTicks), n2 = Math.sin(s2 * Math.PI) * this._swingAmount;
                 t2 += new jo(this.context, 2 * this._swingTicks / 3).toSeconds() * n2;
               }
-              this._timeline.forEachAtTime(e2, (e3) => e3.invoke(t2));
+              this._timeline.forEachAtTime(e3, (e4) => e4.invoke(t2));
             }
-            schedule(t2, e2) {
-              const s2 = new Zo(this, { callback: t2, time: new mo(this.context, e2).toTicks() });
+            schedule(t2, e3) {
+              const s2 = new Zo(this, { callback: t2, time: new mo(this.context, e3).toTicks() });
               return this._addEvent(s2, this._timeline);
             }
-            scheduleRepeat(t2, e2, s2, n2 = 1 / 0) {
-              const i2 = new Xo(this, { callback: t2, duration: new ho(this.context, n2).toTicks(), interval: new ho(this.context, e2).toTicks(), time: new mo(this.context, s2).toTicks() });
+            scheduleRepeat(t2, e3, s2, n2 = 1 / 0) {
+              const i2 = new Xo(this, { callback: t2, duration: new ho(this.context, n2).toTicks(), interval: new ho(this.context, e3).toTicks(), time: new mo(this.context, s2).toTicks() });
               return this._addEvent(i2, this._repeatedEvents);
             }
-            scheduleOnce(t2, e2) {
-              const s2 = new Zo(this, { callback: t2, once: true, time: new mo(this.context, e2).toTicks() });
+            scheduleOnce(t2, e3) {
+              const s2 = new Zo(this, { callback: t2, once: true, time: new mo(this.context, e3).toTicks() });
               return this._addEvent(s2, this._timeline);
             }
             clear(t2) {
               if (this._scheduledEvents.hasOwnProperty(t2)) {
-                const e2 = this._scheduledEvents[t2.toString()];
-                e2.timeline.remove(e2.event), e2.event.dispose(), delete this._scheduledEvents[t2.toString()];
+                const e3 = this._scheduledEvents[t2.toString()];
+                e3.timeline.remove(e3.event), e3.event.dispose(), delete this._scheduledEvents[t2.toString()];
               }
               return this;
             }
-            _addEvent(t2, e2) {
-              return this._scheduledEvents[t2.id.toString()] = { event: t2, timeline: e2 }, e2.add(t2), t2.id;
+            _addEvent(t2, e3) {
+              return this._scheduledEvents[t2.id.toString()] = { event: t2, timeline: e3 }, e3.add(t2), t2.id;
             }
             cancel(t2 = 0) {
-              const e2 = this.toTicks(t2);
-              return this._timeline.forEachFrom(e2, (t3) => this.clear(t3.id)), this._repeatedEvents.forEachFrom(e2, (t3) => this.clear(t3.id)), this;
+              const e3 = this.toTicks(t2);
+              return this._timeline.forEachFrom(e3, (t3) => this.clear(t3.id)), this._repeatedEvents.forEachFrom(e3, (t3) => this.clear(t3.id)), this;
             }
             _bindClockEvents() {
-              this._clock.on("start", (t2, e2) => {
-                e2 = new jo(this.context, e2).toSeconds(), this.emit("start", t2, e2);
+              this._clock.on("start", (t2, e3) => {
+                e3 = new jo(this.context, e3).toSeconds(), this.emit("start", t2, e3);
               }), this._clock.on("stop", (t2) => {
                 this.emit("stop", t2);
               }), this._clock.on("pause", (t2) => {
@@ -6377,9 +6393,9 @@
             get state() {
               return this._clock.getStateAtTime(this.now());
             }
-            start(t2, e2) {
+            start(t2, e3) {
               let s2;
-              return ci(e2) && (s2 = this.toTicks(e2)), this._clock.start(t2, s2), this;
+              return ci(e3) && (s2 = this.toTicks(e3)), this._clock.start(t2, s2), this;
             }
             stop(t2) {
               return this._clock.stop(t2), this;
@@ -6414,8 +6430,8 @@
             set loop(t2) {
               this._loop.set(t2, this.now());
             }
-            setLoopPoints(t2, e2) {
-              return this.loopStart = t2, this.loopEnd = e2, this;
+            setLoopPoints(t2, e3) {
+              return this.loopStart = t2, this.loopEnd = e3, this;
             }
             get swing() {
               return this._swingAmount;
@@ -6430,18 +6446,18 @@
               this._swingTicks = this.toTicks(t2);
             }
             get position() {
-              const t2 = this.now(), e2 = this._clock.getTicksAtTime(t2);
-              return new jo(this.context, e2).toBarsBeatsSixteenths();
+              const t2 = this.now(), e3 = this._clock.getTicksAtTime(t2);
+              return new jo(this.context, e3).toBarsBeatsSixteenths();
             }
             set position(t2) {
-              const e2 = this.toTicks(t2);
-              this.ticks = e2;
+              const e3 = this.toTicks(t2);
+              this.ticks = e3;
             }
             get seconds() {
               return this._clock.seconds;
             }
             set seconds(t2) {
-              const e2 = this.now(), s2 = this._clock.frequency.timeToTicks(t2, e2);
+              const e3 = this.now(), s2 = this._clock.frequency.timeToTicks(t2, e3);
               this.ticks = s2;
             }
             get progress() {
@@ -6456,12 +6472,12 @@
             }
             set ticks(t2) {
               if (this._clock.ticks !== t2) {
-                const e2 = this.now();
+                const e3 = this.now();
                 if (this.state === "started") {
-                  const s2 = this._clock.getTicksAtTime(e2), n2 = e2 + this._clock.frequency.getDurationOfTicks(Math.ceil(s2) - s2, e2);
+                  const s2 = this._clock.getTicksAtTime(e3), n2 = e3 + this._clock.frequency.getDurationOfTicks(Math.ceil(s2) - s2, e3);
                   this.emit("stop", n2), this._clock.setTicksAtTime(t2, n2), this.emit("start", n2, this._clock.getSecondsAtTime(n2));
                 } else
-                  this._clock.setTicksAtTime(t2, e2);
+                  this._clock.setTicksAtTime(t2, e3);
               }
             }
             getTicksAtTime(t2) {
@@ -6480,26 +6496,26 @@
               if (t2 = this.toTicks(t2), this.state !== "started")
                 return 0;
               {
-                const e2 = this.now(), s2 = t2 - this.getTicksAtTime(e2) % t2;
-                return this._clock.nextTickTime(s2, e2);
+                const e3 = this.now(), s2 = t2 - this.getTicksAtTime(e3) % t2;
+                return this._clock.nextTickTime(s2, e3);
               }
             }
-            syncSignal(t2, e2) {
-              if (!e2) {
+            syncSignal(t2, e3) {
+              if (!e3) {
                 const s3 = this.now();
                 if (t2.getValueAtTime(s3) !== 0) {
                   const n2 = 1 / (60 / this.bpm.getValueAtTime(s3) / this.PPQ);
-                  e2 = t2.getValueAtTime(s3) / n2;
+                  e3 = t2.getValueAtTime(s3) / n2;
                 } else
-                  e2 = 0;
+                  e3 = 0;
               }
-              const s2 = new ko(e2);
+              const s2 = new ko(e3);
               return this.bpm.connect(s2), s2.connect(t2._param), this._syncedSignals.push({ initial: t2.value, ratio: s2, signal: t2 }), t2.value = 0, this;
             }
             unsyncSignal(t2) {
-              for (let e2 = this._syncedSignals.length - 1; e2 >= 0; e2--) {
-                const s2 = this._syncedSignals[e2];
-                s2.signal === t2 && (s2.ratio.dispose(), s2.signal.value = s2.initial, this._syncedSignals.splice(e2, 1));
+              for (let e3 = this._syncedSignals.length - 1; e3 >= 0; e3--) {
+                const s2 = this._syncedSignals[e3];
+                s2.signal === t2 && (s2.ratio.dispose(), s2.signal.value = s2.initial, this._syncedSignals.splice(e3, 1));
               }
               return this;
             }
@@ -6531,50 +6547,50 @@
             _clampToCurrentTime(t2) {
               return this._synced ? t2 : Math.max(t2, this.context.currentTime);
             }
-            start(t2, e2, s2) {
+            start(t2, e3, s2) {
               let n2 = ai(t2) && this._synced ? this.context.transport.seconds : this.toSeconds(t2);
               if (n2 = this._clampToCurrentTime(n2), this._synced || this._state.getValueAtTime(n2) !== "started")
                 if (this.log("start", n2), this._state.setStateAtTime("started", n2), this._synced) {
                   const t3 = this._state.get(n2);
-                  t3 && (t3.offset = this.toSeconds(Oi(e2, 0)), t3.duration = s2 ? this.toSeconds(s2) : void 0);
+                  t3 && (t3.offset = this.toSeconds(Oi(e3, 0)), t3.duration = s2 ? this.toSeconds(s2) : void 0);
                   const i2 = this.context.transport.schedule((t4) => {
-                    this._start(t4, e2, s2);
+                    this._start(t4, e3, s2);
                   }, n2);
                   this._scheduled.push(i2), this.context.transport.state === "started" && this.context.transport.getSecondsAtTime(this.immediate()) > n2 && this._syncedStart(this.now(), this.context.transport.seconds);
                 } else
-                  si(this.context), this._start(n2, e2, s2);
+                  si(this.context), this._start(n2, e3, s2);
               else
-                ti(Ri(n2, this._state.get(n2).time), "Start time must be strictly greater than previous start time"), this._state.cancel(n2), this._state.setStateAtTime("started", n2), this.log("restart", n2), this.restart(n2, e2, s2);
+                ti(Ri(n2, this._state.get(n2).time), "Start time must be strictly greater than previous start time"), this._state.cancel(n2), this._state.setStateAtTime("started", n2), this.log("restart", n2), this.restart(n2, e3, s2);
               return this;
             }
             stop(t2) {
-              let e2 = ai(t2) && this._synced ? this.context.transport.seconds : this.toSeconds(t2);
-              if (e2 = this._clampToCurrentTime(e2), this._state.getValueAtTime(e2) === "started" || ci(this._state.getNextState("started", e2))) {
-                if (this.log("stop", e2), this._synced) {
-                  const t3 = this.context.transport.schedule(this._stop.bind(this), e2);
+              let e3 = ai(t2) && this._synced ? this.context.transport.seconds : this.toSeconds(t2);
+              if (e3 = this._clampToCurrentTime(e3), this._state.getValueAtTime(e3) === "started" || ci(this._state.getNextState("started", e3))) {
+                if (this.log("stop", e3), this._synced) {
+                  const t3 = this.context.transport.schedule(this._stop.bind(this), e3);
                   this._scheduled.push(t3);
                 } else
-                  this._stop(e2);
-                this._state.cancel(e2), this._state.setStateAtTime("stopped", e2);
+                  this._stop(e3);
+                this._state.cancel(e3), this._state.setStateAtTime("stopped", e3);
               }
               return this;
             }
-            restart(t2, e2, s2) {
-              return t2 = this.toSeconds(t2), this._state.getValueAtTime(t2) === "started" && (this._state.cancel(t2), this._restart(t2, e2, s2)), this;
+            restart(t2, e3, s2) {
+              return t2 = this.toSeconds(t2), this._state.getValueAtTime(t2) === "started" && (this._state.cancel(t2), this._restart(t2, e3, s2)), this;
             }
             sync() {
-              return this._synced || (this._synced = true, this._syncedStart = (t2, e2) => {
-                if (e2 > 0) {
-                  const s2 = this._state.get(e2);
-                  if (s2 && s2.state === "started" && s2.time !== e2) {
-                    const n2 = e2 - this.toSeconds(s2.time);
+              return this._synced || (this._synced = true, this._syncedStart = (t2, e3) => {
+                if (e3 > 0) {
+                  const s2 = this._state.get(e3);
+                  if (s2 && s2.state === "started" && s2.time !== e3) {
+                    const n2 = e3 - this.toSeconds(s2.time);
                     let i2;
                     s2.duration && (i2 = this.toSeconds(s2.duration) - n2), this._start(t2, this.toSeconds(s2.offset) + n2, i2);
                   }
                 }
               }, this._syncedStop = (t2) => {
-                const e2 = this.context.transport.getSecondsAtTime(Math.max(t2 - this.sampleTime, 0));
-                this._state.getValueAtTime(e2) === "started" && this._stop(t2);
+                const e3 = this.context.transport.getSecondsAtTime(Math.max(t2 - this.sampleTime, 0));
+                this._state.getValueAtTime(e3) === "started" && this._stop(t2);
               }, this.context.transport.on("start", this._syncedStart), this.context.transport.on("loopStart", this._syncedStart), this.context.transport.on("stop", this._syncedStop), this.context.transport.on("pause", this._syncedStop), this.context.transport.on("loopEnd", this._syncedStop)), this;
             }
             unsync() {
@@ -6611,14 +6627,14 @@
             set curve(t2) {
               this._curve = t2;
             }
-            start(t2, e2, s2, n2 = 1) {
+            start(t2, e3, s2, n2 = 1) {
               ti(this.buffer.loaded, "buffer is either not set or not loaded");
               const i2 = this.toSeconds(t2);
-              this._startGain(i2, n2), e2 = this.loop ? Oi(e2, this.loopStart) : Oi(e2, 0);
-              let o2 = Math.max(this.toSeconds(e2), 0);
+              this._startGain(i2, n2), e3 = this.loop ? Oi(e3, this.loopStart) : Oi(e3, 0);
+              let o2 = Math.max(this.toSeconds(e3), 0);
               if (this.loop) {
-                const t3 = this.toSeconds(this.loopEnd) || this.buffer.duration, e3 = this.toSeconds(this.loopStart), s3 = t3 - e3;
-                qi(o2, t3) && (o2 = (o2 - e3) % s3 + e3), Ii(o2, this.buffer.duration) && (o2 = 0);
+                const t3 = this.toSeconds(this.loopEnd) || this.buffer.duration, e4 = this.toSeconds(this.loopStart), s3 = t3 - e4;
+                qi(o2, t3) && (o2 = (o2 - e4) % s3 + e4), Ii(o2, this.buffer.duration) && (o2 = 0);
               }
               if (this._source.buffer = this.buffer.get(), this._source.loopEnd = this.toSeconds(this.loopEnd) || this.buffer.duration, Fi(o2, this.buffer.duration) && (this._sourceStarted = true, this._source.start(i2, o2)), ci(s2)) {
                 let t3 = this.toSeconds(s2);
@@ -6682,8 +6698,8 @@
               this._playbackRate = t2, this._source && (this._source.playbackRate.value = t2);
             }
             _start(t2) {
-              const e2 = tr[this._type];
-              this._source = new $o({ url: e2, context: this.context, fadeIn: this._fadeIn, fadeOut: this._fadeOut, loop: true, onended: () => this.onstop(this), playbackRate: this._playbackRate }).connect(this.output), this._source.start(this.toSeconds(t2), Math.random() * (e2.duration - 1e-3));
+              const e3 = tr[this._type];
+              this._source = new $o({ url: e3, context: this.context, fadeIn: this._fadeIn, fadeOut: this._fadeOut, loop: true, onended: () => this.onstop(this), playbackRate: this._playbackRate }).connect(this.output), this._source.start(this.toSeconds(t2), Math.random() * (e3.duration - 1e-3));
             }
             _stop(t2) {
               this._source && (this._source.stop(this.toSeconds(t2)), this._source = null);
@@ -6710,13 +6726,13 @@
           const Ko = { brown: null, pink: null, white: null }, tr = { get brown() {
             if (!Ko.brown) {
               const t2 = [];
-              for (let e2 = 0; e2 < 2; e2++) {
+              for (let e3 = 0; e3 < 2; e3++) {
                 const s2 = new Float32Array(220500);
-                t2[e2] = s2;
+                t2[e3] = s2;
                 let n2 = 0;
                 for (let t3 = 0; t3 < 220500; t3++) {
-                  const e3 = 2 * Math.random() - 1;
-                  s2[t3] = (n2 + 0.02 * e3) / 1.02, n2 = s2[t3], s2[t3] *= 3.5;
+                  const e4 = 2 * Math.random() - 1;
+                  s2[t3] = (n2 + 0.02 * e4) / 1.02, n2 = s2[t3], s2[t3] *= 3.5;
                 }
               }
               Ko.brown = new Xi().fromArray(t2);
@@ -6725,13 +6741,13 @@
           }, get pink() {
             if (!Ko.pink) {
               const t2 = [];
-              for (let e2 = 0; e2 < 2; e2++) {
+              for (let e3 = 0; e3 < 2; e3++) {
                 const s2 = new Float32Array(220500);
                 let n2, i2, o2, r2, a2, c2, h2;
-                t2[e2] = s2, n2 = i2 = o2 = r2 = a2 = c2 = h2 = 0;
+                t2[e3] = s2, n2 = i2 = o2 = r2 = a2 = c2 = h2 = 0;
                 for (let t3 = 0; t3 < 220500; t3++) {
-                  const e3 = 2 * Math.random() - 1;
-                  n2 = 0.99886 * n2 + 0.0555179 * e3, i2 = 0.99332 * i2 + 0.0750759 * e3, o2 = 0.969 * o2 + 0.153852 * e3, r2 = 0.8665 * r2 + 0.3104856 * e3, a2 = 0.55 * a2 + 0.5329522 * e3, c2 = -0.7616 * c2 - 0.016898 * e3, s2[t3] = n2 + i2 + o2 + r2 + a2 + c2 + h2 + 0.5362 * e3, s2[t3] *= 0.11, h2 = 0.115926 * e3;
+                  const e4 = 2 * Math.random() - 1;
+                  n2 = 0.99886 * n2 + 0.0555179 * e4, i2 = 0.99332 * i2 + 0.0750759 * e4, o2 = 0.969 * o2 + 0.153852 * e4, r2 = 0.8665 * r2 + 0.3104856 * e4, a2 = 0.55 * a2 + 0.5329522 * e4, c2 = -0.7616 * c2 - 0.016898 * e4, s2[t3] = n2 + i2 + o2 + r2 + a2 + c2 + h2 + 0.5362 * e4, s2[t3] *= 0.11, h2 = 0.115926 * e4;
                 }
               }
               Ko.pink = new Xi().fromArray(t2);
@@ -6740,9 +6756,9 @@
           }, get white() {
             if (!Ko.white) {
               const t2 = [];
-              for (let e2 = 0; e2 < 2; e2++) {
+              for (let e3 = 0; e3 < 2; e3++) {
                 const s2 = new Float32Array(220500);
-                t2[e2] = s2;
+                t2[e3] = s2;
                 for (let t3 = 0; t3 < 220500; t3++)
                   s2[t3] = 2 * Math.random() - 1;
               }
@@ -6762,8 +6778,8 @@
             open(t2) {
               return yi(this, void 0, void 0, function* () {
                 ti(er.supported, "UserMedia is not supported"), this.state === "started" && this.close();
-                const e2 = yield er.enumerateDevices();
-                ui(t2) ? this._device = e2[t2] : (this._device = e2.find((e3) => e3.label === t2 || e3.deviceId === t2), !this._device && e2.length > 0 && (this._device = e2[0]), ti(ci(this._device), "No matching device " + t2));
+                const e3 = yield er.enumerateDevices();
+                ui(t2) ? this._device = e3[t2] : (this._device = e3.find((e4) => e4.label === t2 || e4.deviceId === t2), !this._device && e3.length > 0 && (this._device = e3[0]), ti(ci(this._device), "No matching device " + t2));
                 const s2 = { audio: { echoCancellation: false, sampleRate: this.context.sampleRate, noiseSuppression: false, mozNoiseSuppression: false } };
                 this._device && (s2.audio.deviceId = this._device.deviceId);
                 const n2 = yield navigator.mediaDevices.getUserMedia(s2);
@@ -6810,9 +6826,9 @@
               return ci(navigator.mediaDevices) && ci(navigator.mediaDevices.getUserMedia);
             }
           }
-          function sr(t2, e2) {
+          function sr(t2, e3) {
             return yi(this, void 0, void 0, function* () {
-              const s2 = e2 / t2.context.sampleRate, n2 = new Yi(1, s2, t2.context.sampleRate);
+              const s2 = e3 / t2.context.sampleRate, n2 = new Yi(1, s2, t2.context.sampleRate);
               new t2.constructor(Object.assign(t2.get(), { frequency: 2 / s2, detune: 0, context: n2 })).toDestination().start(0);
               return (yield n2.render()).getChannelData(0);
             });
@@ -6827,8 +6843,8 @@
               return Object.assign(Co.getDefaults(), { detune: 0, frequency: 440, type: "sine" });
             }
             start(t2) {
-              const e2 = this.toSeconds(t2);
-              return this.log("start", e2), this._startGain(e2), this._oscillator.start(e2), this;
+              const e3 = this.toSeconds(t2);
+              return this.log("start", e3), this._startGain(e3), this._oscillator.start(e3), this;
             }
             _stopSource(t2) {
               this._oscillator.stop(t2);
@@ -6856,16 +6872,16 @@
               return Object.assign(Ho.getDefaults(), { detune: 0, frequency: 440, partialCount: 0, partials: [], phase: 0, type: "sine" });
             }
             _start(t2) {
-              const e2 = this.toSeconds(t2), s2 = new nr({ context: this.context, onended: () => this.onstop(this) });
-              this._oscillator = s2, this._wave ? this._oscillator.setPeriodicWave(this._wave) : this._oscillator.type = this._type, this._oscillator.connect(this.output), this.frequency.connect(this._oscillator.frequency), this.detune.connect(this._oscillator.detune), this._oscillator.start(e2);
+              const e3 = this.toSeconds(t2), s2 = new nr({ context: this.context, onended: () => this.onstop(this) });
+              this._oscillator = s2, this._wave ? this._oscillator.setPeriodicWave(this._wave) : this._oscillator.type = this._type, this._oscillator.connect(this.output), this.frequency.connect(this._oscillator.frequency), this.detune.connect(this._oscillator.detune), this._oscillator.start(e3);
             }
             _stop(t2) {
-              const e2 = this.toSeconds(t2);
-              this._oscillator && this._oscillator.stop(e2);
+              const e3 = this.toSeconds(t2);
+              this._oscillator && this._oscillator.stop(e3);
             }
             _restart(t2) {
-              const e2 = this.toSeconds(t2);
-              return this.log("restart", e2), this._oscillator && this._oscillator.cancelStop(), this._state.cancel(e2), this;
+              const e3 = this.toSeconds(t2);
+              return this.log("restart", e3), this._oscillator && this._oscillator.cancelStop(), this._state.cancel(e3), this;
             }
             syncFrequency() {
               return this.context.transport.syncSignal(this.frequency), this;
@@ -6876,8 +6892,8 @@
             _getCachedPeriodicWave() {
               if (this._type === "custom") {
                 return ir._periodicWaveCache.find((t2) => {
-                  return t2.phase === this._phase && (e2 = t2.partials, s2 = this._partials, e2.length === s2.length && e2.every((t3, e3) => s2[e3] === t3));
-                  var e2, s2;
+                  return t2.phase === this._phase && (e3 = t2.partials, s2 = this._partials, e3.length === s2.length && e3.every((t3, e4) => s2[e4] === t3));
+                  var e3, s2;
                 });
               }
               {
@@ -6890,17 +6906,17 @@
             }
             set type(t2) {
               this._type = t2;
-              const e2 = ["sine", "square", "sawtooth", "triangle"].indexOf(t2) !== -1;
-              if (this._phase === 0 && e2)
+              const e3 = ["sine", "square", "sawtooth", "triangle"].indexOf(t2) !== -1;
+              if (this._phase === 0 && e3)
                 this._wave = void 0, this._partialCount = 0, this._oscillator !== null && (this._oscillator.type = t2);
               else {
-                const e3 = this._getCachedPeriodicWave();
-                if (ci(e3)) {
-                  const { partials: t3, wave: s2 } = e3;
+                const e4 = this._getCachedPeriodicWave();
+                if (ci(e4)) {
+                  const { partials: t3, wave: s2 } = e4;
                   this._wave = s2, this._partials = t3, this._oscillator !== null && this._oscillator.setPeriodicWave(this._wave);
                 } else {
-                  const [e4, s2] = this._getRealImaginary(t2, this._phase), n2 = this.context.createPeriodicWave(e4, s2);
-                  this._wave = n2, this._oscillator !== null && this._oscillator.setPeriodicWave(this._wave), ir._periodicWaveCache.push({ imag: s2, partialCount: this._partialCount, partials: this._partials, phase: this._phase, real: e4, type: this._type, wave: this._wave }), ir._periodicWaveCache.length > 100 && ir._periodicWaveCache.shift();
+                  const [e5, s2] = this._getRealImaginary(t2, this._phase), n2 = this.context.createPeriodicWave(e5, s2);
+                  this._wave = n2, this._oscillator !== null && this._oscillator.setPeriodicWave(this._wave), ir._periodicWaveCache.push({ imag: s2, partialCount: this._partialCount, partials: this._partials, phase: this._phase, real: e5, type: this._type, wave: this._wave }), ir._periodicWaveCache.length > 100 && ir._periodicWaveCache.shift();
                 }
               }
             }
@@ -6915,16 +6931,16 @@
             }
             set partialCount(t2) {
               ei(t2, 0);
-              let e2 = this._type;
+              let e3 = this._type;
               const s2 = /^(sine|triangle|square|sawtooth)(\d+)$/.exec(this._type);
-              if (s2 && (e2 = s2[1]), this._type !== "custom")
-                this.type = t2 === 0 ? e2 : e2 + t2.toString();
+              if (s2 && (e3 = s2[1]), this._type !== "custom")
+                this.type = t2 === 0 ? e3 : e3 + t2.toString();
               else {
-                const e3 = new Float32Array(t2);
-                this._partials.forEach((t3, s3) => e3[s3] = t3), this._partials = Array.from(e3), this.type = this._type;
+                const e4 = new Float32Array(t2);
+                this._partials.forEach((t3, s3) => e4[s3] = t3), this._partials = Array.from(e4), this.type = this._type;
               }
             }
-            _getRealImaginary(t2, e2) {
+            _getRealImaginary(t2, e3) {
               let s2 = 2048;
               const n2 = new Float32Array(s2), i2 = new Float32Array(s2);
               let o2 = 1;
@@ -6932,8 +6948,8 @@
                 if (o2 = this._partials.length + 1, this._partialCount = this._partials.length, s2 = o2, this._partials.length === 0)
                   return [n2, i2];
               } else {
-                const e3 = /^(sine|triangle|square|sawtooth)(\d+)$/.exec(t2);
-                e3 ? (o2 = parseInt(e3[2], 10) + 1, this._partialCount = parseInt(e3[2], 10), t2 = e3[1], o2 = Math.max(o2, 2), s2 = o2) : this._partialCount = 0, this._partials = [];
+                const e4 = /^(sine|triangle|square|sawtooth)(\d+)$/.exec(t2);
+                e4 ? (o2 = parseInt(e4[2], 10) + 1, this._partialCount = parseInt(e4[2], 10), t2 = e4[1], o2 = Math.max(o2, 2), s2 = o2) : this._partialCount = 0, this._partials = [];
               }
               for (let r2 = 1; r2 < s2; ++r2) {
                 const s3 = 2 / (r2 * Math.PI);
@@ -6957,24 +6973,24 @@
                   default:
                     throw new TypeError("Oscillator: invalid type: " + t2);
                 }
-                a2 !== 0 ? (n2[r2] = -a2 * Math.sin(e2 * r2), i2[r2] = a2 * Math.cos(e2 * r2)) : (n2[r2] = 0, i2[r2] = 0);
+                a2 !== 0 ? (n2[r2] = -a2 * Math.sin(e3 * r2), i2[r2] = a2 * Math.cos(e3 * r2)) : (n2[r2] = 0, i2[r2] = 0);
               }
               return [n2, i2];
             }
-            _inverseFFT(t2, e2, s2) {
+            _inverseFFT(t2, e3, s2) {
               let n2 = 0;
               const i2 = t2.length;
               for (let o2 = 0; o2 < i2; o2++)
-                n2 += t2[o2] * Math.cos(o2 * s2) + e2[o2] * Math.sin(o2 * s2);
+                n2 += t2[o2] * Math.cos(o2 * s2) + e3[o2] * Math.sin(o2 * s2);
               return n2;
             }
             getInitialValue() {
-              const [t2, e2] = this._getRealImaginary(this._type, 0);
+              const [t2, e3] = this._getRealImaginary(this._type, 0);
               let s2 = 0;
               const n2 = 2 * Math.PI;
               for (let i2 = 0; i2 < 32; i2++)
-                s2 = Math.max(this._inverseFFT(t2, e2, i2 / 32 * n2), s2);
-              return Vi(-this._inverseFFT(t2, e2, this._phase) / s2, -1, 1);
+                s2 = Math.max(this._inverseFFT(t2, e3, i2 / 32 * n2), s2);
+              return Vi(-this._inverseFFT(t2, e3, this._phase) / s2, -1, 1);
             }
             get partials() {
               return this._partials.slice(0, this.partialCount);
@@ -7002,8 +7018,8 @@
             constructor() {
               super(Object.assign(Di(or.getDefaults(), arguments, ["context"])));
             }
-            connect(t2, e2 = 0, s2 = 0) {
-              return Oo(this, t2, e2, s2), this;
+            connect(t2, e3 = 0, s2 = 0) {
+              return Oo(this, t2, e3, s2), this;
             }
           }
           class rr extends or {
@@ -7015,11 +7031,11 @@
             static getDefaults() {
               return Object.assign(Do.getDefaults(), { length: 1024 });
             }
-            setMap(t2, e2 = 1024) {
-              const s2 = new Float32Array(e2);
-              for (let n2 = 0, i2 = e2; n2 < i2; n2++) {
-                const e3 = n2 / (i2 - 1) * 2 - 1;
-                s2[n2] = t2(e3, n2);
+            setMap(t2, e3 = 1024) {
+              const s2 = new Float32Array(e3);
+              for (let n2 = 0, i2 = e3; n2 < i2; n2++) {
+                const e4 = n2 / (i2 - 1) * 2 - 1;
+                s2[n2] = t2(e4, n2);
               }
               return this.curve = s2, this;
             }
@@ -7033,7 +7049,7 @@
               return this._shaper.oversample;
             }
             set oversample(t2) {
-              ti(["none", "2x", "4x"].some((e2) => e2.includes(t2)), "oversampling must be either 'none', '2x', or '4x'"), this._shaper.oversample = t2;
+              ti(["none", "2x", "4x"].some((e3) => e3.includes(t2)), "oversampling must be either 'none', '2x', or '4x'"), this._shaper.oversample = t2;
             }
             dispose() {
               return super.dispose(), this._shaper.disconnect(), this;
@@ -7244,31 +7260,31 @@
               return Object.assign(ir.getDefaults(), { count: 3, spread: 20, type: "sawtooth" });
             }
             _start(t2) {
-              t2 = this.toSeconds(t2), this._forEach((e2) => e2.start(t2));
+              t2 = this.toSeconds(t2), this._forEach((e3) => e3.start(t2));
             }
             _stop(t2) {
-              t2 = this.toSeconds(t2), this._forEach((e2) => e2.stop(t2));
+              t2 = this.toSeconds(t2), this._forEach((e3) => e3.stop(t2));
             }
             _restart(t2) {
-              this._forEach((e2) => e2.restart(t2));
+              this._forEach((e3) => e3.restart(t2));
             }
             _forEach(t2) {
-              for (let e2 = 0; e2 < this._oscillators.length; e2++)
-                t2(this._oscillators[e2], e2);
+              for (let e3 = 0; e3 < this._oscillators.length; e3++)
+                t2(this._oscillators[e3], e3);
             }
             get type() {
               return this._type;
             }
             set type(t2) {
-              this._type = t2, this._forEach((e2) => e2.type = t2);
+              this._type = t2, this._forEach((e3) => e3.type = t2);
             }
             get spread() {
               return this._spread;
             }
             set spread(t2) {
               if (this._spread = t2, this._oscillators.length > 1) {
-                const e2 = -t2 / 2, s2 = t2 / (this._oscillators.length - 1);
-                this._forEach((t3, n2) => t3.detune.value = e2 + s2 * n2);
+                const e3 = -t2 / 2, s2 = t2 / (this._oscillators.length - 1);
+                this._forEach((t3, n2) => t3.detune.value = e3 + s2 * n2);
               }
             }
             get count() {
@@ -7277,9 +7293,9 @@
             set count(t2) {
               if (ei(t2, 1), this._oscillators.length !== t2) {
                 this._forEach((t3) => t3.dispose()), this._oscillators = [];
-                for (let e2 = 0; e2 < t2; e2++) {
-                  const s2 = new ir({ context: this.context, volume: -6 - 1.1 * t2, type: this._type, phase: this._phase + e2 / t2 * 360, partialCount: this._partialCount, onstop: e2 === 0 ? () => this.onstop(this) : Zi });
-                  this.type === "custom" && (s2.partials = this._partials), this.frequency.connect(s2.frequency), this.detune.connect(s2.detune), s2.detune.overridden = false, s2.connect(this.output), this._oscillators[e2] = s2;
+                for (let e3 = 0; e3 < t2; e3++) {
+                  const s2 = new ir({ context: this.context, volume: -6 - 1.1 * t2, type: this._type, phase: this._phase + e3 / t2 * 360, partialCount: this._partialCount, onstop: e3 === 0 ? () => this.onstop(this) : Zi });
+                  this.type === "custom" && (s2.partials = this._partials), this.frequency.connect(s2.frequency), this.detune.connect(s2.detune), s2.detune.overridden = false, s2.connect(this.output), this._oscillators[e3] = s2;
                 }
                 this.spread = this._spread, this.state === "started" && this._forEach((t3) => t3.start());
               }
@@ -7288,25 +7304,25 @@
               return this._phase;
             }
             set phase(t2) {
-              this._phase = t2, this._forEach((t3, e2) => t3.phase = this._phase + e2 / this.count * 360);
+              this._phase = t2, this._forEach((t3, e3) => t3.phase = this._phase + e3 / this.count * 360);
             }
             get baseType() {
               return this._oscillators[0].baseType;
             }
             set baseType(t2) {
-              this._forEach((e2) => e2.baseType = t2), this._type = this._oscillators[0].type;
+              this._forEach((e3) => e3.baseType = t2), this._type = this._oscillators[0].type;
             }
             get partials() {
               return this._oscillators[0].partials;
             }
             set partials(t2) {
-              this._partials = t2, this._partialCount = this._partials.length, t2.length && (this._type = "custom", this._forEach((e2) => e2.partials = t2));
+              this._partials = t2, this._partialCount = this._partials.length, t2.length && (this._type = "custom", this._forEach((e3) => e3.partials = t2));
             }
             get partialCount() {
               return this._oscillators[0].partialCount;
             }
             set partialCount(t2) {
-              this._partialCount = t2, this._forEach((e2) => e2.partialCount = t2), this._type = this._oscillators[0].type;
+              this._partialCount = t2, this._forEach((e3) => e3.partialCount = t2), this._type = this._oscillators[0].type;
             }
             asArray(t2 = 1024) {
               return yi(this, void 0, void 0, function* () {
@@ -7406,12 +7422,12 @@
             _createNewOscillator(t2) {
               if (t2 !== this._sourceType) {
                 this._sourceType = t2;
-                const e2 = fr[t2], s2 = this.now();
+                const e3 = fr[t2], s2 = this.now();
                 if (this._oscillator) {
                   const t3 = this._oscillator;
                   t3.stop(s2), this.context.setTimeout(() => t3.dispose(), this.blockTime);
                 }
-                this._oscillator = new e2({ context: this.context }), this.frequency.connect(this._oscillator.frequency), this.detune.connect(this._oscillator.detune), this._oscillator.connect(this.output), this._oscillator.onstop = () => this.onstop(this), this.state === "started" && this._oscillator.start(s2);
+                this._oscillator = new e3({ context: this.context }), this.frequency.connect(this._oscillator.frequency), this.detune.connect(this._oscillator.detune), this._oscillator.connect(this.output), this._oscillator.onstop = () => this.onstop(this), this.state === "started" && this._oscillator.start(s2);
               }
             }
             get phase() {
@@ -7424,11 +7440,11 @@
               return this._sourceType;
             }
             set sourceType(t2) {
-              let e2 = "sine";
-              this._oscillator.type !== "pwm" && this._oscillator.type !== "pulse" && (e2 = this._oscillator.type), t2 === "fm" ? this.type = "fm" + e2 : t2 === "am" ? this.type = "am" + e2 : t2 === "fat" ? this.type = "fat" + e2 : t2 === "oscillator" ? this.type = e2 : t2 === "pulse" ? this.type = "pulse" : t2 === "pwm" && (this.type = "pwm");
+              let e3 = "sine";
+              this._oscillator.type !== "pwm" && this._oscillator.type !== "pulse" && (e3 = this._oscillator.type), t2 === "fm" ? this.type = "fm" + e3 : t2 === "am" ? this.type = "am" + e3 : t2 === "fat" ? this.type = "fat" + e3 : t2 === "oscillator" ? this.type = e3 : t2 === "pulse" ? this.type = "pulse" : t2 === "pwm" && (this.type = "pwm");
             }
-            _getOscType(t2, e2) {
-              return t2 instanceof fr[e2];
+            _getOscType(t2, e3) {
+              return t2 instanceof fr[e3];
             }
             get baseType() {
               return this._oscillator.baseType;
@@ -7580,36 +7596,36 @@
               return this._units;
             }
             set units(t2) {
-              const e2 = this.min, s2 = this.max;
-              this._units = t2, this.min = e2, this.max = s2;
+              const e3 = this.min, s2 = this.max;
+              this._units = t2, this.min = e3, this.max = s2;
             }
             get state() {
               return this._oscillator.state;
             }
-            connect(t2, e2, s2) {
-              return (t2 instanceof xo || t2 instanceof Do) && (this.convert = t2.convert, this.units = t2.units), Oo(this, t2, e2, s2), this;
+            connect(t2, e3, s2) {
+              return (t2 instanceof xo || t2 instanceof Do) && (this.convert = t2.convert, this.units = t2.units), Oo(this, t2, e3, s2), this;
             }
             dispose() {
               return super.dispose(), this._oscillator.dispose(), this._stoppedSignal.dispose(), this._zeros.dispose(), this._scaler.dispose(), this._a2g.dispose(), this._amplitudeGain.dispose(), this.amplitude.dispose(), this;
             }
           }
-          function xr(t2, e2 = 1 / 0) {
+          function xr(t2, e3 = 1 / 0) {
             const s2 = /* @__PURE__ */ new WeakMap();
             return function(n2, i2) {
               Reflect.defineProperty(n2, i2, { configurable: true, enumerable: true, get: function() {
                 return s2.get(this);
               }, set: function(n3) {
-                ei(n3, t2, e2), s2.set(this, n3);
+                ei(n3, t2, e3), s2.set(this, n3);
               } });
             };
           }
-          function wr(t2, e2 = 1 / 0) {
+          function wr(t2, e3 = 1 / 0) {
             const s2 = /* @__PURE__ */ new WeakMap();
             return function(n2, i2) {
               Reflect.defineProperty(n2, i2, { configurable: true, enumerable: true, get: function() {
                 return s2.get(this);
               }, set: function(n3) {
-                ei(this.toSeconds(n3), t2, e2), s2.set(this, n3);
+                ei(this.toSeconds(n3), t2, e3), s2.set(this, n3);
               } });
             };
           }
@@ -7633,12 +7649,12 @@
             _onSourceEnd(t2) {
               this.onstop(this), this._activeSources.delete(t2), this._activeSources.size !== 0 || this._synced || this._state.getValueAtTime(this.now()) !== "started" || (this._state.cancel(this.now()), this._state.setStateAtTime("stopped", this.now()));
             }
-            start(t2, e2, s2) {
-              return super.start(t2, e2, s2), this;
+            start(t2, e3, s2) {
+              return super.start(t2, e3, s2), this;
             }
-            _start(t2, e2, s2) {
-              e2 = this._loop ? Oi(e2, this._loopStart) : Oi(e2, 0);
-              const n2 = this.toSeconds(e2), i2 = s2;
+            _start(t2, e3, s2) {
+              e3 = this._loop ? Oi(e3, this._loopStart) : Oi(e3, 0);
+              const n2 = this.toSeconds(e3), i2 = s2;
               s2 = Oi(s2, Math.max(this._buffer.duration - n2, 0));
               let o2 = this.toSeconds(s2);
               o2 /= this._playbackRate, t2 = this.toSeconds(t2);
@@ -7646,40 +7662,40 @@
               this._loop || this._synced || (this._state.cancel(t2 + o2), this._state.setStateAtTime("stopped", t2 + o2, { implicitEnd: true })), this._activeSources.add(r2), this._loop && ai(i2) ? r2.start(t2, n2) : r2.start(t2, n2, o2 - this.toSeconds(this.fadeOut));
             }
             _stop(t2) {
-              const e2 = this.toSeconds(t2);
-              this._activeSources.forEach((t3) => t3.stop(e2));
+              const e3 = this.toSeconds(t2);
+              this._activeSources.forEach((t3) => t3.stop(e3));
             }
-            restart(t2, e2, s2) {
-              return super.restart(t2, e2, s2), this;
+            restart(t2, e3, s2) {
+              return super.restart(t2, e3, s2), this;
             }
-            _restart(t2, e2, s2) {
-              this._stop(t2), this._start(t2, e2, s2);
+            _restart(t2, e3, s2) {
+              this._stop(t2), this._start(t2, e3, s2);
             }
-            seek(t2, e2) {
-              const s2 = this.toSeconds(e2);
+            seek(t2, e3) {
+              const s2 = this.toSeconds(e3);
               if (this._state.getValueAtTime(s2) === "started") {
-                const e3 = this.toSeconds(t2);
-                this._stop(s2), this._start(s2, e3);
+                const e4 = this.toSeconds(t2);
+                this._stop(s2), this._start(s2, e4);
               }
               return this;
             }
-            setLoopPoints(t2, e2) {
-              return this.loopStart = t2, this.loopEnd = e2, this;
+            setLoopPoints(t2, e3) {
+              return this.loopStart = t2, this.loopEnd = e3, this;
             }
             get loopStart() {
               return this._loopStart;
             }
             set loopStart(t2) {
-              this._loopStart = t2, this.buffer.loaded && ei(this.toSeconds(t2), 0, this.buffer.duration), this._activeSources.forEach((e2) => {
-                e2.loopStart = t2;
+              this._loopStart = t2, this.buffer.loaded && ei(this.toSeconds(t2), 0, this.buffer.duration), this._activeSources.forEach((e3) => {
+                e3.loopStart = t2;
               });
             }
             get loopEnd() {
               return this._loopEnd;
             }
             set loopEnd(t2) {
-              this._loopEnd = t2, this.buffer.loaded && ei(this.toSeconds(t2), 0, this.buffer.duration), this._activeSources.forEach((e2) => {
-                e2.loopEnd = t2;
+              this._loopEnd = t2, this.buffer.loaded && ei(this.toSeconds(t2), 0, this.buffer.duration), this._activeSources.forEach((e3) => {
+                e3.loopEnd = t2;
               });
             }
             get buffer() {
@@ -7692,8 +7708,8 @@
               return this._loop;
             }
             set loop(t2) {
-              if (this._loop !== t2 && (this._loop = t2, this._activeSources.forEach((e2) => {
-                e2.loop = t2;
+              if (this._loop !== t2 && (this._loop = t2, this._activeSources.forEach((e3) => {
+                e3.loop = t2;
               }), t2)) {
                 const t3 = this._state.getNextState("stopped", this.now());
                 t3 && this._state.cancel(t3.time);
@@ -7704,9 +7720,9 @@
             }
             set playbackRate(t2) {
               this._playbackRate = t2;
-              const e2 = this.now(), s2 = this._state.getNextState("stopped", e2);
+              const e3 = this.now(), s2 = this._state.getNextState("stopped", e3);
               s2 && s2.implicitEnd && (this._state.cancel(s2.time), this._activeSources.forEach((t3) => t3.cancelStop())), this._activeSources.forEach((s3) => {
-                s3.playbackRate.setValueAtTime(t2, e2);
+                s3.playbackRate.setValueAtTime(t2, e3);
               });
             }
             get reverse() {
@@ -7742,39 +7758,39 @@
               return this._fadeIn;
             }
             set fadeIn(t2) {
-              this._fadeIn = t2, this._players.forEach((e2) => {
-                e2.fadeIn = t2;
+              this._fadeIn = t2, this._players.forEach((e3) => {
+                e3.fadeIn = t2;
               });
             }
             get fadeOut() {
               return this._fadeOut;
             }
             set fadeOut(t2) {
-              this._fadeOut = t2, this._players.forEach((e2) => {
-                e2.fadeOut = t2;
+              this._fadeOut = t2, this._players.forEach((e3) => {
+                e3.fadeOut = t2;
               });
             }
             get state() {
-              return Array.from(this._players).some(([t2, e2]) => e2.state === "started") ? "started" : "stopped";
+              return Array.from(this._players).some(([t2, e3]) => e3.state === "started") ? "started" : "stopped";
             }
             has(t2) {
               return this._buffers.has(t2);
             }
             player(t2) {
               if (ti(this.has(t2), `No Player with the name ${t2} exists on this object`), !this._players.has(t2)) {
-                const e2 = new br({ context: this.context, fadeIn: this._fadeIn, fadeOut: this._fadeOut, url: this._buffers.get(t2) }).connect(this.output);
-                this._players.set(t2, e2);
+                const e3 = new br({ context: this.context, fadeIn: this._fadeIn, fadeOut: this._fadeOut, url: this._buffers.get(t2) }).connect(this.output);
+                this._players.set(t2, e3);
               }
               return this._players.get(t2);
             }
             get loaded() {
               return this._buffers.loaded;
             }
-            add(t2, e2, s2) {
-              return ti(!this._buffers.has(t2), "A buffer with that name already exists on this object"), this._buffers.add(t2, e2, s2), this;
+            add(t2, e3, s2) {
+              return ti(!this._buffers.has(t2), "A buffer with that name already exists on this object"), this._buffers.add(t2, e3, s2), this;
             }
             stopAll(t2) {
-              return this._players.forEach((e2) => e2.stop(t2)), this;
+              return this._players.forEach((e3) => e3.stop(t2)), this;
             }
             dispose() {
               return super.dispose(), this._volume.dispose(), this.volume.dispose(), this._players.forEach((t2) => t2.dispose()), this._buffers.dispose(), this;
@@ -7789,31 +7805,31 @@
             static getDefaults() {
               return Object.assign(Ho.getDefaults(), { onload: Zi, onerror: Zi, overlap: 0.1, grainSize: 0.2, playbackRate: 1, detune: 0, loop: false, loopStart: 0, loopEnd: 0, reverse: false });
             }
-            _start(t2, e2, s2) {
-              e2 = Oi(e2, 0), e2 = this.toSeconds(e2), t2 = this.toSeconds(t2);
+            _start(t2, e3, s2) {
+              e3 = Oi(e3, 0), e3 = this.toSeconds(e3), t2 = this.toSeconds(t2);
               const n2 = 1 / this._clock.frequency.getValueAtTime(t2);
-              this._clock.start(t2, e2 / n2), s2 && this.stop(t2 + this.toSeconds(s2));
+              this._clock.start(t2, e3 / n2), s2 && this.stop(t2 + this.toSeconds(s2));
             }
-            restart(t2, e2, s2) {
-              return super.restart(t2, e2, s2), this;
+            restart(t2, e3, s2) {
+              return super.restart(t2, e3, s2), this;
             }
-            _restart(t2, e2, s2) {
-              this._stop(t2), this._start(t2, e2, s2);
+            _restart(t2, e3, s2) {
+              this._stop(t2), this._start(t2, e3, s2);
             }
             _stop(t2) {
               this._clock.stop(t2);
             }
             _onstop(t2) {
-              this._activeSources.forEach((e2) => {
-                e2.fadeOut = 0, e2.stop(t2);
+              this._activeSources.forEach((e3) => {
+                e3.fadeOut = 0, e3.stop(t2);
               }), this.onstop(this);
             }
             _tick(t2) {
-              const e2 = this._clock.getTicksAtTime(t2), s2 = e2 * this._grainSize;
+              const e3 = this._clock.getTicksAtTime(t2), s2 = e3 * this._grainSize;
               if (this.log("offset", s2), !this.loop && s2 > this.buffer.duration)
                 return void this.stop(t2);
               const n2 = s2 < this._overlap ? 0 : this._overlap, i2 = new $o({ context: this.context, url: this.buffer, fadeIn: n2, fadeOut: this._overlap, loop: this.loop, loopStart: this._loopStart, loopEnd: this._loopEnd, playbackRate: no(this.detune / 100) }).connect(this.output);
-              i2.start(t2, this._grainSize * e2), i2.stop(t2 + this._grainSize / this.playbackRate), this._activeSources.push(i2), i2.onended = () => {
+              i2.start(t2, this._grainSize * e3), i2.stop(t2 + this._grainSize / this.playbackRate), this._activeSources.push(i2), i2.onended = () => {
                 const t3 = this._activeSources.indexOf(i2);
                 t3 !== -1 && this._activeSources.splice(t3, 1);
               };
@@ -7852,8 +7868,8 @@
               return this._overlap;
             }
             set overlap(t2) {
-              const e2 = this.toSeconds(t2);
-              ei(e2, 0), this._overlap = e2;
+              const e3 = this.toSeconds(t2);
+              ei(e3, 0), this._overlap = e3;
             }
             get loaded() {
               return this.buffer.loaded;
@@ -7928,7 +7944,7 @@
               return Object.assign(or.getDefaults(), { value: 1 });
             }
             _expFunc(t2) {
-              return (e2) => Math.pow(Math.abs(e2), t2);
+              return (e3) => Math.pow(Math.abs(e3), t2);
             }
             get value() {
               return this._exponent;
@@ -7966,60 +7982,60 @@
               this._lastVal = t2.value, this._synced = this.context.transport.scheduleRepeat(this._onTick.bind(this), "1i"), this._syncedCallback = this._anchorValue.bind(this), this.context.transport.on("start", this._syncedCallback), this.context.transport.on("pause", this._syncedCallback), this.context.transport.on("stop", this._syncedCallback), this._constantSource.disconnect(), this._constantSource.stop(0), this._constantSource = this.output = new Ao({ context: this.context, offset: t2.value, units: t2.units }).start(0), this.setValueAtTime(t2.value, 0);
             }
             _onTick(t2) {
-              const e2 = super.getValueAtTime(this.context.transport.seconds);
-              this._lastVal !== e2 && (this._lastVal = e2, this._constantSource.offset.setValueAtTime(e2, t2));
+              const e3 = super.getValueAtTime(this.context.transport.seconds);
+              this._lastVal !== e3 && (this._lastVal = e3, this._constantSource.offset.setValueAtTime(e3, t2));
             }
             _anchorValue(t2) {
-              const e2 = super.getValueAtTime(this.context.transport.seconds);
-              this._lastVal = e2, this._constantSource.offset.cancelAndHoldAtTime(t2), this._constantSource.offset.setValueAtTime(e2, t2);
+              const e3 = super.getValueAtTime(this.context.transport.seconds);
+              this._lastVal = e3, this._constantSource.offset.cancelAndHoldAtTime(t2), this._constantSource.offset.setValueAtTime(e3, t2);
             }
             getValueAtTime(t2) {
-              const e2 = new mo(this.context, t2).toSeconds();
-              return super.getValueAtTime(e2);
+              const e3 = new mo(this.context, t2).toSeconds();
+              return super.getValueAtTime(e3);
             }
-            setValueAtTime(t2, e2) {
-              const s2 = new mo(this.context, e2).toSeconds();
+            setValueAtTime(t2, e3) {
+              const s2 = new mo(this.context, e3).toSeconds();
               return super.setValueAtTime(t2, s2), this;
             }
-            linearRampToValueAtTime(t2, e2) {
-              const s2 = new mo(this.context, e2).toSeconds();
+            linearRampToValueAtTime(t2, e3) {
+              const s2 = new mo(this.context, e3).toSeconds();
               return super.linearRampToValueAtTime(t2, s2), this;
             }
-            exponentialRampToValueAtTime(t2, e2) {
-              const s2 = new mo(this.context, e2).toSeconds();
+            exponentialRampToValueAtTime(t2, e3) {
+              const s2 = new mo(this.context, e3).toSeconds();
               return super.exponentialRampToValueAtTime(t2, s2), this;
             }
-            setTargetAtTime(t2, e2, s2) {
-              const n2 = new mo(this.context, e2).toSeconds();
+            setTargetAtTime(t2, e3, s2) {
+              const n2 = new mo(this.context, e3).toSeconds();
               return super.setTargetAtTime(t2, n2, s2), this;
             }
             cancelScheduledValues(t2) {
-              const e2 = new mo(this.context, t2).toSeconds();
-              return super.cancelScheduledValues(e2), this;
+              const e3 = new mo(this.context, t2).toSeconds();
+              return super.cancelScheduledValues(e3), this;
             }
-            setValueCurveAtTime(t2, e2, s2, n2) {
-              const i2 = new mo(this.context, e2).toSeconds();
+            setValueCurveAtTime(t2, e3, s2, n2) {
+              const i2 = new mo(this.context, e3).toSeconds();
               return s2 = this.toSeconds(s2), super.setValueCurveAtTime(t2, i2, s2, n2), this;
             }
             cancelAndHoldAtTime(t2) {
-              const e2 = new mo(this.context, t2).toSeconds();
-              return super.cancelAndHoldAtTime(e2), this;
+              const e3 = new mo(this.context, t2).toSeconds();
+              return super.cancelAndHoldAtTime(e3), this;
             }
             setRampPoint(t2) {
-              const e2 = new mo(this.context, t2).toSeconds();
-              return super.setRampPoint(e2), this;
+              const e3 = new mo(this.context, t2).toSeconds();
+              return super.setRampPoint(e3), this;
             }
-            exponentialRampTo(t2, e2, s2) {
+            exponentialRampTo(t2, e3, s2) {
               const n2 = new mo(this.context, s2).toSeconds();
-              return super.exponentialRampTo(t2, e2, n2), this;
+              return super.exponentialRampTo(t2, e3, n2), this;
             }
-            linearRampTo(t2, e2, s2) {
+            linearRampTo(t2, e3, s2) {
               const n2 = new mo(this.context, s2).toSeconds();
-              return super.linearRampTo(t2, e2, n2), this;
+              return super.linearRampTo(t2, e3, n2), this;
             }
-            targetRampTo(t2, e2, s2) {
+            targetRampTo(t2, e3, s2) {
               const n2 = new mo(this.context, s2).toSeconds();
-              return super.targetRampTo(t2, e2, n2), this;
+              return super.targetRampTo(t2, e3, n2), this;
             }
             dispose() {
               return super.dispose(), this.context.transport.clear(this._synced), this.context.transport.off("start", this._syncedCallback), this.context.transport.off("pause", this._syncedCallback), this.context.transport.off("stop", this._syncedCallback), this._constantSource.dispose(), this;
@@ -8037,21 +8053,21 @@
             get value() {
               return this.getValueAtTime(this.now());
             }
-            _getCurve(t2, e2) {
+            _getCurve(t2, e3) {
               if (fi(t2))
                 return t2;
               {
                 let s2;
                 for (s2 in Ir)
-                  if (Ir[s2][e2] === t2)
+                  if (Ir[s2][e3] === t2)
                     return s2;
                 return t2;
               }
             }
-            _setCurve(t2, e2, s2) {
+            _setCurve(t2, e3, s2) {
               if (fi(s2) && Reflect.has(Ir, s2)) {
                 const n2 = Ir[s2];
-                li(n2) ? t2 !== "_decayCurve" && (this[t2] = n2[e2]) : this[t2] = n2;
+                li(n2) ? t2 !== "_decayCurve" && (this[t2] = n2[e3]) : this[t2] = n2;
               } else {
                 if (!di(s2) || t2 === "_decayCurve")
                   throw new Error("Envelope: invalid curve: " + s2);
@@ -8074,21 +8090,21 @@
               return this._decayCurve;
             }
             set decayCurve(t2) {
-              ti(["linear", "exponential"].some((e2) => e2 === t2), "Invalid envelope curve: " + t2), this._decayCurve = t2;
+              ti(["linear", "exponential"].some((e3) => e3 === t2), "Invalid envelope curve: " + t2), this._decayCurve = t2;
             }
-            triggerAttack(t2, e2 = 1) {
-              this.log("triggerAttack", t2, e2), t2 = this.toSeconds(t2);
+            triggerAttack(t2, e3 = 1) {
+              this.log("triggerAttack", t2, e3), t2 = this.toSeconds(t2);
               let s2 = this.toSeconds(this.attack);
               const n2 = this.toSeconds(this.decay), i2 = this.getValueAtTime(t2);
               if (i2 > 0) {
                 s2 = (1 - i2) / (1 / s2);
               }
               if (s2 < this.sampleTime)
-                this._sig.cancelScheduledValues(t2), this._sig.setValueAtTime(e2, t2);
+                this._sig.cancelScheduledValues(t2), this._sig.setValueAtTime(e3, t2);
               else if (this._attackCurve === "linear")
-                this._sig.linearRampTo(e2, s2, t2);
+                this._sig.linearRampTo(e3, s2, t2);
               else if (this._attackCurve === "exponential")
-                this._sig.targetRampTo(e2, s2, t2);
+                this._sig.targetRampTo(e3, s2, t2);
               else {
                 this._sig.cancelAndHoldAtTime(t2);
                 let n3 = this._attackCurve;
@@ -8097,39 +8113,39 @@
                     n3 = this._attackCurve.slice(t3), n3[0] = i2;
                     break;
                   }
-                this._sig.setValueCurveAtTime(n3, t2, s2, e2);
+                this._sig.setValueCurveAtTime(n3, t2, s2, e3);
               }
               if (n2 && this.sustain < 1) {
-                const i3 = e2 * this.sustain, o2 = t2 + s2;
+                const i3 = e3 * this.sustain, o2 = t2 + s2;
                 this.log("decay", o2), this._decayCurve === "linear" ? this._sig.linearRampToValueAtTime(i3, n2 + o2) : this._sig.exponentialApproachValueAtTime(i3, o2, n2);
               }
               return this;
             }
             triggerRelease(t2) {
               this.log("triggerRelease", t2), t2 = this.toSeconds(t2);
-              const e2 = this.getValueAtTime(t2);
-              if (e2 > 0) {
+              const e3 = this.getValueAtTime(t2);
+              if (e3 > 0) {
                 const s2 = this.toSeconds(this.release);
-                s2 < this.sampleTime ? this._sig.setValueAtTime(0, t2) : this._releaseCurve === "linear" ? this._sig.linearRampTo(0, s2, t2) : this._releaseCurve === "exponential" ? this._sig.targetRampTo(0, s2, t2) : (ti(di(this._releaseCurve), "releaseCurve must be either 'linear', 'exponential' or an array"), this._sig.cancelAndHoldAtTime(t2), this._sig.setValueCurveAtTime(this._releaseCurve, t2, s2, e2));
+                s2 < this.sampleTime ? this._sig.setValueAtTime(0, t2) : this._releaseCurve === "linear" ? this._sig.linearRampTo(0, s2, t2) : this._releaseCurve === "exponential" ? this._sig.targetRampTo(0, s2, t2) : (ti(di(this._releaseCurve), "releaseCurve must be either 'linear', 'exponential' or an array"), this._sig.cancelAndHoldAtTime(t2), this._sig.setValueCurveAtTime(this._releaseCurve, t2, s2, e3));
               }
               return this;
             }
             getValueAtTime(t2) {
               return this._sig.getValueAtTime(t2);
             }
-            triggerAttackRelease(t2, e2, s2 = 1) {
-              return e2 = this.toSeconds(e2), this.triggerAttack(e2, s2), this.triggerRelease(e2 + this.toSeconds(t2)), this;
+            triggerAttackRelease(t2, e3, s2 = 1) {
+              return e3 = this.toSeconds(e3), this.triggerAttack(e3, s2), this.triggerRelease(e3 + this.toSeconds(t2)), this;
             }
             cancel(t2) {
               return this._sig.cancelScheduledValues(this.toSeconds(t2)), this;
             }
-            connect(t2, e2 = 0, s2 = 0) {
-              return Oo(this, t2, e2, s2), this;
+            connect(t2, e3 = 0, s2 = 0) {
+              return Oo(this, t2, e3, s2), this;
             }
             asArray(t2 = 1024) {
               return yi(this, void 0, void 0, function* () {
-                const e2 = t2 / this.context.sampleRate, s2 = new Yi(1, e2, this.context.sampleRate), n2 = this.toSeconds(this.attack) + this.toSeconds(this.decay), i2 = n2 + this.toSeconds(this.release), o2 = 0.1 * i2, r2 = i2 + o2, a2 = new this.constructor(Object.assign(this.get(), { attack: e2 * this.toSeconds(this.attack) / r2, decay: e2 * this.toSeconds(this.decay) / r2, release: e2 * this.toSeconds(this.release) / r2, context: s2 }));
-                a2._sig.toDestination(), a2.triggerAttackRelease(e2 * (n2 + o2) / r2, 0);
+                const e3 = t2 / this.context.sampleRate, s2 = new Yi(1, e3, this.context.sampleRate), n2 = this.toSeconds(this.attack) + this.toSeconds(this.decay), i2 = n2 + this.toSeconds(this.release), o2 = 0.1 * i2, r2 = i2 + o2, a2 = new this.constructor(Object.assign(this.get(), { attack: e3 * this.toSeconds(this.attack) / r2, decay: e3 * this.toSeconds(this.decay) / r2, release: e3 * this.toSeconds(this.release) / r2, context: s2 }));
+                a2._sig.toDestination(), a2.triggerAttackRelease(e3 * (n2 + o2) / r2, 0);
                 return (yield s2.render()).getChannelData(0);
               });
             }
@@ -8139,15 +8155,15 @@
           }
           vi([wr(0)], Fr.prototype, "attack", void 0), vi([wr(0)], Fr.prototype, "decay", void 0), vi([xr(0, 1)], Fr.prototype, "sustain", void 0), vi([wr(0)], Fr.prototype, "release", void 0);
           const Ir = (() => {
-            let t2, e2;
+            let t2, e3;
             const s2 = [];
             for (t2 = 0; t2 < 128; t2++)
               s2[t2] = Math.sin(t2 / 127 * (Math.PI / 2));
             const n2 = [];
             for (t2 = 0; t2 < 127; t2++) {
-              e2 = t2 / 127;
-              const s3 = Math.sin(e2 * (2 * Math.PI) * 6.4 - Math.PI / 2) + 1;
-              n2[t2] = s3 / 10 + 0.83 * e2;
+              e3 = t2 / 127;
+              const s3 = Math.sin(e3 * (2 * Math.PI) * 6.4 - Math.PI / 2) + 1;
+              n2[t2] = s3 / 10 + 0.83 * e3;
             }
             n2[127] = 1;
             const i2 = [];
@@ -8155,18 +8171,18 @@
               i2[t2] = Math.ceil(t2 / 127 * 5) / 5;
             const o2 = [];
             for (t2 = 0; t2 < 128; t2++)
-              e2 = t2 / 127, o2[t2] = 0.5 * (1 - Math.cos(Math.PI * e2));
+              e3 = t2 / 127, o2[t2] = 0.5 * (1 - Math.cos(Math.PI * e3));
             const r2 = [];
             for (t2 = 0; t2 < 128; t2++) {
-              e2 = t2 / 127;
-              const s3 = 4 * Math.pow(e2, 3) + 0.2, n3 = Math.cos(s3 * Math.PI * 2 * e2);
-              r2[t2] = Math.abs(n3 * (1 - e2));
+              e3 = t2 / 127;
+              const s3 = 4 * Math.pow(e3, 3) + 0.2, n3 = Math.cos(s3 * Math.PI * 2 * e3);
+              r2[t2] = Math.abs(n3 * (1 - e3));
             }
             function a2(t3) {
-              const e3 = new Array(t3.length);
+              const e4 = new Array(t3.length);
               for (let s3 = 0; s3 < t3.length; s3++)
-                e3[s3] = 1 - t3[s3];
-              return e3;
+                e4[s3] = 1 - t3[s3];
+              return e4;
             }
             return { bounce: { In: a2(r2), Out: r2 }, cosine: { In: s2, Out: (c2 = s2, c2.slice(0).reverse()) }, exponential: "exponential", linear: "linear", ripple: { In: n2, Out: a2(n2) }, sine: { In: o2, Out: a2(o2) }, step: { In: i2, Out: a2(i2) } };
             var c2;
@@ -8187,11 +8203,11 @@
               let t2 = false;
               return this._synced || (this._synced = true, t2 = true), t2;
             }
-            _syncMethod(t2, e2) {
+            _syncMethod(t2, e3) {
               const s2 = this["_original_" + t2] = this[t2];
               this[t2] = (...t3) => {
-                const n2 = t3[e2], i2 = this.context.transport.schedule((n3) => {
-                  t3[e2] = n3, s2.apply(this, t3);
+                const n2 = t3[e3], i2 = this.context.transport.schedule((n3) => {
+                  t3[e3] = n3, s2.apply(this, t3);
                 }, n2);
                 this._scheduledEvents.push(i2);
               };
@@ -8199,8 +8215,8 @@
             unsync() {
               return this._scheduledEvents.forEach((t2) => this.context.transport.clear(t2)), this._scheduledEvents = [], this._synced && (this._synced = false, this.triggerAttack = this._original_triggerAttack, this.triggerRelease = this._original_triggerRelease), this;
             }
-            triggerAttackRelease(t2, e2, s2, n2) {
-              const i2 = this.toSeconds(s2), o2 = this.toSeconds(e2);
+            triggerAttackRelease(t2, e3, s2, n2) {
+              const i2 = this.toSeconds(s2), o2 = this.toSeconds(e3);
               return this.triggerAttack(t2, i2, n2), this.triggerRelease(i2 + o2), this;
             }
             dispose() {
@@ -8216,18 +8232,18 @@
             static getDefaults() {
               return Object.assign(Vr.getDefaults(), { detune: 0, onsilence: Zi, portamento: 0 });
             }
-            triggerAttack(t2, e2, s2 = 1) {
-              this.log("triggerAttack", t2, e2, s2);
-              const n2 = this.toSeconds(e2);
+            triggerAttack(t2, e3, s2 = 1) {
+              this.log("triggerAttack", t2, e3, s2);
+              const n2 = this.toSeconds(e3);
               return this._triggerEnvelopeAttack(n2, s2), this.setNote(t2, n2), this;
             }
             triggerRelease(t2) {
               this.log("triggerRelease", t2);
-              const e2 = this.toSeconds(t2);
-              return this._triggerEnvelopeRelease(e2), this;
+              const e3 = this.toSeconds(t2);
+              return this._triggerEnvelopeRelease(e3), this;
             }
-            setNote(t2, e2) {
-              const s2 = this.toSeconds(e2), n2 = t2 instanceof lo ? t2.toFrequency() : t2;
+            setNote(t2, e3) {
+              const s2 = this.toSeconds(e3), n2 = t2 instanceof lo ? t2.toFrequency() : t2;
               if (this.portamento > 0 && this.getLevelAtTime(s2) > 0.05) {
                 const t3 = this.toSeconds(this.portamento);
                 this.frequency.exponentialRampTo(n2, t3, s2);
@@ -8254,10 +8270,10 @@
             static getDefaults() {
               return Object.assign(Nr.getDefaults(), { envelope: Object.assign(Mi(Fr.getDefaults(), Object.keys(wo.getDefaults())), { attack: 5e-3, decay: 0.1, release: 1, sustain: 0.3 }), oscillator: Object.assign(Mi(_r.getDefaults(), [...Object.keys(Ho.getDefaults()), "frequency", "detune"]), { type: "triangle" }) });
             }
-            _triggerEnvelopeAttack(t2, e2) {
-              if (this.envelope.triggerAttack(t2, e2), this.oscillator.start(t2), this.envelope.sustain === 0) {
-                const e3 = this.toSeconds(this.envelope.attack), s2 = this.toSeconds(this.envelope.decay);
-                this.oscillator.stop(t2 + e3 + s2);
+            _triggerEnvelopeAttack(t2, e3) {
+              if (this.envelope.triggerAttack(t2, e3), this.oscillator.start(t2), this.envelope.sustain === 0) {
+                const e4 = this.toSeconds(this.envelope.attack), s2 = this.toSeconds(this.envelope.decay);
+                this.oscillator.stop(t2 + e4 + s2);
               }
             }
             _triggerEnvelopeRelease(t2) {
@@ -8279,8 +8295,8 @@
             static getDefaults() {
               return Object.assign(Nr.getDefaults(), { harmonicity: 3, oscillator: Object.assign(Mi(_r.getDefaults(), [...Object.keys(Ho.getDefaults()), "frequency", "detune"]), { type: "sine" }), envelope: Object.assign(Mi(Fr.getDefaults(), Object.keys(wo.getDefaults())), { attack: 0.01, decay: 0.01, sustain: 1, release: 0.5 }), modulation: Object.assign(Mi(_r.getDefaults(), [...Object.keys(Ho.getDefaults()), "frequency", "detune"]), { type: "square" }), modulationEnvelope: Object.assign(Mi(Fr.getDefaults(), Object.keys(wo.getDefaults())), { attack: 0.5, decay: 0, sustain: 1, release: 0.5 }) });
             }
-            _triggerEnvelopeAttack(t2, e2) {
-              this._carrier._triggerEnvelopeAttack(t2, e2), this._modulator._triggerEnvelopeAttack(t2, e2);
+            _triggerEnvelopeAttack(t2, e3) {
+              this._carrier._triggerEnvelopeAttack(t2, e3), this._modulator._triggerEnvelopeAttack(t2, e3);
             }
             _triggerEnvelopeRelease(t2) {
               return this._carrier._triggerEnvelopeRelease(t2), this._modulator._triggerEnvelopeRelease(t2), this;
@@ -8316,13 +8332,13 @@
               ti(["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "notch", "allpass", "peaking"].indexOf(t2) !== -1, "Invalid filter type: " + t2), this._filter.type = t2;
             }
             getFrequencyResponse(t2 = 128) {
-              const e2 = new Float32Array(t2);
+              const e3 = new Float32Array(t2);
               for (let s3 = 0; s3 < t2; s3++) {
                 const n3 = 19980 * Math.pow(s3 / t2, 2) + 20;
-                e2[s3] = n3;
+                e3[s3] = n3;
               }
               const s2 = new Float32Array(t2), n2 = new Float32Array(t2), i2 = this.context.createBiquadFilter();
-              return i2.type = this.type, i2.Q.value = this.Q.value, i2.frequency.value = this.frequency.value, i2.gain.value = this.gain.value, i2.getFrequencyResponse(e2, s2, n2), s2;
+              return i2.type = this.type, i2.Q.value = this.Q.value, i2.frequency.value = this.frequency.value, i2.gain.value = this.gain.value, i2.getFrequencyResponse(e3, s2, n2), s2;
             }
             dispose() {
               return super.dispose(), this._filter.disconnect(), this.Q.dispose(), this.frequency.dispose(), this.gain.dispose(), this.detune.dispose(), this;
@@ -8341,26 +8357,26 @@
               return this._type;
             }
             set type(t2) {
-              ti(["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "notch", "allpass", "peaking"].indexOf(t2) !== -1, "Invalid filter type: " + t2), this._type = t2, this._filters.forEach((e2) => e2.type = t2);
+              ti(["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "notch", "allpass", "peaking"].indexOf(t2) !== -1, "Invalid filter type: " + t2), this._type = t2, this._filters.forEach((e3) => e3.type = t2);
             }
             get rolloff() {
               return this._rolloff;
             }
             set rolloff(t2) {
-              const e2 = ui(t2) ? t2 : parseInt(t2, 10), s2 = [-12, -24, -48, -96];
-              let n2 = s2.indexOf(e2);
-              ti(n2 !== -1, "rolloff can only be " + s2.join(", ")), n2 += 1, this._rolloff = e2, this.input.disconnect(), this._filters.forEach((t3) => t3.disconnect()), this._filters = new Array(n2);
+              const e3 = ui(t2) ? t2 : parseInt(t2, 10), s2 = [-12, -24, -48, -96];
+              let n2 = s2.indexOf(e3);
+              ti(n2 !== -1, "rolloff can only be " + s2.join(", ")), n2 += 1, this._rolloff = e3, this.input.disconnect(), this._filters.forEach((t3) => t3.disconnect()), this._filters = new Array(n2);
               for (let t3 = 0; t3 < n2; t3++) {
-                const e3 = new Br({ context: this.context });
-                e3.type = this._type, this.frequency.connect(e3.frequency), this.detune.connect(e3.detune), this.Q.connect(e3.Q), this.gain.connect(e3.gain), this._filters[t3] = e3;
+                const e4 = new Br({ context: this.context });
+                e4.type = this._type, this.frequency.connect(e4.frequency), this.detune.connect(e4.detune), this.Q.connect(e4.Q), this.gain.connect(e4.gain), this._filters[t3] = e4;
               }
               this._internalChannels = this._filters, bo(this.input, ...this._internalChannels, this.output);
             }
             getFrequencyResponse(t2 = 128) {
-              const e2 = new Br({ frequency: this.frequency.value, gain: this.gain.value, Q: this.Q.value, type: this._type, detune: this.detune.value }), s2 = new Float32Array(t2).map(() => 1);
+              const e3 = new Br({ frequency: this.frequency.value, gain: this.gain.value, Q: this.Q.value, type: this._type, detune: this.detune.value }), s2 = new Float32Array(t2).map(() => 1);
               return this._filters.forEach(() => {
-                e2.getFrequencyResponse(t2).forEach((t3, e3) => s2[e3] *= t3);
-              }), e2.dispose(), s2;
+                e3.getFrequencyResponse(t2).forEach((t3, e4) => s2[e4] *= t3);
+              }), e3.dispose(), s2;
             }
             dispose() {
               return super.dispose(), this._filters.forEach((t2) => {
@@ -8381,8 +8397,8 @@
               return this._baseFrequency;
             }
             set baseFrequency(t2) {
-              const e2 = this.toFrequency(t2);
-              ei(e2, 0), this._baseFrequency = e2, this._scale.min = this._baseFrequency, this.octaves = this._octaves;
+              const e3 = this.toFrequency(t2);
+              ei(e3, 0), this._baseFrequency = e3, this._scale.min = this._baseFrequency, this.octaves = this._octaves;
             }
             get octaves() {
               return this._octaves;
@@ -8409,10 +8425,10 @@
             static getDefaults() {
               return Object.assign(Nr.getDefaults(), { envelope: Object.assign(Mi(Fr.getDefaults(), Object.keys(wo.getDefaults())), { attack: 5e-3, decay: 0.1, release: 1, sustain: 0.9 }), filter: Object.assign(Mi(Wr.getDefaults(), Object.keys(wo.getDefaults())), { Q: 1, rolloff: -12, type: "lowpass" }), filterEnvelope: Object.assign(Mi(Gr.getDefaults(), Object.keys(wo.getDefaults())), { attack: 0.6, baseFrequency: 200, decay: 0.2, exponent: 2, octaves: 3, release: 2, sustain: 0.5 }), oscillator: Object.assign(Mi(_r.getDefaults(), Object.keys(Ho.getDefaults())), { type: "sawtooth" }) });
             }
-            _triggerEnvelopeAttack(t2, e2 = 1) {
-              if (this.envelope.triggerAttack(t2, e2), this.filterEnvelope.triggerAttack(t2), this.oscillator.start(t2), this.envelope.sustain === 0) {
-                const e3 = this.toSeconds(this.envelope.attack), s2 = this.toSeconds(this.envelope.decay);
-                this.oscillator.stop(t2 + e3 + s2);
+            _triggerEnvelopeAttack(t2, e3 = 1) {
+              if (this.envelope.triggerAttack(t2, e3), this.filterEnvelope.triggerAttack(t2), this.oscillator.start(t2), this.envelope.sustain === 0) {
+                const e4 = this.toSeconds(this.envelope.attack), s2 = this.toSeconds(this.envelope.decay);
+                this.oscillator.stop(t2 + e4 + s2);
               }
             }
             _triggerEnvelopeRelease(t2) {
@@ -8437,8 +8453,8 @@
             static getDefaults() {
               return Ai(Nr.getDefaults(), { vibratoAmount: 0.5, vibratoRate: 5, harmonicity: 1.5, voice0: Ai(Mi(Ur.getDefaults(), Object.keys(Nr.getDefaults())), { filterEnvelope: { attack: 0.01, decay: 0, sustain: 1, release: 0.5 }, envelope: { attack: 0.01, decay: 0, sustain: 1, release: 0.5 } }), voice1: Ai(Mi(Ur.getDefaults(), Object.keys(Nr.getDefaults())), { filterEnvelope: { attack: 0.01, decay: 0, sustain: 1, release: 0.5 }, envelope: { attack: 0.01, decay: 0, sustain: 1, release: 0.5 } }) });
             }
-            _triggerEnvelopeAttack(t2, e2) {
-              this.voice0._triggerEnvelopeAttack(t2, e2), this.voice1._triggerEnvelopeAttack(t2, e2);
+            _triggerEnvelopeAttack(t2, e3) {
+              this.voice0._triggerEnvelopeAttack(t2, e3), this.voice1._triggerEnvelopeAttack(t2, e3);
             }
             _triggerEnvelopeRelease(t2) {
               return this.voice0._triggerEnvelopeRelease(t2), this.voice1._triggerEnvelopeRelease(t2), this;
@@ -8466,24 +8482,24 @@
               super(Di(Yr.getDefaults(), arguments)), this.name = "MetalSynth", this._oscillators = [], this._freqMultipliers = [];
               const t2 = Di(Yr.getDefaults(), arguments);
               this.detune = new Do({ context: this.context, units: "cents", value: t2.detune }), this.frequency = new Do({ context: this.context, units: "frequency" }), this._amplitude = new ko({ context: this.context, gain: 0 }).connect(this.output), this._highpass = new Wr({ Q: 0, context: this.context, type: "highpass" }).connect(this._amplitude);
-              for (let e2 = 0; e2 < Xr.length; e2++) {
-                const s2 = new ur({ context: this.context, harmonicity: t2.harmonicity, modulationIndex: t2.modulationIndex, modulationType: "square", onstop: e2 === 0 ? () => this.onsilence(this) : Zi, type: "square" });
-                s2.connect(this._highpass), this._oscillators[e2] = s2;
-                const n2 = new cr({ context: this.context, value: Xr[e2] });
-                this._freqMultipliers[e2] = n2, this.frequency.chain(n2, s2.frequency), this.detune.connect(s2.detune);
+              for (let e3 = 0; e3 < Xr.length; e3++) {
+                const s2 = new ur({ context: this.context, harmonicity: t2.harmonicity, modulationIndex: t2.modulationIndex, modulationType: "square", onstop: e3 === 0 ? () => this.onsilence(this) : Zi, type: "square" });
+                s2.connect(this._highpass), this._oscillators[e3] = s2;
+                const n2 = new cr({ context: this.context, value: Xr[e3] });
+                this._freqMultipliers[e3] = n2, this.frequency.chain(n2, s2.frequency), this.detune.connect(s2.detune);
               }
               this._filterFreqScaler = new gr({ context: this.context, max: 7e3, min: this.toFrequency(t2.resonance) }), this.envelope = new Fr({ attack: t2.envelope.attack, attackCurve: "linear", context: this.context, decay: t2.envelope.decay, release: t2.envelope.release, sustain: 0 }), this.envelope.chain(this._filterFreqScaler, this._highpass.frequency), this.envelope.connect(this._amplitude.gain), this._octaves = t2.octaves, this.octaves = t2.octaves;
             }
             static getDefaults() {
               return Ai(Nr.getDefaults(), { envelope: Object.assign(Mi(Fr.getDefaults(), Object.keys(wo.getDefaults())), { attack: 1e-3, decay: 1.4, release: 0.2 }), harmonicity: 5.1, modulationIndex: 32, octaves: 1.5, resonance: 4e3 });
             }
-            _triggerEnvelopeAttack(t2, e2 = 1) {
-              return this.envelope.triggerAttack(t2, e2), this._oscillators.forEach((e3) => e3.start(t2)), this.envelope.sustain === 0 && this._oscillators.forEach((e3) => {
-                e3.stop(t2 + this.toSeconds(this.envelope.attack) + this.toSeconds(this.envelope.decay));
+            _triggerEnvelopeAttack(t2, e3 = 1) {
+              return this.envelope.triggerAttack(t2, e3), this._oscillators.forEach((e4) => e4.start(t2)), this.envelope.sustain === 0 && this._oscillators.forEach((e4) => {
+                e4.stop(t2 + this.toSeconds(this.envelope.attack) + this.toSeconds(this.envelope.decay));
               }), this;
             }
             _triggerEnvelopeRelease(t2) {
-              return this.envelope.triggerRelease(t2), this._oscillators.forEach((e2) => e2.stop(t2 + this.toSeconds(this.envelope.release))), this;
+              return this.envelope.triggerRelease(t2), this._oscillators.forEach((e3) => e3.stop(t2 + this.toSeconds(this.envelope.release))), this;
             }
             getLevelAtTime(t2) {
               return t2 = this.toSeconds(t2), this.envelope.getValueAtTime(t2);
@@ -8492,13 +8508,13 @@
               return this._oscillators[0].modulationIndex.value;
             }
             set modulationIndex(t2) {
-              this._oscillators.forEach((e2) => e2.modulationIndex.value = t2);
+              this._oscillators.forEach((e3) => e3.modulationIndex.value = t2);
             }
             get harmonicity() {
               return this._oscillators[0].harmonicity.value;
             }
             set harmonicity(t2) {
-              this._oscillators.forEach((e2) => e2.harmonicity.value = t2);
+              this._oscillators.forEach((e3) => e3.harmonicity.value = t2);
             }
             get resonance() {
               return this._filterFreqScaler.min;
@@ -8525,8 +8541,8 @@
             static getDefaults() {
               return Ai(Nr.getDefaults(), jr.getDefaults(), { envelope: { attack: 1e-3, attackCurve: "exponential", decay: 0.4, release: 1.4, sustain: 0.01 }, octaves: 10, oscillator: { type: "sine" }, pitchDecay: 0.05 });
             }
-            setNote(t2, e2) {
-              const s2 = this.toSeconds(e2), n2 = this.toFrequency(t2 instanceof lo ? t2.toFrequency() : t2), i2 = n2 * this.octaves;
+            setNote(t2, e3) {
+              const s2 = this.toSeconds(e3), n2 = this.toFrequency(t2 instanceof lo ? t2.toFrequency() : t2), i2 = n2 * this.octaves;
               return this.oscillator.frequency.setValueAtTime(i2, s2), this.oscillator.frequency.exponentialRampToValueAtTime(n2, s2 + this.toSeconds(this.pitchDecay)), this;
             }
             dispose() {
@@ -8543,8 +8559,8 @@
             static getDefaults() {
               return Object.assign(Vr.getDefaults(), { envelope: Object.assign(Mi(Fr.getDefaults(), Object.keys(wo.getDefaults())), { decay: 0.1, sustain: 0 }), noise: Object.assign(Mi(Jo.getDefaults(), Object.keys(Ho.getDefaults())), { type: "white" }) });
             }
-            triggerAttack(t2, e2 = 1) {
-              return t2 = this.toSeconds(t2), this.envelope.triggerAttack(t2, e2), this.noise.start(t2), this.envelope.sustain === 0 && this.noise.stop(t2 + this.toSeconds(this.envelope.attack) + this.toSeconds(this.envelope.decay)), this;
+            triggerAttack(t2, e3 = 1) {
+              return t2 = this.toSeconds(t2), this.envelope.triggerAttack(t2, e3), this.noise.start(t2), this.envelope.sustain === 0 && this.noise.stop(t2 + this.toSeconds(this.envelope.attack) + this.toSeconds(this.envelope.decay)), this;
             }
             triggerRelease(t2) {
               return t2 = this.toSeconds(t2), this.envelope.triggerRelease(t2), this.noise.stop(t2 + this.toSeconds(this.envelope.release)), this;
@@ -8552,8 +8568,8 @@
             sync() {
               return this._syncState() && (this._syncMethod("triggerAttack", 0), this._syncMethod("triggerRelease", 0)), this;
             }
-            triggerAttackRelease(t2, e2, s2 = 1) {
-              return e2 = this.toSeconds(e2), t2 = this.toSeconds(t2), this.triggerAttack(e2, s2), this.triggerRelease(e2 + t2), this;
+            triggerAttackRelease(t2, e3, s2 = 1) {
+              return e3 = this.toSeconds(e3), t2 = this.toSeconds(t2), this.triggerAttack(e3, s2), this.triggerRelease(e3 + t2), this;
             }
             dispose() {
               return super.dispose(), this.noise.dispose(), this.envelope.dispose(), this;
@@ -8563,15 +8579,15 @@
           function Kr(t2) {
             Jr.add(t2);
           }
-          function ta(t2, e2) {
-            const s2 = `registerProcessor("${t2}", ${e2})`;
+          function ta(t2, e3) {
+            const s2 = `registerProcessor("${t2}", ${e3})`;
             Jr.add(s2);
           }
           class ea extends wo {
             constructor(t2) {
               super(t2), this.name = "ToneAudioWorklet", this.workletOptions = {}, this.onprocessorerror = Zi;
-              const e2 = URL.createObjectURL(new Blob([Array.from(Jr).join("\n")], { type: "text/javascript" })), s2 = this._audioWorkletName();
-              this._dummyGain = this.context.createGain(), this._dummyParam = this._dummyGain.gain, this.context.addAudioWorkletModule(e2, s2).then(() => {
+              const e3 = URL.createObjectURL(new Blob([Array.from(Jr).join("\n")], { type: "text/javascript" })), s2 = this._audioWorkletName();
+              this._dummyGain = this.context.createGain(), this._dummyParam = this._dummyGain.gain, this.context.addAudioWorkletModule(e3, s2).then(() => {
                 this.disposed || (this._worklet = this.context.createAudioWorkletNode(s2, this.workletOptions), this._worklet.onprocessorerror = this.onprocessorerror.bind(this), this.onReady(this._worklet));
               });
             }
@@ -8627,8 +8643,8 @@
             }
             onReady(t2) {
               bo(this.input, t2, this.output);
-              const e2 = t2.parameters.get("delayTime");
-              this.delayTime.setParam(e2);
+              const e3 = t2.parameters.get("delayTime");
+              this.delayTime.setParam(e3);
               const s2 = t2.parameters.get("feedback");
               this.resonance.setParam(s2);
             }
@@ -8646,10 +8662,10 @@
               return Object.assign(wo.getDefaults(), { frequency: 880, type: "lowpass" });
             }
             _createFilter() {
-              const t2 = this._filter, e2 = this.toFrequency(this._frequency), s2 = 1 / (2 * Math.PI * e2);
+              const t2 = this._filter, e3 = this.toFrequency(this._frequency), s2 = 1 / (2 * Math.PI * e3);
               if (this._type === "lowpass") {
-                const t3 = 1 / (s2 * this.context.sampleRate), e3 = t3 - 1;
-                this._filter = this.context.createIIRFilter([t3, 0], [1, e3]);
+                const t3 = 1 / (s2 * this.context.sampleRate), e4 = t3 - 1;
+                this._filter = this.context.createIIRFilter([t3, 0], [1, e4]);
               } else {
                 const t3 = 1 / (s2 * this.context.sampleRate) - 1;
                 this._filter = this.context.createIIRFilter([1, -1], [1, t3]);
@@ -8671,13 +8687,13 @@
               this._type = t2, this._createFilter();
             }
             getFrequencyResponse(t2 = 128) {
-              const e2 = new Float32Array(t2);
+              const e3 = new Float32Array(t2);
               for (let s3 = 0; s3 < t2; s3++) {
                 const n3 = 19980 * Math.pow(s3 / t2, 2) + 20;
-                e2[s3] = n3;
+                e3[s3] = n3;
               }
               const s2 = new Float32Array(t2), n2 = new Float32Array(t2);
-              return this._filter.getFrequencyResponse(e2, s2, n2), s2;
+              return this._filter.getFrequencyResponse(e3, s2, n2), s2;
             }
             dispose() {
               return super.dispose(), this.input.dispose(), this.output.dispose(), this._filter.disconnect(), this;
@@ -8717,11 +8733,11 @@
             set dampening(t2) {
               this._lfcf.dampening = t2;
             }
-            triggerAttack(t2, e2) {
+            triggerAttack(t2, e3) {
               const s2 = this.toFrequency(t2);
-              e2 = this.toSeconds(e2);
+              e3 = this.toSeconds(e3);
               const n2 = 1 / s2;
-              return this._lfcf.delayTime.setValueAtTime(n2, e2), this._noise.start(e2), this._noise.stop(e2 + n2 * this.attackNoise), this._lfcf.resonance.cancelScheduledValues(e2), this._lfcf.resonance.setValueAtTime(this.resonance, e2), this;
+              return this._lfcf.delayTime.setValueAtTime(n2, e3), this._noise.start(e3), this._noise.stop(e3 + n2 * this.attackNoise), this._lfcf.resonance.cancelScheduledValues(e3), this._lfcf.resonance.setValueAtTime(this.resonance, e3), this;
             }
             triggerRelease(t2) {
               return this._lfcf.resonance.linearRampTo(0, this.release, t2), this;
@@ -8735,8 +8751,8 @@
               super(Di(ra.getDefaults(), arguments, ["voice", "options"])), this.name = "PolySynth", this._availableVoices = [], this._activeVoices = [], this._voices = [], this._gcTimeout = -1, this._averageActiveVoices = 0;
               const t2 = Di(ra.getDefaults(), arguments, ["voice", "options"]);
               ti(!ui(t2.voice), "DEPRECATED: The polyphony count is no longer the first argument.");
-              const e2 = t2.voice.getDefaults();
-              this.options = Object.assign(e2, t2.options), this.voice = t2.voice, this.maxPolyphony = t2.maxPolyphony, this._dummyVoice = this._getNextAvailableVoice();
+              const e3 = t2.voice.getDefaults();
+              this.options = Object.assign(e3, t2.options), this.voice = t2.voice, this.maxPolyphony = t2.maxPolyphony, this._dummyVoice = this._getNextAvailableVoice();
               const s2 = this._voices.indexOf(this._dummyVoice);
               this._voices.splice(s2, 1), this._gcTimeout = this.context.setInterval(this._collectGarbage.bind(this), 1);
             }
@@ -8748,8 +8764,8 @@
             }
             _makeVoiceAvailable(t2) {
               this._availableVoices.push(t2);
-              const e2 = this._activeVoices.findIndex((e3) => e3.voice === t2);
-              this._activeVoices.splice(e2, 1);
+              const e3 = this._activeVoices.findIndex((e4) => e4.voice === t2);
+              this._activeVoices.splice(e3, 1);
             }
             _getNextAvailableVoice() {
               if (this._availableVoices.length)
@@ -8762,47 +8778,47 @@
             }
             _collectGarbage() {
               if (this._averageActiveVoices = Math.max(0.95 * this._averageActiveVoices, this.activeVoices), this._availableVoices.length && this._voices.length > Math.ceil(this._averageActiveVoices + 1)) {
-                const t2 = this._availableVoices.shift(), e2 = this._voices.indexOf(t2);
-                this._voices.splice(e2, 1), this.context.isOffline || t2.dispose();
+                const t2 = this._availableVoices.shift(), e3 = this._voices.indexOf(t2);
+                this._voices.splice(e3, 1), this.context.isOffline || t2.dispose();
               }
             }
-            _triggerAttack(t2, e2, s2) {
+            _triggerAttack(t2, e3, s2) {
               t2.forEach((t3) => {
                 const n2 = new No(this.context, t3).toMidi(), i2 = this._getNextAvailableVoice();
-                i2 && (i2.triggerAttack(t3, e2, s2), this._activeVoices.push({ midi: n2, voice: i2, released: false }), this.log("triggerAttack", t3, e2));
+                i2 && (i2.triggerAttack(t3, e3, s2), this._activeVoices.push({ midi: n2, voice: i2, released: false }), this.log("triggerAttack", t3, e3));
               });
             }
-            _triggerRelease(t2, e2) {
+            _triggerRelease(t2, e3) {
               t2.forEach((t3) => {
-                const s2 = new No(this.context, t3).toMidi(), n2 = this._activeVoices.find(({ midi: t4, released: e3 }) => t4 === s2 && !e3);
-                n2 && (n2.voice.triggerRelease(e2), n2.released = true, this.log("triggerRelease", t3, e2));
+                const s2 = new No(this.context, t3).toMidi(), n2 = this._activeVoices.find(({ midi: t4, released: e4 }) => t4 === s2 && !e4);
+                n2 && (n2.voice.triggerRelease(e3), n2.released = true, this.log("triggerRelease", t3, e3));
               });
             }
-            _scheduleEvent(t2, e2, s2, n2) {
-              ti(!this.disposed, "Synth was already disposed"), s2 <= this.now() ? t2 === "attack" ? this._triggerAttack(e2, s2, n2) : this._triggerRelease(e2, s2) : this.context.setTimeout(() => {
-                this._scheduleEvent(t2, e2, s2, n2);
+            _scheduleEvent(t2, e3, s2, n2) {
+              ti(!this.disposed, "Synth was already disposed"), s2 <= this.now() ? t2 === "attack" ? this._triggerAttack(e3, s2, n2) : this._triggerRelease(e3, s2) : this.context.setTimeout(() => {
+                this._scheduleEvent(t2, e3, s2, n2);
               }, s2 - this.now());
             }
-            triggerAttack(t2, e2, s2) {
+            triggerAttack(t2, e3, s2) {
               Array.isArray(t2) || (t2 = [t2]);
-              const n2 = this.toSeconds(e2);
+              const n2 = this.toSeconds(e3);
               return this._scheduleEvent("attack", t2, n2, s2), this;
             }
-            triggerRelease(t2, e2) {
+            triggerRelease(t2, e3) {
               Array.isArray(t2) || (t2 = [t2]);
-              const s2 = this.toSeconds(e2);
+              const s2 = this.toSeconds(e3);
               return this._scheduleEvent("release", t2, s2), this;
             }
-            triggerAttackRelease(t2, e2, s2, n2) {
+            triggerAttackRelease(t2, e3, s2, n2) {
               const i2 = this.toSeconds(s2);
-              if (this.triggerAttack(t2, i2, n2), di(e2)) {
+              if (this.triggerAttack(t2, i2, n2), di(e3)) {
                 ti(di(t2), "If the duration is an array, the notes must also be an array"), t2 = t2;
                 for (let s3 = 0; s3 < t2.length; s3++) {
-                  const n3 = e2[Math.min(s3, e2.length - 1)], o2 = this.toSeconds(n3);
+                  const n3 = e3[Math.min(s3, e3.length - 1)], o2 = this.toSeconds(n3);
                   ti(o2 > 0, "The duration must be greater than 0"), this.triggerRelease(t2[s3], i2 + o2);
                 }
               } else {
-                const s3 = this.toSeconds(e2);
+                const s3 = this.toSeconds(e3);
                 ti(s3 > 0, "The duration must be greater than 0"), this.triggerRelease(t2, i2 + s3);
               }
               return this;
@@ -8811,16 +8827,16 @@
               return this._syncState() && (this._syncMethod("triggerAttack", 1), this._syncMethod("triggerRelease", 1)), this;
             }
             set(t2) {
-              const e2 = Mi(t2, ["onsilence", "context"]);
-              return this.options = Ai(this.options, e2), this._voices.forEach((t3) => t3.set(e2)), this._dummyVoice.set(e2), this;
+              const e3 = Mi(t2, ["onsilence", "context"]);
+              return this.options = Ai(this.options, e3), this._voices.forEach((t3) => t3.set(e3)), this._dummyVoice.set(e3), this;
             }
             get() {
               return this._dummyVoice.get();
             }
             releaseAll(t2) {
-              const e2 = this.toSeconds(t2);
+              const e3 = this.toSeconds(t2);
               return this._activeVoices.forEach(({ voice: t3 }) => {
-                t3.triggerRelease(e2);
+                t3.triggerRelease(e3);
               }), this;
             }
             dispose() {
@@ -8830,76 +8846,76 @@
           class aa extends Vr {
             constructor() {
               super(Di(aa.getDefaults(), arguments, ["urls", "onload", "baseUrl"], "urls")), this.name = "Sampler", this._activeSources = /* @__PURE__ */ new Map();
-              const t2 = Di(aa.getDefaults(), arguments, ["urls", "onload", "baseUrl"], "urls"), e2 = {};
+              const t2 = Di(aa.getDefaults(), arguments, ["urls", "onload", "baseUrl"], "urls"), e3 = {};
               Object.keys(t2.urls).forEach((s2) => {
                 const n2 = parseInt(s2, 10);
                 if (ti(_i(s2) || ui(n2) && isFinite(n2), "url key is neither a note or midi pitch: " + s2), _i(s2)) {
                   const n3 = new lo(this.context, s2).toMidi();
-                  e2[n3] = t2.urls[s2];
+                  e3[n3] = t2.urls[s2];
                 } else
-                  ui(n2) && isFinite(n2) && (e2[n2] = t2.urls[n2]);
-              }), this._buffers = new Vo({ urls: e2, onload: t2.onload, baseUrl: t2.baseUrl, onerror: t2.onerror }), this.attack = t2.attack, this.release = t2.release, this.curve = t2.curve, this._buffers.loaded && Promise.resolve().then(t2.onload);
+                  ui(n2) && isFinite(n2) && (e3[n2] = t2.urls[n2]);
+              }), this._buffers = new Vo({ urls: e3, onload: t2.onload, baseUrl: t2.baseUrl, onerror: t2.onerror }), this.attack = t2.attack, this.release = t2.release, this.curve = t2.curve, this._buffers.loaded && Promise.resolve().then(t2.onload);
             }
             static getDefaults() {
               return Object.assign(Vr.getDefaults(), { attack: 0, baseUrl: "", curve: "exponential", onload: Zi, onerror: Zi, release: 0.1, urls: {} });
             }
             _findClosest(t2) {
-              let e2 = 0;
-              for (; e2 < 96; ) {
-                if (this._buffers.has(t2 + e2))
-                  return -e2;
-                if (this._buffers.has(t2 - e2))
-                  return e2;
-                e2++;
+              let e3 = 0;
+              for (; e3 < 96; ) {
+                if (this._buffers.has(t2 + e3))
+                  return -e3;
+                if (this._buffers.has(t2 - e3))
+                  return e3;
+                e3++;
               }
               throw new Error("No available buffers for note: " + t2);
             }
-            triggerAttack(t2, e2, s2 = 1) {
-              return this.log("triggerAttack", t2, e2, s2), Array.isArray(t2) || (t2 = [t2]), t2.forEach((t3) => {
+            triggerAttack(t2, e3, s2 = 1) {
+              return this.log("triggerAttack", t2, e3, s2), Array.isArray(t2) || (t2 = [t2]), t2.forEach((t3) => {
                 const n2 = ro(new lo(this.context, t3).toFrequency()), i2 = Math.round(n2), o2 = n2 - i2, r2 = this._findClosest(i2), a2 = i2 - r2, c2 = this._buffers.get(a2), h2 = no(r2 + o2), u2 = new $o({ url: c2, context: this.context, curve: this.curve, fadeIn: this.attack, fadeOut: this.release, playbackRate: h2 }).connect(this.output);
-                u2.start(e2, 0, c2.duration / h2, s2), di(this._activeSources.get(i2)) || this._activeSources.set(i2, []), this._activeSources.get(i2).push(u2), u2.onended = () => {
+                u2.start(e3, 0, c2.duration / h2, s2), di(this._activeSources.get(i2)) || this._activeSources.set(i2, []), this._activeSources.get(i2).push(u2), u2.onended = () => {
                   if (this._activeSources && this._activeSources.has(i2)) {
-                    const t4 = this._activeSources.get(i2), e3 = t4.indexOf(u2);
-                    e3 !== -1 && t4.splice(e3, 1);
+                    const t4 = this._activeSources.get(i2), e4 = t4.indexOf(u2);
+                    e4 !== -1 && t4.splice(e4, 1);
                   }
                 };
               }), this;
             }
-            triggerRelease(t2, e2) {
-              return this.log("triggerRelease", t2, e2), Array.isArray(t2) || (t2 = [t2]), t2.forEach((t3) => {
+            triggerRelease(t2, e3) {
+              return this.log("triggerRelease", t2, e3), Array.isArray(t2) || (t2 = [t2]), t2.forEach((t3) => {
                 const s2 = new lo(this.context, t3).toMidi();
                 if (this._activeSources.has(s2) && this._activeSources.get(s2).length) {
                   const t4 = this._activeSources.get(s2);
-                  e2 = this.toSeconds(e2), t4.forEach((t5) => {
-                    t5.stop(e2);
+                  e3 = this.toSeconds(e3), t4.forEach((t5) => {
+                    t5.stop(e3);
                   }), this._activeSources.set(s2, []);
                 }
               }), this;
             }
             releaseAll(t2) {
-              const e2 = this.toSeconds(t2);
+              const e3 = this.toSeconds(t2);
               return this._activeSources.forEach((t3) => {
                 for (; t3.length; ) {
-                  t3.shift().stop(e2);
+                  t3.shift().stop(e3);
                 }
               }), this;
             }
             sync() {
               return this._syncState() && (this._syncMethod("triggerAttack", 1), this._syncMethod("triggerRelease", 1)), this;
             }
-            triggerAttackRelease(t2, e2, s2, n2 = 1) {
+            triggerAttackRelease(t2, e3, s2, n2 = 1) {
               const i2 = this.toSeconds(s2);
-              return this.triggerAttack(t2, i2, n2), di(e2) ? (ti(di(t2), "notes must be an array when duration is array"), t2.forEach((t3, s3) => {
-                const n3 = e2[Math.min(s3, e2.length - 1)];
+              return this.triggerAttack(t2, i2, n2), di(e3) ? (ti(di(t2), "notes must be an array when duration is array"), t2.forEach((t3, s3) => {
+                const n3 = e3[Math.min(s3, e3.length - 1)];
                 this.triggerRelease(t3, i2 + this.toSeconds(n3));
-              })) : this.triggerRelease(t2, i2 + this.toSeconds(e2)), this;
+              })) : this.triggerRelease(t2, i2 + this.toSeconds(e3)), this;
             }
-            add(t2, e2, s2) {
+            add(t2, e3, s2) {
               if (ti(_i(t2) || isFinite(t2), "note must be a pitch or midi: " + t2), _i(t2)) {
                 const n2 = new lo(this.context, t2).toMidi();
-                this._buffers.add(n2, e2, s2);
+                this._buffers.add(n2, e3, s2);
               } else
-                this._buffers.add(t2, e2, s2);
+                this._buffers.add(t2, e3, s2);
               return this;
             }
             get loaded() {
@@ -8923,16 +8939,16 @@
             }
             _rescheduleEvents(t2 = -1) {
               this._state.forEachFrom(t2, (t3) => {
-                let e2;
+                let e3;
                 if (t3.state === "started") {
                   t3.id !== -1 && this.context.transport.clear(t3.id);
                   const s2 = t3.time + Math.round(this.startOffset / this._playbackRate);
                   if (this._loop === true || ui(this._loop) && this._loop > 1) {
-                    e2 = 1 / 0, ui(this._loop) && (e2 = this._loop * this._getLoopDuration());
+                    e3 = 1 / 0, ui(this._loop) && (e3 = this._loop * this._getLoopDuration());
                     const n2 = this._state.getAfter(s2);
-                    n2 !== null && (e2 = Math.min(e2, n2.time - s2)), e2 !== 1 / 0 && (this._state.setStateAtTime("stopped", s2 + e2 + 1, { id: -1 }), e2 = new jo(this.context, e2));
+                    n2 !== null && (e3 = Math.min(e3, n2.time - s2)), e3 !== 1 / 0 && (this._state.setStateAtTime("stopped", s2 + e3 + 1, { id: -1 }), e3 = new jo(this.context, e3));
                     const i2 = new jo(this.context, this._getLoopDuration());
-                    t3.id = this.context.transport.scheduleRepeat(this._tick.bind(this), i2, new jo(this.context, s2), e2);
+                    t3.id = this.context.transport.scheduleRepeat(this._tick.bind(this), i2, new jo(this.context, s2), e3);
                   } else
                     t3.id = this.context.transport.schedule(this._tick.bind(this), new jo(this.context, s2));
                 }
@@ -8960,35 +8976,35 @@
               this._humanize = t2;
             }
             start(t2) {
-              const e2 = this.toTicks(t2);
-              return this._state.getValueAtTime(e2) === "stopped" && (this._state.add({ id: -1, state: "started", time: e2 }), this._rescheduleEvents(e2)), this;
+              const e3 = this.toTicks(t2);
+              return this._state.getValueAtTime(e3) === "stopped" && (this._state.add({ id: -1, state: "started", time: e3 }), this._rescheduleEvents(e3)), this;
             }
             stop(t2) {
               this.cancel(t2);
-              const e2 = this.toTicks(t2);
-              if (this._state.getValueAtTime(e2) === "started") {
-                this._state.setStateAtTime("stopped", e2, { id: -1 });
-                const t3 = this._state.getBefore(e2);
-                let s2 = e2;
+              const e3 = this.toTicks(t2);
+              if (this._state.getValueAtTime(e3) === "started") {
+                this._state.setStateAtTime("stopped", e3, { id: -1 });
+                const t3 = this._state.getBefore(e3);
+                let s2 = e3;
                 t3 !== null && (s2 = t3.time), this._rescheduleEvents(s2);
               }
               return this;
             }
             cancel(t2) {
               t2 = Oi(t2, -1 / 0);
-              const e2 = this.toTicks(t2);
-              return this._state.forEachFrom(e2, (t3) => {
+              const e3 = this.toTicks(t2);
+              return this._state.forEachFrom(e3, (t3) => {
                 this.context.transport.clear(t3.id);
-              }), this._state.cancel(e2), this;
+              }), this._state.cancel(e3), this;
             }
             _tick(t2) {
-              const e2 = this.context.transport.getTicksAtTime(t2);
-              if (!this.mute && this._state.getValueAtTime(e2) === "started") {
+              const e3 = this.context.transport.getTicksAtTime(t2);
+              if (!this.mute && this._state.getValueAtTime(e3) === "started") {
                 if (this.probability < 1 && Math.random() > this.probability)
                   return;
                 if (this.humanize) {
-                  let e3 = 0.02;
-                  pi(this.humanize) || (e3 = this.toSeconds(this.humanize)), t2 += (2 * Math.random() - 1) * e3;
+                  let e4 = 0.02;
+                  pi(this.humanize) || (e4 = this.toSeconds(this.humanize)), t2 += (2 * Math.random() - 1) * e4;
                 }
                 this.callback(t2, this.value);
               }
@@ -9022,10 +9038,10 @@
             }
             get progress() {
               if (this._loop) {
-                const t2 = this.context.transport.ticks, e2 = this._state.get(t2);
-                if (e2 !== null && e2.state === "started") {
+                const t2 = this.context.transport.ticks, e3 = this._state.get(t2);
+                if (e3 !== null && e3.state === "started") {
                   const s2 = this._getLoopDuration();
-                  return (t2 - e2.time) % s2 / s2;
+                  return (t2 - e3.time) % s2 / s2;
                 }
                 return 0;
               }
@@ -9113,19 +9129,19 @@
             static getDefaults() {
               return Object.assign(ca.getDefaults(), { events: [] });
             }
-            start(t2, e2) {
+            start(t2, e3) {
               const s2 = this.toTicks(t2);
               if (this._state.getValueAtTime(s2) !== "started") {
-                e2 = Oi(e2, this._loop ? this._loopStart : 0), e2 = this._loop ? Oi(e2, this._loopStart) : Oi(e2, 0);
-                const t3 = this.toTicks(e2);
-                this._state.add({ id: -1, offset: t3, state: "started", time: s2 }), this._forEach((e3) => {
-                  this._startNote(e3, s2, t3);
+                e3 = Oi(e3, this._loop ? this._loopStart : 0), e3 = this._loop ? Oi(e3, this._loopStart) : Oi(e3, 0);
+                const t3 = this.toTicks(e3);
+                this._state.add({ id: -1, offset: t3, state: "started", time: s2 }), this._forEach((e4) => {
+                  this._startNote(e4, s2, t3);
                 });
               }
               return this;
             }
-            _startNote(t2, e2, s2) {
-              e2 -= s2, this._loop ? t2.startOffset >= this._loopStart && t2.startOffset < this._loopEnd ? (t2.startOffset < s2 && (e2 += this._getLoopDuration()), t2.start(new jo(this.context, e2))) : t2.startOffset < this._loopStart && t2.startOffset >= s2 && (t2.loop = false, t2.start(new jo(this.context, e2))) : t2.startOffset >= s2 && t2.start(new jo(this.context, e2));
+            _startNote(t2, e3, s2) {
+              e3 -= s2, this._loop ? t2.startOffset >= this._loopStart && t2.startOffset < this._loopEnd ? (t2.startOffset < s2 && (e3 += this._getLoopDuration()), t2.start(new jo(this.context, e3))) : t2.startOffset < this._loopStart && t2.startOffset >= s2 && (t2.loop = false, t2.start(new jo(this.context, e3))) : t2.startOffset >= s2 && t2.start(new jo(this.context, e3));
             }
             get startOffset() {
               return this._startOffset;
@@ -9136,56 +9152,56 @@
               });
             }
             stop(t2) {
-              const e2 = this.toTicks(t2);
-              return this._state.cancel(e2), this._state.setStateAtTime("stopped", e2), this._forEach((e3) => {
-                e3.stop(t2);
+              const e3 = this.toTicks(t2);
+              return this._state.cancel(e3), this._state.setStateAtTime("stopped", e3), this._forEach((e4) => {
+                e4.stop(t2);
               }), this;
             }
-            at(t2, e2) {
+            at(t2, e3) {
               const s2 = new mo(this.context, t2).toTicks(), n2 = new jo(this.context, 1).toSeconds(), i2 = this._events.values();
               let o2 = i2.next();
               for (; !o2.done; ) {
                 const t3 = o2.value;
                 if (Math.abs(s2 - t3.startOffset) < n2)
-                  return ci(e2) && (t3.value = e2), t3;
+                  return ci(e3) && (t3.value = e3), t3;
                 o2 = i2.next();
               }
-              return ci(e2) ? (this.add(t2, e2), this.at(t2)) : null;
+              return ci(e3) ? (this.add(t2, e3), this.at(t2)) : null;
             }
-            add(t2, e2) {
-              t2 instanceof Object && Reflect.has(t2, "time") && (t2 = (e2 = t2).time);
+            add(t2, e3) {
+              t2 instanceof Object && Reflect.has(t2, "time") && (t2 = (e3 = t2).time);
               const s2 = this.toTicks(t2);
               let n2;
-              return e2 instanceof ca ? (n2 = e2, n2.callback = this._tick.bind(this)) : n2 = new ca({ callback: this._tick.bind(this), context: this.context, value: e2 }), n2.startOffset = s2, n2.set({ humanize: this.humanize, loop: this.loop, loopEnd: this.loopEnd, loopStart: this.loopStart, playbackRate: this.playbackRate, probability: this.probability }), this._events.add(n2), this._restartEvent(n2), this;
+              return e3 instanceof ca ? (n2 = e3, n2.callback = this._tick.bind(this)) : n2 = new ca({ callback: this._tick.bind(this), context: this.context, value: e3 }), n2.startOffset = s2, n2.set({ humanize: this.humanize, loop: this.loop, loopEnd: this.loopEnd, loopStart: this.loopStart, playbackRate: this.playbackRate, probability: this.probability }), this._events.add(n2), this._restartEvent(n2), this;
             }
             _restartEvent(t2) {
-              this._state.forEach((e2) => {
-                e2.state === "started" ? this._startNote(t2, e2.time, e2.offset) : t2.stop(new jo(this.context, e2.time));
+              this._state.forEach((e3) => {
+                e3.state === "started" ? this._startNote(t2, e3.time, e3.offset) : t2.stop(new jo(this.context, e3.time));
               });
             }
-            remove(t2, e2) {
-              return li(t2) && t2.hasOwnProperty("time") && (t2 = (e2 = t2).time), t2 = this.toTicks(t2), this._events.forEach((s2) => {
-                s2.startOffset === t2 && (ai(e2) || ci(e2) && s2.value === e2) && (this._events.delete(s2), s2.dispose());
+            remove(t2, e3) {
+              return li(t2) && t2.hasOwnProperty("time") && (t2 = (e3 = t2).time), t2 = this.toTicks(t2), this._events.forEach((s2) => {
+                s2.startOffset === t2 && (ai(e3) || ci(e3) && s2.value === e3) && (this._events.delete(s2), s2.dispose());
               }), this;
             }
             clear() {
               return this._forEach((t2) => t2.dispose()), this._events.clear(), this;
             }
             cancel(t2) {
-              return this._forEach((e2) => e2.cancel(t2)), this._state.cancel(this.toTicks(t2)), this;
+              return this._forEach((e3) => e3.cancel(t2)), this._state.cancel(this.toTicks(t2)), this;
             }
             _forEach(t2) {
-              return this._events && this._events.forEach((e2) => {
-                e2 instanceof ua ? e2._forEach(t2) : t2(e2);
+              return this._events && this._events.forEach((e3) => {
+                e3 instanceof ua ? e3._forEach(t2) : t2(e3);
               }), this;
             }
-            _setAll(t2, e2) {
+            _setAll(t2, e3) {
               this._forEach((s2) => {
-                s2[t2] = e2;
+                s2[t2] = e3;
               });
             }
-            _tick(t2, e2) {
-              this.mute || this.callback(t2, e2);
+            _tick(t2, e3) {
+              this.mute || this.callback(t2, e3);
             }
             _testLoopBoundries(t2) {
               this._loop && (t2.startOffset < this._loopStart || t2.startOffset >= this._loopEnd) ? t2.cancel(0) : t2.state === "stopped" && this._restartEvent(t2);
@@ -9206,16 +9222,16 @@
               return this._loop;
             }
             set loop(t2) {
-              this._loop = t2, this._forEach((e2) => {
-                e2.loopStart = this.loopStart, e2.loopEnd = this.loopEnd, e2.loop = t2, this._testLoopBoundries(e2);
+              this._loop = t2, this._forEach((e3) => {
+                e3.loopStart = this.loopStart, e3.loopEnd = this.loopEnd, e3.loop = t2, this._testLoopBoundries(e3);
               });
             }
             get loopEnd() {
               return new jo(this.context, this._loopEnd).toSeconds();
             }
             set loopEnd(t2) {
-              this._loopEnd = this.toTicks(t2), this._loop && this._forEach((e2) => {
-                e2.loopEnd = t2, this._testLoopBoundries(e2);
+              this._loopEnd = this.toTicks(t2), this._loop && this._forEach((e3) => {
+                e3.loopEnd = t2, this._testLoopBoundries(e3);
               });
             }
             get loopStart() {
@@ -9240,48 +9256,48 @@
             }
           }
           function* la(t2) {
-            let e2 = 0;
-            for (; e2 < t2.length; )
-              e2 = fa(e2, t2), yield t2[e2], e2++;
+            let e3 = 0;
+            for (; e3 < t2.length; )
+              e3 = fa(e3, t2), yield t2[e3], e3++;
           }
           function* pa(t2) {
-            let e2 = t2.length - 1;
-            for (; e2 >= 0; )
-              e2 = fa(e2, t2), yield t2[e2], e2--;
+            let e3 = t2.length - 1;
+            for (; e3 >= 0; )
+              e3 = fa(e3, t2), yield t2[e3], e3--;
           }
-          function* da(t2, e2) {
+          function* da(t2, e3) {
             for (; ; )
-              yield* e2(t2);
+              yield* e3(t2);
           }
-          function fa(t2, e2) {
-            return Vi(t2, 0, e2.length - 1);
+          function fa(t2, e3) {
+            return Vi(t2, 0, e3.length - 1);
           }
-          function* _a(t2, e2) {
-            let s2 = e2 ? 0 : t2.length - 1;
+          function* _a(t2, e3) {
+            let s2 = e3 ? 0 : t2.length - 1;
             for (; ; )
-              s2 = fa(s2, t2), yield t2[s2], e2 ? (s2++, s2 >= t2.length - 1 && (e2 = false)) : (s2--, s2 <= 0 && (e2 = true));
+              s2 = fa(s2, t2), yield t2[s2], e3 ? (s2++, s2 >= t2.length - 1 && (e3 = false)) : (s2--, s2 <= 0 && (e3 = true));
           }
           function* ma(t2) {
-            let e2 = 0, s2 = 0;
-            for (; e2 < t2.length; )
-              e2 = fa(e2, t2), yield t2[e2], s2++, e2 += s2 % 2 ? 2 : -1;
+            let e3 = 0, s2 = 0;
+            for (; e3 < t2.length; )
+              e3 = fa(e3, t2), yield t2[e3], s2++, e3 += s2 % 2 ? 2 : -1;
           }
           function* ga(t2) {
-            let e2 = t2.length - 1, s2 = 0;
-            for (; e2 >= 0; )
-              e2 = fa(e2, t2), yield t2[e2], s2++, e2 += s2 % 2 ? -2 : 1;
+            let e3 = t2.length - 1, s2 = 0;
+            for (; e3 >= 0; )
+              e3 = fa(e3, t2), yield t2[e3], s2++, e3 += s2 % 2 ? -2 : 1;
           }
           function* va(t2) {
-            const e2 = [];
+            const e3 = [];
             for (let s2 = 0; s2 < t2.length; s2++)
-              e2.push(s2);
-            for (; e2.length > 0; ) {
-              const s2 = fa(e2.splice(Math.floor(e2.length * Math.random()), 1)[0], t2);
+              e3.push(s2);
+            for (; e3.length > 0; ) {
+              const s2 = fa(e3.splice(Math.floor(e3.length * Math.random()), 1)[0], t2);
               yield t2[s2];
             }
           }
-          function* ya(t2, e2 = "up", s2 = 0) {
-            switch (ti(t2.length > 0, "The array must have more than one value in it"), e2) {
+          function* ya(t2, e3 = "up", s2 = 0) {
+            switch (ti(t2.length > 0, "The array must have more than one value in it"), e3) {
               case "up":
                 yield* da(t2, la);
               case "down":
@@ -9297,17 +9313,17 @@
               case "random":
                 yield* function* (t3) {
                   for (; ; ) {
-                    const e3 = Math.floor(Math.random() * t3.length);
-                    yield t3[e3];
+                    const e4 = Math.floor(Math.random() * t3.length);
+                    yield t3[e4];
                   }
                 }(t2);
               case "randomOnce":
                 yield* da(t2, va);
               case "randomWalk":
                 yield* function* (t3) {
-                  let e3 = Math.floor(Math.random() * t3.length);
+                  let e4 = Math.floor(Math.random() * t3.length);
                   for (; ; )
-                    e3 === 0 ? e3++ : e3 === t3.length - 1 || Math.random() < 0.5 ? e3-- : e3++, yield t3[e3];
+                    e4 === 0 ? e4++ : e4 === t3.length - 1 || Math.random() < 0.5 ? e4-- : e4++, yield t3[e4];
                 }(t2);
             }
           }
@@ -9321,8 +9337,8 @@
               return Object.assign(ha.getDefaults(), { pattern: "up", values: [], callback: Zi });
             }
             _tick(t2) {
-              const e2 = this._pattern.next();
-              this._value = e2.value, this.callback(t2, this._value);
+              const e3 = this._pattern.next();
+              this._value = e3.value, this.callback(t2, this._value);
             }
             get values() {
               return this._values;
@@ -9349,8 +9365,8 @@
             static getDefaults() {
               return Object.assign(Mi(ca.getDefaults(), ["value"]), { events: [], loop: true, loopEnd: 0, loopStart: 0, subdivision: "8n" });
             }
-            _seqCallback(t2, e2) {
-              e2 !== null && this.callback(t2, e2);
+            _seqCallback(t2, e3) {
+              e3 !== null && this.callback(t2, e3);
             }
             get events() {
               return this._events;
@@ -9358,8 +9374,8 @@
             set events(t2) {
               this.clear(), this._eventsArray = t2, this._events = this._createSequence(this._eventsArray), this._eventsUpdated();
             }
-            start(t2, e2) {
-              return this._part.start(t2, e2 ? this._indexTime(e2) : e2), this;
+            start(t2, e3) {
+              return this._part.start(t2, e3 ? this._indexTime(e3) : e3), this;
             }
             stop(t2) {
               return this._part.stop(t2), this;
@@ -9368,19 +9384,19 @@
               return new jo(this.context, this._subdivision).toSeconds();
             }
             _createSequence(t2) {
-              return new Proxy(t2, { get: (t3, e2) => t3[e2], set: (t3, e2, s2) => (fi(e2) && isFinite(parseInt(e2, 10)) && di(s2) ? t3[e2] = this._createSequence(s2) : t3[e2] = s2, this._eventsUpdated(), true) });
+              return new Proxy(t2, { get: (t3, e3) => t3[e3], set: (t3, e3, s2) => (fi(e3) && isFinite(parseInt(e3, 10)) && di(s2) ? t3[e3] = this._createSequence(s2) : t3[e3] = s2, this._eventsUpdated(), true) });
             }
             _eventsUpdated() {
               this._part.clear(), this._rescheduleSequence(this._eventsArray, this._subdivision, this.startOffset), this.loopEnd = this.loopEnd;
             }
-            _rescheduleSequence(t2, e2, s2) {
+            _rescheduleSequence(t2, e3, s2) {
               t2.forEach((t3, n2) => {
-                const i2 = n2 * e2 + s2;
+                const i2 = n2 * e3 + s2;
                 if (di(t3))
-                  this._rescheduleSequence(t3, e2 / t3.length, i2);
+                  this._rescheduleSequence(t3, e3 / t3.length, i2);
                 else {
-                  const e3 = new jo(this.context, i2, "i").toSeconds();
-                  this._part.add(e3, t3);
+                  const e4 = new jo(this.context, i2, "i").toSeconds();
+                  this._part.add(e4, t3);
                 }
               });
             }
@@ -9655,8 +9671,8 @@
             }
             onReady(t2) {
               bo(this.input, t2, this.output);
-              const e2 = t2.parameters.get("bits");
-              this.bits.setParam(e2);
+              const e3 = t2.parameters.get("bits");
+              this.bits.setParam(e3);
             }
             dispose() {
               return super.dispose(), this.input.dispose(), this.output.dispose(), this.bits.dispose(), this;
@@ -9671,14 +9687,14 @@
             static getDefaults() {
               return Object.assign(Ta.getDefaults(), { order: 1, oversample: "none" });
             }
-            _getCoefficient(t2, e2, s2) {
-              return s2.has(e2) || (e2 === 0 ? s2.set(e2, 0) : e2 === 1 ? s2.set(e2, t2) : s2.set(e2, 2 * t2 * this._getCoefficient(t2, e2 - 1, s2) - this._getCoefficient(t2, e2 - 2, s2))), s2.get(e2);
+            _getCoefficient(t2, e3, s2) {
+              return s2.has(e3) || (e3 === 0 ? s2.set(e3, 0) : e3 === 1 ? s2.set(e3, t2) : s2.set(e3, 2 * t2 * this._getCoefficient(t2, e3 - 1, s2) - this._getCoefficient(t2, e3 - 2, s2))), s2.get(e3);
             }
             get order() {
               return this._order;
             }
             set order(t2) {
-              this._order = t2, this._shaper.setMap((e2) => this._getCoefficient(e2, t2, /* @__PURE__ */ new Map()));
+              this._order = t2, this._shaper.setMap((e3) => this._getCoefficient(e3, t2, /* @__PURE__ */ new Map()));
             }
             get oversample() {
               return this._shaper.oversample;
@@ -9758,8 +9774,8 @@
             }
             set depth(t2) {
               this._depth = t2;
-              const e2 = this._delayTime * t2;
-              this._lfoL.min = Math.max(this._delayTime - e2, 0), this._lfoL.max = this._delayTime + e2, this._lfoR.min = Math.max(this._delayTime - e2, 0), this._lfoR.max = this._delayTime + e2;
+              const e3 = this._delayTime * t2;
+              this._lfoL.min = Math.max(this._delayTime - e3, 0), this._lfoL.max = this._delayTime + e3, this._lfoR.min = Math.max(this._delayTime - e3, 0), this._lfoR.max = this._delayTime + e3;
             }
             get delayTime() {
               return 1e3 * this._delayTime;
@@ -9809,8 +9825,8 @@
             }
             set distortion(t2) {
               this._distortion = t2;
-              const e2 = 100 * t2, s2 = Math.PI / 180;
-              this._shaper.setMap((t3) => Math.abs(t3) < 1e-3 ? 0 : (3 + e2) * t3 * 20 * s2 / (Math.PI + e2 * Math.abs(t3)));
+              const e3 = 100 * t2, s2 = Math.PI / 180;
+              this._shaper.setMap((t3) => Math.abs(t3) < 1e-3 ? 0 : (3 + e3) * t3 * 20 * s2 / (Math.PI + e3 * Math.abs(t3)));
             }
             get oversample() {
               return this._shaper.oversample;
@@ -9853,8 +9869,8 @@
             }
             _createAllPassFilterBank(t2) {
               return t2.map((t3) => {
-                const e2 = [[t3 * t3, 0, -1], [1, 0, -t3 * t3]];
-                return this.context.createIIRFilter(e2[0], e2[1]);
+                const e3 = [[t3 * t3, 0, -1], [1, 0, -t3 * t3]];
+                return this.context.createIIRFilter(e3[0], e3[1]);
               });
             }
             dispose() {
@@ -9866,8 +9882,8 @@
               super(Di(Ba.getDefaults(), arguments, ["frequency"])), this.name = "FrequencyShifter";
               const t2 = Di(Ba.getDefaults(), arguments, ["frequency"]);
               this.frequency = new Do({ context: this.context, units: "frequency", value: t2.frequency, minValue: -this.context.sampleRate / 2, maxValue: this.context.sampleRate / 2 }), this._sine = new nr({ context: this.context, type: "sine" }), this._cosine = new ir({ context: this.context, phase: -90, type: "sine" }), this._sineMultiply = new cr({ context: this.context }), this._cosineMultiply = new cr({ context: this.context }), this._negate = new Ar({ context: this.context }), this._add = new mr({ context: this.context }), this._phaseShifter = new za({ context: this.context }), this.effectSend.connect(this._phaseShifter), this.frequency.fan(this._sine.frequency, this._cosine.frequency), this._phaseShifter.offset90.connect(this._cosineMultiply), this._cosine.connect(this._cosineMultiply.factor), this._phaseShifter.connect(this._sineMultiply), this._sine.connect(this._sineMultiply.factor), this._sineMultiply.connect(this._negate), this._cosineMultiply.connect(this._add), this._negate.connect(this._add.addend), this._add.connect(this.effectReturn);
-              const e2 = this.immediate();
-              this._sine.start(e2), this._cosine.start(e2);
+              const e3 = this.immediate();
+              this._sine.start(e3), this._cosine.start(e3);
             }
             static getDefaults() {
               return Object.assign(Ta.getDefaults(), { frequency: 0 });
@@ -9882,13 +9898,13 @@
               super(Di(Ua.getDefaults(), arguments, ["roomSize", "dampening"])), this.name = "Freeverb", this._combFilters = [], this._allpassFiltersL = [], this._allpassFiltersR = [];
               const t2 = Di(Ua.getDefaults(), arguments, ["roomSize", "dampening"]);
               this.roomSize = new Do({ context: this.context, value: t2.roomSize, units: "normalRange" }), this._allpassFiltersL = Ga.map((t3) => {
-                const e2 = this.context.createBiquadFilter();
-                return e2.type = "allpass", e2.frequency.value = t3, e2;
+                const e3 = this.context.createBiquadFilter();
+                return e3.type = "allpass", e3.frequency.value = t3, e3;
               }), this._allpassFiltersR = Ga.map((t3) => {
-                const e2 = this.context.createBiquadFilter();
-                return e2.type = "allpass", e2.frequency.value = t3, e2;
-              }), this._combFilters = Wa.map((e2, s2) => {
-                const n2 = new ia({ context: this.context, dampening: t2.dampening, delayTime: e2 });
+                const e3 = this.context.createBiquadFilter();
+                return e3.type = "allpass", e3.frequency.value = t3, e3;
+              }), this._combFilters = Wa.map((e3, s2) => {
+                const n2 = new ia({ context: this.context, dampening: t2.dampening, delayTime: e3 });
                 return s2 < Wa.length / 2 ? this.connectEffectLeft(n2, ...this._allpassFiltersL) : this.connectEffectRight(n2, ...this._allpassFiltersR), this.roomSize.connect(n2.resonance), n2;
               }), Ui(this, ["roomSize"]);
             }
@@ -9899,7 +9915,7 @@
               return this._combFilters[0].dampening;
             }
             set dampening(t2) {
-              this._combFilters.forEach((e2) => e2.dampening = t2);
+              this._combFilters.forEach((e3) => e3.dampening = t2);
             }
             dispose() {
               return super.dispose(), this._allpassFiltersL.forEach((t2) => t2.disconnect()), this._allpassFiltersR.forEach((t2) => t2.disconnect()), this._combFilters.forEach((t2) => t2.dispose()), this.roomSize.dispose(), this;
@@ -9911,11 +9927,11 @@
               super(Di(Ya.getDefaults(), arguments, ["roomSize"])), this.name = "JCReverb", this._allpassFilters = [], this._feedbackCombFilters = [];
               const t2 = Di(Ya.getDefaults(), arguments, ["roomSize"]);
               this.roomSize = new Do({ context: this.context, value: t2.roomSize, units: "normalRange" }), this._scaleRoomSize = new gr({ context: this.context, min: -0.733, max: 0.197 }), this._allpassFilters = Xa.map((t3) => {
-                const e2 = this.context.createBiquadFilter();
-                return e2.type = "allpass", e2.frequency.value = t3, e2;
-              }), this._feedbackCombFilters = Qa.map((t3, e2) => {
+                const e3 = this.context.createBiquadFilter();
+                return e3.type = "allpass", e3.frequency.value = t3, e3;
+              }), this._feedbackCombFilters = Qa.map((t3, e3) => {
                 const s2 = new sa({ context: this.context, delayTime: t3 });
-                return this._scaleRoomSize.connect(s2.resonance), s2.resonance.value = Za[e2], e2 < Qa.length / 2 ? this.connectEffectLeft(...this._allpassFilters, s2) : this.connectEffectRight(...this._allpassFilters, s2), s2;
+                return this._scaleRoomSize.connect(s2.resonance), s2.resonance.value = Za[e3], e3 < Qa.length / 2 ? this.connectEffectLeft(...this._allpassFilters, s2) : this.connectEffectRight(...this._allpassFilters, s2), s2;
               }), this.roomSize.connect(this._scaleRoomSize), Ui(this, ["roomSize"]);
             }
             static getDefaults() {
@@ -9948,8 +9964,8 @@
               super(Di(Ja.getDefaults(), arguments, ["pitch"])), this.name = "PitchShift";
               const t2 = Di(Ja.getDefaults(), arguments, ["pitch"]);
               this._frequency = new Do({ context: this.context }), this._delayA = new Fo({ maxDelay: 1, context: this.context }), this._lfoA = new yr({ context: this.context, min: 0, max: 0.1, type: "sawtooth" }).connect(this._delayA.delayTime), this._delayB = new Fo({ maxDelay: 1, context: this.context }), this._lfoB = new yr({ context: this.context, min: 0, max: 0.1, type: "sawtooth", phase: 180 }).connect(this._delayB.delayTime), this._crossFade = new ba({ context: this.context }), this._crossFadeLFO = new yr({ context: this.context, min: 0, max: 1, type: "triangle", phase: 90 }).connect(this._crossFade.fade), this._feedbackDelay = new Fo({ delayTime: t2.delayTime, context: this.context }), this.delayTime = this._feedbackDelay.delayTime, Ui(this, "delayTime"), this._pitch = t2.pitch, this._windowSize = t2.windowSize, this._delayA.connect(this._crossFade.a), this._delayB.connect(this._crossFade.b), this._frequency.fan(this._lfoA.frequency, this._lfoB.frequency, this._crossFadeLFO.frequency), this.effectSend.fan(this._delayA, this._delayB), this._crossFade.chain(this._feedbackDelay, this.effectReturn);
-              const e2 = this.now();
-              this._lfoA.start(e2), this._lfoB.start(e2), this._crossFadeLFO.start(e2), this.windowSize = this._windowSize;
+              const e3 = this.now();
+              this._lfoA.start(e3), this._lfoB.start(e3), this._crossFadeLFO.start(e3), this.windowSize = this._windowSize;
             }
             static getDefaults() {
               return Object.assign(ja.getDefaults(), { pitch: 0, windowSize: 0.1, delayTime: 0, feedback: 0 });
@@ -9959,8 +9975,8 @@
             }
             set pitch(t2) {
               this._pitch = t2;
-              let e2 = 0;
-              t2 < 0 ? (this._lfoA.min = 0, this._lfoA.max = this._windowSize, this._lfoB.min = 0, this._lfoB.max = this._windowSize, e2 = no(t2 - 1) + 1) : (this._lfoA.min = this._windowSize, this._lfoA.max = 0, this._lfoB.min = this._windowSize, this._lfoB.max = 0, e2 = no(t2) - 1), this._frequency.value = e2 * (1.2 / this._windowSize);
+              let e3 = 0;
+              t2 < 0 ? (this._lfoA.min = 0, this._lfoA.max = this._windowSize, this._lfoB.min = 0, this._lfoB.max = this._windowSize, e3 = no(t2 - 1) + 1) : (this._lfoA.min = this._windowSize, this._lfoA.max = 0, this._lfoB.min = this._windowSize, this._lfoB.max = 0, e3 = no(t2) - 1), this._frequency.value = e3 * (1.2 / this._windowSize);
             }
             get windowSize() {
               return this._windowSize;
@@ -9981,11 +9997,11 @@
             static getDefaults() {
               return Object.assign(Ia.getDefaults(), { frequency: 0.5, octaves: 3, stages: 10, Q: 10, baseFrequency: 350 });
             }
-            _makeFilters(t2, e2) {
+            _makeFilters(t2, e3) {
               const s2 = [];
               for (let n2 = 0; n2 < t2; n2++) {
                 const t3 = this.context.createBiquadFilter();
-                t3.type = "allpass", this.Q.connect(t3.Q), e2.connect(t3.frequency), s2.push(t3);
+                t3.type = "allpass", this.Q.connect(t3.Q), e3.connect(t3.frequency), s2.push(t3);
               }
               return s2;
             }
@@ -9994,8 +10010,8 @@
             }
             set octaves(t2) {
               this._octaves = t2;
-              const e2 = this._baseFrequency * Math.pow(2, t2);
-              this._lfoL.max = e2, this._lfoR.max = e2;
+              const e3 = this._baseFrequency * Math.pow(2, t2);
+              this._lfoL.max = e3, this._lfoR.max = e3;
             }
             get baseFrequency() {
               return this._baseFrequency;
@@ -10030,11 +10046,11 @@
             }
             generate() {
               return yi(this, void 0, void 0, function* () {
-                const t2 = this.ready, e2 = new Yi(2, this._decay + this._preDelay, this.context.sampleRate), s2 = new Jo({ context: e2 }), n2 = new Jo({ context: e2 }), i2 = new Fa({ context: e2 });
+                const t2 = this.ready, e3 = new Yi(2, this._decay + this._preDelay, this.context.sampleRate), s2 = new Jo({ context: e3 }), n2 = new Jo({ context: e3 }), i2 = new Fa({ context: e3 });
                 s2.connect(i2, 0, 0), n2.connect(i2, 0, 1);
-                const o2 = new ko({ context: e2 }).toDestination();
+                const o2 = new ko({ context: e3 }).toDestination();
                 i2.connect(o2), s2.start(0), n2.start(0), o2.gain.setValueAtTime(0, 0), o2.gain.setValueAtTime(1, this._preDelay), o2.gain.exponentialApproachValueAtTime(0, this._preDelay, this.decay);
-                const r2 = e2.render();
+                const r2 = e3.render();
                 return this.ready = r2.then(Zi), yield t2, this._convolver.buffer = (yield r2).get(), this;
               });
             }
@@ -10146,16 +10162,16 @@
               super(Di(ac.getDefaults(), arguments, ["type", "size"])), this.name = "Analyser", this._analysers = [], this._buffers = [];
               const t2 = Di(ac.getDefaults(), arguments, ["type", "size"]);
               this.input = this.output = this._gain = new ko({ context: this.context }), this._split = new qa({ context: this.context, channels: t2.channels }), this.input.connect(this._split), ei(t2.channels, 1);
-              for (let e2 = 0; e2 < t2.channels; e2++)
-                this._analysers[e2] = this.context.createAnalyser(), this._split.connect(this._analysers[e2], e2, 0);
+              for (let e3 = 0; e3 < t2.channels; e3++)
+                this._analysers[e3] = this.context.createAnalyser(), this._split.connect(this._analysers[e3], e3, 0);
               this.size = t2.size, this.type = t2.type;
             }
             static getDefaults() {
               return Object.assign(wo.getDefaults(), { size: 1024, smoothing: 0.8, type: "fft", channels: 1 });
             }
             getValue() {
-              return this._analysers.forEach((t2, e2) => {
-                const s2 = this._buffers[e2];
+              return this._analysers.forEach((t2, e3) => {
+                const s2 = this._buffers[e3];
                 this._type === "fft" ? t2.getFloatFrequencyData(s2) : this._type === "waveform" && t2.getFloatTimeDomainData(s2);
               }), this.channels === 1 ? this._buffers[0] : this._buffers;
             }
@@ -10163,8 +10179,8 @@
               return this._analysers[0].frequencyBinCount;
             }
             set size(t2) {
-              this._analysers.forEach((e2, s2) => {
-                e2.fftSize = 2 * t2, this._buffers[s2] = new Float32Array(t2);
+              this._analysers.forEach((e3, s2) => {
+                e3.fftSize = 2 * t2, this._buffers[s2] = new Float32Array(t2);
               });
             }
             get channels() {
@@ -10180,7 +10196,7 @@
               return this._analysers[0].smoothingTimeConstant;
             }
             set smoothing(t2) {
-              this._analysers.forEach((e2) => e2.smoothingTimeConstant = t2);
+              this._analysers.forEach((e3) => e3.smoothingTimeConstant = t2);
             }
             dispose() {
               return super.dispose(), this._analysers.forEach((t2) => t2.disconnect()), this._split.dispose(), this._gain.dispose(), this;
@@ -10207,11 +10223,11 @@
               return ri("'getLevel' has been changed to 'getValue'"), this.getValue();
             }
             getValue() {
-              const t2 = this._analyser.getValue(), e2 = (this.channels === 1 ? [t2] : t2).map((t3) => {
-                const e3 = t3.reduce((t4, e4) => t4 + e4 * e4, 0), s2 = Math.sqrt(e3 / t3.length);
+              const t2 = this._analyser.getValue(), e3 = (this.channels === 1 ? [t2] : t2).map((t3) => {
+                const e4 = t3.reduce((t4, e5) => t4 + e5 * e5, 0), s2 = Math.sqrt(e4 / t3.length);
                 return this._rms = Math.max(s2, this._rms * this.smoothing), this.normalRange ? this._rms : so(this._rms);
               });
-              return this.channels === 1 ? e2[0] : e2;
+              return this.channels === 1 ? e3[0] : e3;
             }
             get channels() {
               return this._analyser.channels;
@@ -10359,8 +10375,8 @@
             _getBus(t2) {
               return _c.buses.has(t2) || _c.buses.set(t2, new ko({ context: this.context })), _c.buses.get(t2);
             }
-            send(t2, e2 = 0) {
-              const s2 = this._getBus(t2), n2 = new ko({ context: this.context, units: "decibels", gain: e2 });
+            send(t2, e3 = 0) {
+              const s2 = this._getBus(t2), n2 = new ko({ context: this.context, units: "decibels", gain: e3 });
               return this.connect(n2), n2.connect(s2), n2;
             }
             receive(t2) {
@@ -10417,11 +10433,11 @@
             static getDefaults() {
               return Object.assign(wo.getDefaults(), { coneInnerAngle: 360, coneOuterAngle: 360, coneOuterGain: 0, distanceModel: "inverse", maxDistance: 1e4, orientationX: 0, orientationY: 0, orientationZ: 0, panningModel: "equalpower", positionX: 0, positionY: 0, positionZ: 0, refDistance: 1, rolloffFactor: 1 });
             }
-            setPosition(t2, e2, s2) {
-              return this.positionX.value = t2, this.positionY.value = e2, this.positionZ.value = s2, this;
+            setPosition(t2, e3, s2) {
+              return this.positionX.value = t2, this.positionY.value = e3, this.positionZ.value = s2, this;
             }
-            setOrientation(t2, e2, s2) {
-              return this.orientationX.value = t2, this.orientationY.value = e2, this.orientationZ.value = s2, this;
+            setOrientation(t2, e3, s2) {
+              return this.orientationX.value = t2, this.orientationY.value = e3, this.orientationZ.value = s2, this;
             }
             get panningModel() {
               return this._panner.panningModel;
@@ -10497,10 +10513,10 @@
               return yi(this, void 0, void 0, function* () {
                 ti(this.state !== "started", "Recorder is already started");
                 const t2 = new Promise((t3) => {
-                  const e2 = () => {
-                    this._recorder.removeEventListener("start", e2, false), t3();
+                  const e3 = () => {
+                    this._recorder.removeEventListener("start", e3, false), t3();
                   };
-                  this._recorder.addEventListener("start", e2, false);
+                  this._recorder.addEventListener("start", e3, false);
                 });
                 return this._recorder.start(), yield t2;
               });
@@ -10509,10 +10525,10 @@
               return yi(this, void 0, void 0, function* () {
                 ti(this.state !== "stopped", "Recorder is not started");
                 const t2 = new Promise((t3) => {
-                  const e2 = (s2) => {
-                    this._recorder.removeEventListener("dataavailable", e2, false), t3(s2.data);
+                  const e3 = (s2) => {
+                    this._recorder.removeEventListener("dataavailable", e3, false), t3(s2.data);
                   };
-                  this._recorder.addEventListener("dataavailable", e2, false);
+                  this._recorder.addEventListener("dataavailable", e3, false);
                 });
                 return this._recorder.stop(), yield t2;
               });
@@ -10624,8 +10640,8 @@
             constructor() {
               super(Di(Ac.getDefaults(), arguments, ["url", "onload"])), this.name = "Convolver", this._convolver = this.context.createConvolver();
               const t2 = Di(Ac.getDefaults(), arguments, ["url", "onload"]);
-              this._buffer = new Xi(t2.url, (e2) => {
-                this.buffer = e2, t2.onload();
+              this._buffer = new Xi(t2.url, (e3) => {
+                this.buffer = e3, t2.onload();
               }), this.input = new ko({ context: this.context }), this.output = new ko({ context: this.context }), this._buffer.loaded && (this.buffer = this._buffer), this.normalize = t2.normalize, this.input.chain(this._convolver, this.output);
             }
             static getDefaults() {
@@ -10641,8 +10657,8 @@
             }
             set buffer(t2) {
               t2 && this._buffer.set(t2), this._convolver.buffer && (this.input.disconnect(), this._convolver.disconnect(), this._convolver = this.context.createConvolver(), this.input.chain(this._convolver, this.output));
-              const e2 = this._buffer.get();
-              this._convolver.buffer = e2 || null;
+              const e3 = this._buffer.get();
+              this._convolver.buffer = e3 || null;
             }
             get normalize() {
               return this._convolver.normalize;
@@ -10694,8 +10710,8 @@
         constructor() {
           this.chordArray = [
             ["C3", "E3", "G3", "C4", "E4", "G4", "C5", "E5", "G5", "C6"],
-            ["F3", "A3", "C3", "F4", "A4", "C4", "F5", "A5", "C6", "F6"],
-            ["G3", "B3", "D3", "G4", "B4", "D4", "G5", "B5", "D6", "G6"]
+            ["F3", "A3", "C4", "F4", "A4", "C5", "F5", "A5", "C6", "F6"],
+            ["G3", "B3", "D4", "G4", "B4", "D5", "G5", "B5", "D6", "G6"]
           ];
           this.allTheNotes = [
             "C1",
