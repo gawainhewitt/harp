@@ -96,12 +96,13 @@ class EventHandlers {
 
   handleKeyDown = (e) => {
     let key = e.code;
+    this.#whichKey(key);
     console.log("keydown "+key); //debugging
   }
 
-  handleKeyUp = () => {
+  handleKeyUp = (e) => {
     let key = e.code;
-    console.log("keydown "+key); //debugging
+    console.log("keyup "+key); //debugging
   }
 
   #handleTouchStart = (e) => {
@@ -188,6 +189,19 @@ class EventHandlers {
               this.stringIsPlucked("touch", {chord: i, string: j});
             }
           }
+        }
+      }
+    }
+  }
+
+  #whichKey = (key) => {
+    const chords = [['KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP'], 
+                    ['KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon'],
+                    ['KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash']];
+    for(let i = 0; i < 3; i++){
+      for(let j = 0; j < 10; j++){
+        if(key === chords[i][j]){
+          this.stringIsPlucked("key", {chord: i, string: j});
         }
       }
     }
