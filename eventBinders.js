@@ -1,10 +1,9 @@
 class EventBinders {
-
   constructor() {
     this.stringsArray = [];
-    for(let i = 0; i < 3; i++){
+    for (let i = 0; i < 3; i++) {
       this.stringsArray[i] = [];
-      for(let j = 0; j < 10; j++){
+      for (let j = 0; j < 10; j++) {
         this.stringsArray[i][j] = document.querySelector(`#c${i}s${j}`);
       }
     }
@@ -16,76 +15,74 @@ class EventBinders {
   }
 
   bindChordButtons(handler) {
-    this.onechord.addEventListener('click', () => {
+    this.onechord.addEventListener("click", () => {
       handler(0, "#onechord");
-    })
-    this.twochord.addEventListener('click', () => {
+    });
+    this.twochord.addEventListener("click", () => {
       handler(1, "#twochord");
-    })
-    this.threechord.addEventListener('click', () => {
+    });
+    this.threechord.addEventListener("click", () => {
       handler(2, "#threechord");
-    })
+    });
   }
 
   bindStartScreen(handler) {
-    this.startscreen.addEventListener('click', () => {
+    this.startscreen.addEventListener("click", () => {
       handler();
-    })
+    });
   }
 
   bindMouseEnter(handler) {
-    for(let i = 0; i < 3; i++){
-      for(let j = 0; j < 10; j++){
-        this.stringsArray[i][j].addEventListener('mouseenter', () => { 
-        handler("mouse", {chord: i, string: j});
-        })
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 10; j++) {
+        this.stringsArray[i][j].addEventListener("mouseenter", () => {
+          handler("mouse", { chord: i, string: j });
+        });
       }
     }
   }
 
   bindSelectStart(handler) {
-    document.addEventListener('selectstart', (e) => {
+    document.addEventListener("selectstart", (e) => {
       handler(e);
-    })
+    });
   }
 
   bindMouseDown(handler) {
-    document.addEventListener('mousedown', (e) => {
+    document.addEventListener("mousedown", (e) => {
       handler(e);
-    })
+    });
   }
 
   bindMouseUp(handler) {
-    document.addEventListener('mouseup', (e) => {
+    document.addEventListener("mouseup", (e) => {
       handler(e);
-    })
+    });
   }
 
   bindTouchStart(handler) {
-    this.middlebox.addEventListener('touchstart', handler);
+    this.middlebox.addEventListener("touchstart", handler);
   }
 
   bindTouchEnd(handler) {
-    this.middlebox.addEventListener('touchend', handler);
+    this.middlebox.addEventListener("touchend", handler);
   }
 
   bindTouchMove(handler) {
-    this.middlebox.addEventListener('touchmove', handler);
+    this.middlebox.addEventListener("touchmove", handler);
   }
 
   bindTouchCancel(handler) {
-    this.middlebox.addEventListener('touchcancel', handler);
+    this.middlebox.addEventListener("touchcancel", handler);
   }
 
   bindKeyDown(handler) {
-    document.addEventListener('keydown', handler);
+    document.addEventListener("keydown", handler);
   }
 
   bindKeyUp(handler) {
-    document.addEventListener('keyup', handler);
+    document.addEventListener("keyup", handler);
   }
-
 }
- 
 
 module.exports = EventBinders;
